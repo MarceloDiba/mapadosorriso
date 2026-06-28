@@ -168,104 +168,117 @@ function SmileLab() {
     }
   }, [step, answers]);
 
+  const showCTA = step !== "hero" && step !== "loading" && step !== "result";
+  const showProgress = showCTA;
+
+  // Reset internal scroll on step change
+  const mainRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+  }, [stepIndex]);
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <AppHeader />
+    <div className="min-h-[100dvh] w-full overflow-x-hidden bg-muted/40 text-foreground">
+      <div className="relative mx-auto flex min-h-[100dvh] w-full max-w-[430px] flex-col overflow-hidden bg-background shadow-[0_0_60px_-20px_rgba(0,0,0,0.25)] sm:min-h-[100dvh]">
+        <AppHeader />
+        {showProgress && (
+          <ProgressBar steps={progressSteps.map((s) => s.label)} current={currentProgressIdx} />
+        )}
 
-      {step !== "hero" && step !== "loading" && step !== "result" && (
-        <ProgressBar steps={progressSteps.map((s) => s.label)} current={currentProgressIdx} />
-      )}
+        <main
+          ref={mainRef}
+          className={`flex-1 overflow-y-auto overflow-x-hidden px-5 pt-3 ${showCTA ? "pb-32" : "pb-6"}`}
+        >
+          <div key={step} className="animate-fade-up">
+            {step === "hero" && <Hero onStart={next} />}
 
-      <main className="mx-auto w-full max-w-2xl px-5 pb-40 pt-4 sm:pt-8">
-        <div key={step} className="animate-fade-up">
-          {step === "hero" && <Hero onStart={next} />}
+            {step === "desire" && (
+              <SingleChoiceStep
+                eyebrow="Etapa 01 — Desejo"
+                title="Qual sorriso mais combina com você?"
+                text="Toque na referência que mais se aproxima."
+                items={DESIRE}
+                value={answers.desire}
+                onChange={(v) => setAnswers((a) => ({ ...a, desire: v }))}
+                layout="carousel"
+                withImages
+              />
+            )}
 
-          {step === "desire" && (
-            <SingleChoiceStep
-              eyebrow="Etapa 01 — Desejo"
-              title="Qual dessas ideias mais se aproxima do sorriso que você gostaria de ter?"
-              text="Toque na referência que mais combina com o resultado que você imagina."
-              items={DESIRE}
-              value={answers.desire}
-              onChange={(v) => setAnswers((a) => ({ ...a, desire: v }))}
-              layout="carousel"
-              withImages
-            />
-          )}
+            {step === "perception" && (
+              <MultiChoiceStep
+                eyebrow="Etapa 02 — Percepção"
+                title="O que você gostaria de melhorar?"
+                text="Marque o que mais chama sua atenção. Pode escolher mais de um."
+                items={PERCEPTION}
+                value={answers.perception}
+                onChange={(v) => setAnswers((a) => ({ ...a, perception: v }))}
+              />
+            )}
 
-          {step === "perception" && (
-            <MultiChoiceStep
-              eyebrow="Etapa 02 — Percepção atual"
-              title="Qual detalhe do seu sorriso você gostaria de melhorar?"
-              text="Marque o que mais chama sua atenção hoje. Você pode escolher mais de um."
-              items={PERCEPTION}
-              value={answers.perception}
-              onChange={(v) => setAnswers((a) => ({ ...a, perception: v }))}
-            />
-          )}
+            {step === "references" && <ReferencesGallery items={REFERENCES} />}
 
-          {step === "references" && <ReferencesGallery items={REFERENCES} />}
+            {step === "safety" && (
+              <SingleChoiceStep
+                eyebrow="Etapa 04 — Segurança"
+                title="O que precisa ficar claro antes de avançar?"
+                text="Decisão estética nasce de desejo, informação e segurança."
+                items={SAFETY}
+                value={answers.safety}
+                onChange={(v) => setAnswers((a) => ({ ...a, safety: v }))}
+              />
+            )}
 
-          {step === "safety" && (
-            <SingleChoiceStep
-              eyebrow="Etapa 04 — Segurança"
-              title="O que precisa ficar claro antes de você avançar?"
-              text="Uma boa decisão estética depende de desejo, informação e segurança."
-              items={SAFETY}
-              value={answers.safety}
-              onChange={(v) => setAnswers((a) => ({ ...a, safety: v }))}
-            />
-          )}
+            {step === "moment" && (
+              <SingleChoiceStep
+                eyebrow="Etapa 05 — Momento"
+                title="Qual é o seu momento agora?"
+                text="Isso ajuda a entender o ritmo ideal para você."
+                items={MOMENT}
+                value={answers.moment}
+                onChange={(v) => setAnswers((a) => ({ ...a, moment: v }))}
+              />
+            )}
 
-          {step === "moment" && (
-            <SingleChoiceStep
-              eyebrow="Etapa 05 — Momento"
-              title="Qual é seu momento agora?"
-              text="Isso ajuda a entender se você está buscando informação, comparação ou uma avaliação."
-              items={MOMENT}
-              value={answers.moment}
-              onChange={(v) => setAnswers((a) => ({ ...a, moment: v }))}
-            />
-          )}
+            {step === "intent" && (
+              <SingleChoiceStep
+                eyebrow="Etapa 06 — Intenção"
+                title="O que faria mais sentido agora?"
+                text="Escolha o próximo passo mais confortável."
+                items={INTENT}
+                value={answers.intent}
+                onChange={(v) => setAnswers((a) => ({ ...a, intent: v }))}
+              />
+            )}
 
-          {step === "intent" && (
-            <SingleChoiceStep
-              eyebrow="Etapa 06 — Intenção"
-              title="Se uma equipe pudesse te orientar, o que faria mais sentido agora?"
-              text="Escolha o próximo passo mais confortável para você."
-              items={INTENT}
-              value={answers.intent}
-              onChange={(v) => setAnswers((a) => ({ ...a, intent: v }))}
-            />
-          )}
+            {step === "lead" && (
+              <LeadForm
+                value={answers.lead}
+                onChange={(lead) => setAnswers((a) => ({ ...a, lead }))}
+              />
+            )}
 
-          {step === "lead" && (
-            <LeadForm
-              value={answers.lead}
-              onChange={(lead) => setAnswers((a) => ({ ...a, lead }))}
-            />
-          )}
+            {step === "loading" && <LoadingMap />}
 
-          {step === "loading" && <LoadingMap />}
+            {step === "result" && <ResultMap answers={answers} onRestart={() => { setAnswers(initialAnswers); setStepIndex(0); }} />}
+          </div>
+        </main>
 
-          {step === "result" && <ResultMap answers={answers} onRestart={() => { setAnswers(initialAnswers); setStepIndex(0); }} />}
-        </div>
-      </main>
-
-      {step !== "hero" && step !== "loading" && step !== "result" && (
-        <StickyCTA
-          label={
-            step === "lead"
-              ? "Ver meu Mapa do Sorriso"
-              : step === "references"
-                ? "Entendi, continuar"
-                : "Continuar"
-          }
-          disabled={!canAdvance}
-          onClick={next}
-          onBack={stepIndex > 1 ? back : undefined}
-        />
-      )}
+        {showCTA && (
+          <StickyCTA
+            label={
+              step === "lead"
+                ? "Ver meu Mapa do Sorriso"
+                : step === "references"
+                  ? "Entendi, continuar"
+                  : "Continuar"
+            }
+            disabled={!canAdvance}
+            onClick={next}
+            onBack={stepIndex > 1 ? back : undefined}
+          />
+        )}
+      </div>
     </div>
   );
 }
@@ -274,23 +287,20 @@ function SmileLab() {
 
 function AppHeader() {
   return (
-    <header className="sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur-md">
-      <div className="mx-auto flex w-full max-w-2xl items-center justify-between px-5 py-3.5">
-        <div className="flex items-center gap-2.5">
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-foreground">
+    <header className="shrink-0 border-b border-border/60 bg-background/90 backdrop-blur-md">
+      <div className="flex w-full items-center justify-between px-5 py-3">
+        <div className="flex min-w-0 items-center gap-2.5">
+          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
               <path d="M4 10c2-3 5-4 8-4s6 1 8 4c-1 6-5 9-8 9s-7-3-8-9z" />
               <path d="M8 10c1-1 2.5-1.5 4-1.5s3 .5 4 1.5" />
             </svg>
           </span>
-          <div className="leading-tight">
-            <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">NOA Lead Flow Smile</p>
-            <p className="font-serif text-base text-foreground">Laboratório do Sorriso</p>
+          <div className="min-w-0 leading-tight">
+            <p className="text-[9px] uppercase tracking-[0.18em] text-muted-foreground">NOA Lead Flow Smile</p>
+            <p className="truncate font-serif text-[15px] text-foreground">Laboratório do Sorriso</p>
           </div>
         </div>
-        <span className="hidden text-[11px] uppercase tracking-[0.16em] text-muted-foreground sm:block">
-          Experiência educativa
-        </span>
       </div>
     </header>
   );
@@ -301,13 +311,13 @@ function AppHeader() {
 function ProgressBar({ steps, current }: { steps: string[]; current: number }) {
   const pct = ((current + 1) / steps.length) * 100;
   return (
-    <div className="sticky top-[57px] z-20 border-b border-border/60 bg-background/85 backdrop-blur-md">
-      <div className="mx-auto w-full max-w-2xl px-5 pb-3 pt-3">
-        <div className="mb-2 flex items-center justify-between">
-          <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+    <div className="shrink-0 border-b border-border/60 bg-background/90 backdrop-blur-md">
+      <div className="w-full px-5 pb-3 pt-3">
+        <div className="mb-2 flex items-center justify-between gap-3">
+          <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
             Etapa {String(current + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
           </p>
-          <p className="font-serif text-sm text-foreground">{steps[current]}</p>
+          <p className="truncate font-serif text-[13px] text-foreground">{steps[current]}</p>
         </div>
         <div className="h-[3px] w-full overflow-hidden rounded-full bg-muted">
           <div
@@ -324,46 +334,42 @@ function ProgressBar({ steps, current }: { steps: string[]; current: number }) {
 
 function Hero({ onStart }: { onStart: () => void }) {
   return (
-    <section className="pb-8 pt-2">
-      <div className="relative overflow-hidden rounded-3xl border border-border bg-card shadow-card">
+    <section className="flex min-h-full flex-col pb-4 pt-1">
+      <div className="relative flex-1 overflow-hidden rounded-3xl border border-border bg-card shadow-card">
         <img
           src={heroSmile}
           alt="Sorriso natural editorial"
-          width={1280}
-          height={1600}
-          className="aspect-[4/5] w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/85 via-primary/30 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
-          <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-gold/60 bg-background/15 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-background backdrop-blur">
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/35 to-transparent" />
+        <div className="relative flex h-full min-h-[60vh] flex-col justify-end p-5">
+          <p className="mb-3 inline-flex w-fit items-center gap-2 rounded-full border border-gold/60 bg-background/15 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-background backdrop-blur">
             <span className="h-1 w-1 rounded-full bg-gold" /> Smile Design
           </p>
-          <h1 className="font-serif text-[34px] leading-[1.05] text-background sm:text-5xl">
+          <h1 className="font-serif text-[32px] leading-[1.05] text-background">
             Descubra o mapa<br />do seu sorriso.
           </h1>
+          <p className="mt-3 max-w-[28ch] text-[13px] leading-relaxed text-background/85">
+            Uma experiência visual e educativa antes de conversar com um especialista.
+          </p>
         </div>
       </div>
-
 
       <button
         type="button"
         onClick={onStart}
-        className="group relative z-10 mt-8 flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-6 py-5 text-left text-primary-foreground shadow-soft transition-all duration-300 hover:translate-y-[-2px] hover:shadow-gold active:scale-[0.99]"
+        className="group relative z-10 mt-5 flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-4 text-left text-primary-foreground shadow-soft transition-all duration-300 active:scale-[0.99]"
       >
-        <span className="font-serif text-xl">Começar agora</span>
-        <span aria-hidden className="grid h-11 w-11 place-items-center rounded-full bg-gold text-primary transition-transform group-hover:translate-x-1">
+        <span className="font-serif text-lg">Começar agora</span>
+        <span aria-hidden className="grid h-10 w-10 place-items-center rounded-full bg-gold text-primary transition-transform group-hover:translate-x-1">
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M5 12h14M13 5l7 7-7 7" />
           </svg>
         </span>
       </button>
 
-      <p className="mt-5 text-center text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-        7 etapas · cerca de 3 minutos
-      </p>
-
-      <p className="mt-4 text-center text-[12px] leading-relaxed text-muted-foreground">
-        Esta experiência é educativa e não substitui<br className="sm:hidden" /> uma avaliação odontológica presencial.
+      <p className="mt-3 text-center text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+        7 etapas · cerca de 3 min · educativo
       </p>
     </section>
   );
@@ -455,52 +461,58 @@ function MultiChoiceStep({
 function ReferencesGallery({ items }: { items: CardItem[] }) {
   return (
     <section>
-      <header className="mb-6 mt-2">
-        <p className="mb-3 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-gold">
+      <header className="mb-4 mt-1">
+        <p className="mb-2 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-gold">
           <span className="h-1 w-1 rounded-full bg-gold" />
           Etapa 03 — Pausa educativa
         </p>
-        <h2 className="text-balance font-serif text-[28px] leading-[1.15] text-foreground sm:text-3xl">
-          Antes de seguir, observe alguns detalhes que mudam um sorriso.
+        <h2 className="text-balance font-serif text-[24px] leading-[1.15] text-foreground">
+          Observe os detalhes que mudam um sorriso.
         </h2>
-        <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-          Não é uma pergunta — é só para você ampliar o olhar. Role para conhecer cada elemento.
+        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+          Não é uma pergunta. Deslize para o lado e amplie o olhar.
         </p>
       </header>
 
-      <div className="space-y-4">
-        {items.map((it, idx) => (
-          <article
-            key={it.id}
-            style={{ animationDelay: `${idx * 80}ms` }}
-            className="animate-fade-up overflow-hidden rounded-3xl border border-border bg-card shadow-card"
-          >
-            {it.image && (
-              <div className="relative aspect-[16/10] w-full overflow-hidden">
-                <img
-                  src={it.image}
-                  alt={it.title}
-                  loading="lazy"
-                  className="h-full w-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-transparent" />
-                <span className="absolute left-4 top-4 rounded-full bg-background/90 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-foreground backdrop-blur">
-                  {String(idx + 1).padStart(2, "0")}
-                </span>
-              </div>
-            )}
-            <div className="p-5">
-              <p className="font-serif text-xl leading-tight text-foreground">{it.title}</p>
-              {it.caption && (
-                <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">{it.caption}</p>
+      <div className="-mx-5">
+        <div
+          className="scrollbar-hide flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-3 pt-1"
+          style={{ scrollPaddingLeft: "1.25rem" }}
+        >
+          {items.map((it, idx) => (
+            <article
+              key={it.id}
+              style={{ animationDelay: `${idx * 60}ms` }}
+              className="animate-scale-pop flex w-[82%] shrink-0 snap-center flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card"
+            >
+              {it.image && (
+                <div className="relative aspect-[4/5] w-full overflow-hidden">
+                  <img
+                    src={it.image}
+                    alt={it.title}
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/55 via-transparent to-transparent" />
+                  <span className="absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-foreground backdrop-blur">
+                    {String(idx + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
+                  </span>
+                </div>
               )}
-            </div>
-          </article>
-        ))}
+              <div className="p-4">
+                <p className="font-serif text-lg leading-tight text-foreground">{it.title}</p>
+                {it.caption && (
+                  <p className="mt-1.5 text-[13px] leading-snug text-muted-foreground">{it.caption}</p>
+                )}
+              </div>
+            </article>
+          ))}
+          <div className="w-2 shrink-0" />
+        </div>
       </div>
 
-      <p className="mt-6 text-center text-[12px] leading-relaxed text-muted-foreground">
-        Nenhuma escolha é necessária aqui. Quando quiser, toque em <span className="text-foreground">“Entendi, continuar”</span>.
+      <p className="mt-2 text-center text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+        Deslize para o lado →
       </p>
     </section>
   );
@@ -557,10 +569,10 @@ function Carousel({
               onClick={() => onToggle(it.id)}
               aria-pressed={isSel}
               style={{ animationDelay: `${idx * 60}ms` }}
-              className={`animate-scale-pop relative flex w-[78%] shrink-0 snap-start flex-col overflow-hidden rounded-3xl text-left card-premium sm:w-[58%] ${isSel ? "card-selected" : ""}`}
+              className={`animate-scale-pop relative flex w-[82%] shrink-0 snap-center flex-col overflow-hidden rounded-3xl text-left card-premium ${isSel ? "card-selected" : ""}`}
             >
               {withImages && it.image && (
-                <div className="relative aspect-[4/5] w-full overflow-hidden">
+                <div className="relative aspect-[3/4] w-full overflow-hidden">
                   <img
                     src={it.image}
                     alt={it.title}
@@ -869,16 +881,15 @@ function StickyCTA({
   label, disabled, onClick, onBack,
 }: { label: string; disabled?: boolean; onClick: () => void; onBack?: () => void }) {
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30">
-      <div className="mx-auto w-full max-w-2xl px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
-        <div
-          className="pointer-events-auto flex items-center gap-3 rounded-2xl border border-border bg-card/95 p-2 shadow-card backdrop-blur"
-        >
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 bg-gradient-to-t from-background via-background/95 to-background/0 pt-6">
+      <div className="w-full px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+        <div className="pointer-events-auto flex items-center gap-2 rounded-2xl border border-border bg-card/95 p-2 shadow-card backdrop-blur">
           {onBack && (
             <button
+              type="button"
               onClick={onBack}
               aria-label="Voltar"
-              className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-border bg-background text-foreground/70 transition-colors hover:text-foreground"
+              className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-border bg-background text-foreground/70 transition-colors active:bg-muted"
             >
               <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M19 12H5M12 5l-7 7 7 7" />
@@ -886,16 +897,17 @@ function StickyCTA({
             </button>
           )}
           <button
+            type="button"
             onClick={onClick}
             disabled={disabled}
             className={`group relative flex h-12 flex-1 items-center justify-between gap-3 overflow-hidden rounded-xl px-4 text-left transition-all duration-300 ${
               disabled
                 ? "bg-muted text-muted-foreground"
-                : "bg-primary text-primary-foreground hover:shadow-gold active:scale-[0.99]"
+                : "bg-primary text-primary-foreground active:scale-[0.99]"
             }`}
           >
-            <span className="font-serif text-[17px]">{label}</span>
-            <span className={`grid h-9 w-9 place-items-center rounded-lg transition-transform group-hover:translate-x-0.5 ${disabled ? "bg-background/40" : "bg-gold text-primary"}`}>
+            <span className="font-serif text-[16px]">{label}</span>
+            <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg transition-transform group-hover:translate-x-0.5 ${disabled ? "bg-background/40" : "bg-gold text-primary"}`}>
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.2">
                 <path d="M5 12h14M13 5l7 7-7 7" />
               </svg>
