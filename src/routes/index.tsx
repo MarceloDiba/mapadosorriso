@@ -389,42 +389,38 @@ function StepHeader({ eyebrow, title, text }: { eyebrow: string; title: string; 
 }
 
 function SingleChoiceStep({
-  eyebrow, title, text, items, value, onChange, layout = "list", withImages = false,
+  eyebrow, title, text, items, value, onChange, withImages = false,
 }: {
   eyebrow: string; title: string; text: string;
   items: CardItem[]; value?: string;
   onChange: (v: string) => void;
-  layout?: "list" | "carousel";
   withImages?: boolean;
 }) {
   return (
     <section>
       <StepHeader eyebrow={eyebrow} title={title} text={text} />
-      {layout === "carousel" ? (
-        <Carousel items={items} selected={value ? [value] : []} onToggle={onChange} withImages={withImages} />
-      ) : (
-        <div className="grid gap-3">
-          {items.map((it) => (
-            <OptionCard
-              key={it.id}
-              item={it}
-              selected={value === it.id}
-              onClick={() => onChange(it.id)}
-            />
-          ))}
-        </div>
-      )}
+      <div className="grid gap-3">
+        {items.map((it, idx) => (
+          <OptionCard
+            key={it.id}
+            item={it}
+            selected={value === it.id}
+            onClick={() => onChange(it.id)}
+            withImage={withImages}
+            index={idx}
+          />
+        ))}
+      </div>
     </section>
   );
 }
 
 function MultiChoiceStep({
-  eyebrow, title, text, items, value, onChange, layout = "list", withImages = false,
+  eyebrow, title, text, items, value, onChange, withImages = false,
 }: {
   eyebrow: string; title: string; text: string;
   items: CardItem[]; value: string[];
   onChange: (v: string[]) => void;
-  layout?: "list" | "carousel";
   withImages?: boolean;
 }) {
   const toggle = (id: string) => {
@@ -433,21 +429,19 @@ function MultiChoiceStep({
   return (
     <section>
       <StepHeader eyebrow={eyebrow} title={title} text={text} />
-      {layout === "carousel" ? (
-        <Carousel items={items} selected={value} onToggle={toggle} withImages={withImages} multi />
-      ) : (
-        <div className="grid gap-3">
-          {items.map((it) => (
-            <OptionCard
-              key={it.id}
-              item={it}
-              selected={value.includes(it.id)}
-              onClick={() => toggle(it.id)}
-              multi
-            />
-          ))}
-        </div>
-      )}
+      <div className="grid gap-3">
+        {items.map((it, idx) => (
+          <OptionCard
+            key={it.id}
+            item={it}
+            selected={value.includes(it.id)}
+            onClick={() => toggle(it.id)}
+            multi
+            withImage={withImages}
+            index={idx}
+          />
+        ))}
+      </div>
       {value.length > 0 && (
         <p className="mt-4 text-center text-[12px] uppercase tracking-[0.18em] text-muted-foreground">
           {value.length} {value.length === 1 ? "selecionado" : "selecionados"}
@@ -471,66 +465,91 @@ function ReferencesGallery({ items }: { items: CardItem[] }) {
           Observe os detalhes que mudam um sorriso.
         </h2>
         <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
-          Não é uma pergunta. Deslize para o lado e amplie o olhar.
+          Não é uma pergunta. Role para baixo e amplie o olhar.
         </p>
       </header>
 
-      <div className="relative w-full min-w-0 overflow-hidden">
-        <div
-          className="scrollbar-hide flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-3 pt-1"
-          style={{ paddingLeft: 4, paddingRight: 40 }}
-        >
-          {items.map((it, idx) => (
-            <article
-              key={it.id}
-              style={{ animationDelay: `${idx * 60}ms` }}
-              className="animate-scale-pop flex basis-[calc(100%-3rem)] max-w-[320px] shrink-0 grow-0 snap-start flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card"
-            >
-              {it.image && (
-                <div className="relative aspect-[4/5] w-full overflow-hidden">
-                  <img
-                    src={it.image}
-                    alt={it.title}
-                    loading="lazy"
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/55 via-transparent to-transparent" />
-                  <span className="absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-foreground backdrop-blur">
-                    {String(idx + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
-                  </span>
-                </div>
-              )}
-              <div className="p-4">
-                <p className="font-serif text-lg leading-tight text-foreground">{it.title}</p>
-                {it.caption && (
-                  <p className="mt-1.5 text-[13px] leading-snug text-muted-foreground">{it.caption}</p>
-                )}
+      <div className="grid gap-3">
+        {items.map((it, idx) => (
+          <article
+            key={it.id}
+            style={{ animationDelay: `${idx * 60}ms` }}
+            className="animate-scale-pop flex w-full max-w-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card box-border"
+          >
+            {it.image && (
+              <div className="relative aspect-[16/10] w-full overflow-hidden">
+                <img
+                  src={it.image}
+                  alt={it.title}
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/55 via-transparent to-transparent" />
+                <span className="absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-foreground backdrop-blur">
+                  {String(idx + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
+                </span>
               </div>
-            </article>
-          ))}
-        </div>
+            )}
+            <div className="p-4">
+              <p className="font-serif text-lg leading-tight text-foreground">{it.title}</p>
+              {it.caption && (
+                <p className="mt-1.5 text-[13px] leading-snug text-muted-foreground">{it.caption}</p>
+              )}
+            </div>
+          </article>
+        ))}
       </div>
-
-      <p className="mt-2 text-center text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-        Deslize para o lado →
-      </p>
     </section>
   );
 }
 
-/* ----------------------------- Cards & Carousel ----------------------------- */
+/* ----------------------------- Option Card ----------------------------- */
 
 function OptionCard({
-  item, selected, onClick, multi = false,
-}: { item: CardItem; selected: boolean; onClick: () => void; multi?: boolean }) {
+  item, selected, onClick, multi = false, withImage = false, index = 0,
+}: { item: CardItem; selected: boolean; onClick: () => void; multi?: boolean; withImage?: boolean; index?: number }) {
+  if (withImage && item.image) {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        aria-pressed={selected}
+        style={{ animationDelay: `${index * 50}ms` }}
+        className={`animate-scale-pop group relative flex w-full max-w-full flex-col overflow-hidden rounded-3xl text-left card-premium box-border ${selected ? "card-selected" : ""}`}
+      >
+        <div className="relative aspect-[16/10] w-full overflow-hidden">
+          <img
+            src={item.image}
+            alt={item.title}
+            loading="lazy"
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/55 via-transparent to-transparent" />
+          {selected && (
+            <span className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-gold text-primary shadow-gold animate-scale-pop">
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="3">
+                <path d="M5 12l5 5L20 7" />
+              </svg>
+            </span>
+          )}
+        </div>
+        <div className="p-4">
+          <p className="font-serif text-lg leading-tight text-foreground">{item.title}</p>
+          {item.caption && (
+            <p className="mt-1.5 text-[13px] leading-snug text-muted-foreground">{item.caption}</p>
+          )}
+        </div>
+      </button>
+    );
+  }
   return (
     <button
       type="button"
       onClick={onClick}
       aria-pressed={selected}
-      className={`group relative flex w-full items-start gap-4 rounded-2xl p-5 text-left card-premium hover:translate-y-[-2px] ${selected ? "card-selected" : ""}`}
+      className={`group relative flex w-full max-w-full items-start gap-4 rounded-2xl p-5 text-left card-premium box-border ${selected ? "card-selected" : ""}`}
     >
-      <span className={`mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-${multi ? "md" : "full"} border-2 transition-colors ${selected ? "border-gold bg-gold text-primary" : "border-border bg-background text-transparent"}`}>
+      <span className={`mt-0.5 grid h-6 w-6 shrink-0 place-items-center ${multi ? "rounded-md" : "rounded-full"} border-2 transition-colors ${selected ? "border-gold bg-gold text-primary" : "border-border bg-background text-transparent"}`}>
         <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="3">
           <path d="M5 12l5 5L20 7" />
         </svg>
@@ -542,83 +561,6 @@ function OptionCard({
         )}
       </span>
     </button>
-  );
-}
-
-function Carousel({
-  items, selected, onToggle, withImages = false, multi = false,
-}: {
-  items: CardItem[]; selected: string[];
-  onToggle: (id: string) => void;
-  withImages?: boolean; multi?: boolean;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  return (
-    <div className="w-full">
-      <div className="relative w-full min-w-0 overflow-hidden">
-        <div
-          ref={ref}
-          className="scrollbar-hide flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-4 pt-2"
-          style={{ paddingLeft: 4, paddingRight: 40 }}
-        >
-          {items.map((it, idx) => {
-            const isSel = selected.includes(it.id);
-            return (
-              <button
-                key={it.id}
-                type="button"
-                onClick={() => onToggle(it.id)}
-                aria-pressed={isSel}
-                style={{ animationDelay: `${idx * 60}ms` }}
-                className={`animate-scale-pop relative flex basis-[calc(100%-3rem)] max-w-[320px] shrink-0 grow-0 snap-start flex-col overflow-hidden rounded-3xl text-left card-premium ${isSel ? "card-selected" : ""}`}
-              >
-                {withImages && it.image && (
-                  <div className="relative aspect-[4/5] w-full overflow-hidden">
-                    <img
-                      src={it.image}
-                      alt={it.title}
-                      width={800}
-                      height={1000}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-primary/55 via-transparent to-transparent" />
-                    {isSel && (
-                      <span className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-gold text-primary shadow-gold animate-scale-pop">
-                        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="3">
-                          <path d="M5 12l5 5L20 7" />
-                        </svg>
-                      </span>
-                    )}
-                  </div>
-                )}
-                <div className="flex flex-1 flex-col p-5">
-                  {!withImages && (
-                    <span className={`mb-3 grid h-6 w-6 place-items-center rounded-${multi ? "md" : "full"} border-2 transition-colors ${isSel ? "border-gold bg-gold text-primary" : "border-border bg-background text-transparent"}`}>
-                      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="3">
-                        <path d="M5 12l5 5L20 7" />
-                      </svg>
-                    </span>
-                  )}
-                  <p className="font-serif text-xl leading-tight text-foreground">{it.title}</p>
-                  {it.caption && (
-                    <p className="mt-2 text-[14px] leading-snug text-muted-foreground">{it.caption}</p>
-                  )}
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-      <div className="mt-1 flex justify-center gap-1.5">
-        {items.map((it) => (
-          <span
-            key={it.id}
-            className={`h-1 rounded-full transition-all ${selected.includes(it.id) ? "w-6 bg-gold" : "w-1.5 bg-border"}`}
-          />
-        ))}
-      </div>
-    </div>
   );
 }
 
