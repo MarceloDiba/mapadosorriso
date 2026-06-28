@@ -200,7 +200,6 @@ function SmileLab() {
                 items={DESIRE}
                 value={answers.desire}
                 onChange={(v) => setAnswers((a) => ({ ...a, desire: v }))}
-                layout="carousel"
                 withImages
               />
             )}
