@@ -287,23 +287,20 @@ function SmileLab() {
 
 function AppHeader() {
   return (
-    <header className="sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur-md">
-      <div className="mx-auto flex w-full max-w-2xl items-center justify-between px-5 py-3.5">
-        <div className="flex items-center gap-2.5">
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-foreground">
+    <header className="shrink-0 border-b border-border/60 bg-background/90 backdrop-blur-md">
+      <div className="flex w-full items-center justify-between px-5 py-3">
+        <div className="flex min-w-0 items-center gap-2.5">
+          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
               <path d="M4 10c2-3 5-4 8-4s6 1 8 4c-1 6-5 9-8 9s-7-3-8-9z" />
               <path d="M8 10c1-1 2.5-1.5 4-1.5s3 .5 4 1.5" />
             </svg>
           </span>
-          <div className="leading-tight">
-            <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">NOA Lead Flow Smile</p>
-            <p className="font-serif text-base text-foreground">Laboratório do Sorriso</p>
+          <div className="min-w-0 leading-tight">
+            <p className="text-[9px] uppercase tracking-[0.18em] text-muted-foreground">NOA Lead Flow Smile</p>
+            <p className="truncate font-serif text-[15px] text-foreground">Laboratório do Sorriso</p>
           </div>
         </div>
-        <span className="hidden text-[11px] uppercase tracking-[0.16em] text-muted-foreground sm:block">
-          Experiência educativa
-        </span>
       </div>
     </header>
   );
@@ -314,13 +311,13 @@ function AppHeader() {
 function ProgressBar({ steps, current }: { steps: string[]; current: number }) {
   const pct = ((current + 1) / steps.length) * 100;
   return (
-    <div className="sticky top-[57px] z-20 border-b border-border/60 bg-background/85 backdrop-blur-md">
-      <div className="mx-auto w-full max-w-2xl px-5 pb-3 pt-3">
-        <div className="mb-2 flex items-center justify-between">
-          <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+    <div className="shrink-0 border-b border-border/60 bg-background/90 backdrop-blur-md">
+      <div className="w-full px-5 pb-3 pt-3">
+        <div className="mb-2 flex items-center justify-between gap-3">
+          <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
             Etapa {String(current + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
           </p>
-          <p className="font-serif text-sm text-foreground">{steps[current]}</p>
+          <p className="truncate font-serif text-[13px] text-foreground">{steps[current]}</p>
         </div>
         <div className="h-[3px] w-full overflow-hidden rounded-full bg-muted">
           <div
