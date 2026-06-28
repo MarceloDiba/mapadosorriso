@@ -191,27 +191,27 @@ function SmileLab() {
             />
           )}
 
+          {step === "perception" && (
+            <MultiChoiceStep
+              eyebrow="Etapa 02 — Percepção atual"
+              title="Qual detalhe do seu sorriso você gostaria de melhorar?"
+              text="Marque o que mais chama sua atenção hoje. Você pode escolher mais de um."
+              items={PERCEPTION}
+              value={answers.perception}
+              onChange={(v) => setAnswers((a) => ({ ...a, perception: v }))}
+            />
+          )}
+
           {step === "references" && (
             <MultiChoiceStep
-              eyebrow="Etapa 02 — Referências"
-              title="Observe o que muda a percepção de um sorriso."
-              text="Pequenos detalhes influenciam se um sorriso parece mais natural, marcante, delicado ou artificial. Toque em um ou mais cards que chamarem sua atenção."
+              eyebrow="Etapa 03 — Referências"
+              title="Veja detalhes que mudam a percepção de um sorriso."
+              text="Pequenos elementos podem fazer um sorriso parecer mais natural, harmônico, marcante ou artificial. Toque nos que chamarem sua atenção."
               items={REFERENCES}
               value={answers.references}
               onChange={(v) => setAnswers((a) => ({ ...a, references: v }))}
               layout="carousel"
               withImages
-            />
-          )}
-
-          {step === "perception" && (
-            <MultiChoiceStep
-              eyebrow="Etapa 03 — Percepção"
-              title="Depois de observar as referências, o que você percebe no seu sorriso hoje?"
-              text="Você pode marcar mais de um ponto."
-              items={PERCEPTION}
-              value={answers.perception}
-              onChange={(v) => setAnswers((a) => ({ ...a, perception: v }))}
             />
           )}
 
