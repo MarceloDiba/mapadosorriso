@@ -187,7 +187,7 @@ function SmileLab() {
 
         <main
           ref={mainRef}
-          className={`flex-1 overflow-y-auto overflow-x-hidden px-5 pt-3 ${showCTA ? "pb-32" : "pb-6"}`}
+          className={`flex-1 overflow-y-auto overflow-x-hidden px-5 pt-3 ${showCTA ? "pb-36" : "pb-6"}`}
         >
           <div key={step} className="animate-fade-up">
             {step === "hero" && <Hero onStart={next} />}
