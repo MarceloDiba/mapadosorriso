@@ -875,16 +875,15 @@ function StickyCTA({
   label, disabled, onClick, onBack,
 }: { label: string; disabled?: boolean; onClick: () => void; onBack?: () => void }) {
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30">
-      <div className="mx-auto w-full max-w-2xl px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
-        <div
-          className="pointer-events-auto flex items-center gap-3 rounded-2xl border border-border bg-card/95 p-2 shadow-card backdrop-blur"
-        >
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 bg-gradient-to-t from-background via-background/95 to-background/0 pt-6">
+      <div className="w-full px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+        <div className="pointer-events-auto flex items-center gap-2 rounded-2xl border border-border bg-card/95 p-2 shadow-card backdrop-blur">
           {onBack && (
             <button
+              type="button"
               onClick={onBack}
               aria-label="Voltar"
-              className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-border bg-background text-foreground/70 transition-colors hover:text-foreground"
+              className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-border bg-background text-foreground/70 transition-colors active:bg-muted"
             >
               <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M19 12H5M12 5l-7 7 7 7" />
@@ -892,16 +891,17 @@ function StickyCTA({
             </button>
           )}
           <button
+            type="button"
             onClick={onClick}
             disabled={disabled}
             className={`group relative flex h-12 flex-1 items-center justify-between gap-3 overflow-hidden rounded-xl px-4 text-left transition-all duration-300 ${
               disabled
                 ? "bg-muted text-muted-foreground"
-                : "bg-primary text-primary-foreground hover:shadow-gold active:scale-[0.99]"
+                : "bg-primary text-primary-foreground active:scale-[0.99]"
             }`}
           >
-            <span className="font-serif text-[17px]">{label}</span>
-            <span className={`grid h-9 w-9 place-items-center rounded-lg transition-transform group-hover:translate-x-0.5 ${disabled ? "bg-background/40" : "bg-gold text-primary"}`}>
+            <span className="font-serif text-[16px]">{label}</span>
+            <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg transition-transform group-hover:translate-x-0.5 ${disabled ? "bg-background/40" : "bg-gold text-primary"}`}>
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.2">
                 <path d="M5 12h14M13 5l7 7-7 7" />
               </svg>
