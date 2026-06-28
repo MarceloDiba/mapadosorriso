@@ -898,7 +898,7 @@ function StickyCTA({
             disabled={disabled}
             className={`group relative flex h-12 flex-1 items-center justify-between gap-3 overflow-hidden rounded-xl px-4 text-left transition-all duration-300 ${
               disabled
-                ? "bg-muted text-muted-foreground"
+                ? "cursor-not-allowed bg-muted text-muted-foreground opacity-70"
                 : "bg-primary text-primary-foreground active:scale-[0.99]"
             }`}
           >
