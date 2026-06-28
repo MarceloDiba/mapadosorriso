@@ -157,7 +157,7 @@ function SmileLab() {
   const canAdvance = useMemo(() => {
     switch (step) {
       case "desire": return !!answers.desire;
-      case "references": return answers.references.length > 0;
+      case "references": return true; // educational pause
       case "perception": return answers.perception.length > 0;
       case "safety": return !!answers.safety;
       case "moment": return !!answers.moment;
