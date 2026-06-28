@@ -39,38 +39,40 @@ type CardItem = {
 
 const DESIRE: CardItem[] = [
   { id: "natural", title: "Natural e elegante", caption: "Quero melhorar sem parecer artificial.", image: desireNatural },
-  { id: "bright", title: "Mais branco e iluminado", caption: "Quero um sorriso com mais presença.", image: desireBright },
-  { id: "proportion", title: "Mais proporcional", caption: "Quero melhorar formato, tamanho ou alinhamento visual.", image: desireProportion },
-  { id: "confident", title: "Mais confiante nas fotos", caption: "Quero sorrir sem ficar me preocupando.", image: desireConfident },
+  { id: "bright", title: "Mais branco e iluminado", caption: "Quero um sorriso com mais brilho e presença.", image: desireBright },
+  { id: "harmonic", title: "Mais harmônico", caption: "Quero melhorar equilíbrio, formato ou proporção.", image: desireProportion },
+  { id: "confident", title: "Mais confiante ao sorrir", caption: "Quero sorrir sem ficar me preocupando.", image: desireConfident },
   { id: "bold", title: "Uma mudança mais marcante", caption: "Quero transformar meu sorriso com segurança.", image: desireBold },
+];
+
+const PERCEPTION: CardItem[] = [
+  { id: "color", title: "Cor dos dentes" },
+  { id: "shape", title: "Formato dos dentes" },
+  { id: "size", title: "Tamanho dos dentes" },
+  { id: "spaces", title: "Espaços entre os dentes" },
+  { id: "align", title: "Dentes desalinhados" },
+  { id: "small", title: "Sorriso pequeno ou pouco aparente" },
+  { id: "gum", title: "Gengiva muito aparente" },
+  { id: "edges", title: "Bordas desgastadas ou irregulares" },
+  { id: "unsure", title: "Não sei exatamente, só quero melhorar" },
 ];
 
 const REFERENCES: CardItem[] = [
   { id: "arc", title: "Arco do sorriso", caption: "Quando acompanha a curva do lábio, o sorriso tende a parecer mais harmônico.", image: refArc },
-  { id: "proportion", title: "Proporção dos dentes", caption: "A relação de largura e altura entre os dentes influencia o equilíbrio visual.", image: refProportion },
-  { id: "shade", title: "Cor e luminosidade", caption: "Tons muito brancos podem parecer artificiais; tons quentes trazem naturalidade.", image: refShade },
-  { id: "texture", title: "Textura e brilho", caption: "Pequenas variações de superfície fazem o sorriso parecer real, não fabricado.", image: refTexture },
-  { id: "alignment", title: "Alinhamento e simetria", caption: "Linhas que conversam com o rosto criam sorrisos com estilos diferentes.", image: refAlignment },
-  { id: "exposure", title: "Exposição do sorriso", caption: "O quanto o sorriso aparece ao falar ou sorrir influencia presença e confiança.", image: refExposure },
-];
-
-const PERCEPTION: CardItem[] = [
-  { id: "shade", title: "Cor ou luminosidade" },
-  { id: "shape", title: "Formato dos dentes" },
-  { id: "size", title: "Tamanho ou proporção" },
-  { id: "spaces", title: "Espaços ou alinhamento visual" },
-  { id: "low", title: "Sorriso pouco aparente" },
-  { id: "artificial", title: "Medo de parecer artificial" },
-  { id: "unsure", title: "Ainda não sei, quero entender melhor" },
+  { id: "proportion", title: "Proporção dos dentes", caption: "Tamanho e largura influenciam equilíbrio e naturalidade.", image: refProportion },
+  { id: "shade", title: "Cor e luminosidade", caption: "O branco ideal precisa combinar com pele, rosto e estilo.", image: refShade },
+  { id: "symmetry", title: "Simetria visual", caption: "Pequenas assimetrias podem mudar a percepção do sorriso.", image: refAlignment },
+  { id: "shape", title: "Formato dos dentes", caption: "Formas mais arredondadas, retas ou alongadas comunicam estilos diferentes.", image: refTexture },
+  { id: "exposure", title: "Exposição do sorriso", caption: "O quanto o sorriso aparece ao falar ou sorrir influencia a presença visual.", image: refExposure },
 ];
 
 const SAFETY: CardItem[] = [
-  { id: "natural", title: "Quero entender se fica natural" },
-  { id: "wear", title: "Tenho receio de desgaste" },
-  { id: "fit", title: "Quero saber se combina comigo" },
-  { id: "price", title: "Quero entender investimento" },
-  { id: "pain", title: "Tenho medo de dor ou desconforto" },
-  { id: "alternatives", title: "Quero conhecer alternativas além de facetas" },
+  { id: "natural", title: "Se o resultado pode ficar natural" },
+  { id: "wear", title: "Se existe desgaste dos dentes" },
+  { id: "fit", title: "Se combina com meu rosto" },
+  { id: "price", title: "Quanto pode custar" },
+  { id: "pain", title: "Se pode doer ou causar desconforto" },
+  { id: "alternatives", title: "Quais alternativas existem além de facetas" },
 ];
 
 const MOMENT: CardItem[] = [
@@ -81,18 +83,18 @@ const MOMENT: CardItem[] = [
 ];
 
 const INTENT: CardItem[] = [
-  { id: "evaluate", title: "Quero avaliar meu caso" },
-  { id: "price", title: "Quero entender valores primeiro" },
-  { id: "doubts", title: "Quero tirar dúvidas" },
-  { id: "guidance", title: "Quero receber uma orientação inicial" },
-  { id: "research", title: "Ainda estou pesquisando" },
+  { id: "evaluate", title: "Avaliar meu caso" },
+  { id: "price", title: "Entender valores primeiro" },
+  { id: "doubts", title: "Tirar dúvidas" },
+  { id: "guidance", title: "Receber uma orientação inicial" },
+  { id: "research", title: "Continuar pesquisando" },
 ];
 
 const STEPS = [
   { key: "hero", label: "Início" },
   { key: "desire", label: "Desejo" },
-  { key: "references", label: "Referências" },
   { key: "perception", label: "Percepção" },
+  { key: "references", label: "Referências" },
   { key: "safety", label: "Segurança" },
   { key: "moment", label: "Momento" },
   { key: "intent", label: "Intenção" },
@@ -189,27 +191,27 @@ function SmileLab() {
             />
           )}
 
+          {step === "perception" && (
+            <MultiChoiceStep
+              eyebrow="Etapa 02 — Percepção atual"
+              title="Qual detalhe do seu sorriso você gostaria de melhorar?"
+              text="Marque o que mais chama sua atenção hoje. Você pode escolher mais de um."
+              items={PERCEPTION}
+              value={answers.perception}
+              onChange={(v) => setAnswers((a) => ({ ...a, perception: v }))}
+            />
+          )}
+
           {step === "references" && (
             <MultiChoiceStep
-              eyebrow="Etapa 02 — Referências"
-              title="Observe o que muda a percepção de um sorriso."
-              text="Pequenos detalhes influenciam se um sorriso parece mais natural, marcante, delicado ou artificial. Toque em um ou mais cards que chamarem sua atenção."
+              eyebrow="Etapa 03 — Referências"
+              title="Veja detalhes que mudam a percepção de um sorriso."
+              text="Pequenos elementos podem fazer um sorriso parecer mais natural, harmônico, marcante ou artificial. Toque nos que chamarem sua atenção."
               items={REFERENCES}
               value={answers.references}
               onChange={(v) => setAnswers((a) => ({ ...a, references: v }))}
               layout="carousel"
               withImages
-            />
-          )}
-
-          {step === "perception" && (
-            <MultiChoiceStep
-              eyebrow="Etapa 03 — Percepção"
-              title="Depois de observar as referências, o que você percebe no seu sorriso hoje?"
-              text="Você pode marcar mais de um ponto."
-              items={PERCEPTION}
-              value={answers.perception}
-              onChange={(v) => setAnswers((a) => ({ ...a, perception: v }))}
             />
           )}
 
@@ -355,21 +357,23 @@ function Hero({ onStart }: { onStart: () => void }) {
       </div>
 
       <button
+        type="button"
         onClick={onStart}
-        className="group mt-8 flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-6 py-5 text-left text-primary-foreground shadow-soft transition-all duration-300 hover:translate-y-[-2px] hover:shadow-gold active:scale-[0.99]"
+        className="group relative z-10 mt-8 flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-6 py-5 text-left text-primary-foreground shadow-soft transition-all duration-300 hover:translate-y-[-2px] hover:shadow-gold active:scale-[0.99]"
       >
-        <span className="flex flex-col">
-          <span className="text-[11px] uppercase tracking-[0.2em] text-gold-soft">7 etapas · ~3 min</span>
-          <span className="mt-1 font-serif text-xl">Começar agora</span>
-        </span>
-        <span className="grid h-11 w-11 place-items-center rounded-full bg-gold text-primary transition-transform group-hover:translate-x-1">
+        <span className="font-serif text-xl">Começar agora</span>
+        <span aria-hidden className="grid h-11 w-11 place-items-center rounded-full bg-gold text-primary transition-transform group-hover:translate-x-1">
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M5 12h14M13 5l7 7-7 7" />
           </svg>
         </span>
       </button>
 
-      <p className="mt-6 text-center text-[12px] leading-relaxed text-muted-foreground">
+      <p className="mt-5 text-center text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+        7 etapas · cerca de 3 minutos
+      </p>
+
+      <p className="mt-4 text-center text-[12px] leading-relaxed text-muted-foreground">
         Esta experiência é educativa e não substitui<br className="sm:hidden" /> uma avaliação odontológica presencial.
       </p>
     </section>
@@ -665,8 +669,8 @@ function LoadingMap() {
 const STYLE_LABEL: Record<string, string> = {
   natural: "Natural e elegante",
   bright: "Mais branco e iluminado",
-  proportion: "Mais proporcional",
-  confident: "Mais confiante nas fotos",
+  harmonic: "Mais harmônico",
+  confident: "Mais confiante ao sorrir",
   bold: "Mudança marcante com segurança",
 };
 
