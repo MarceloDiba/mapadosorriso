@@ -76,9 +76,11 @@ const SAFETY: CardItem[] = [
 ];
 
 const MOMENT: CardItem[] = [
-  { id: "soon", title: "Quero conversar com uma equipe em breve" },
+  { id: "now", title: "Quero ser atendido(a) agora" },
+  { id: "schedule", title: "Quero agendar uma avaliação" },
+  { id: "price", title: "Quero entender valores antes" },
   { id: "compare", title: "Estou comparando possibilidades" },
-  { id: "safety", title: "Tenho vontade, mas preciso de segurança" },
+  { id: "fear", title: "Tenho vontade, mas ainda tenho receios" },
   { id: "learn", title: "Quero apenas aprender por enquanto" },
 ];
 
@@ -155,7 +157,7 @@ function SmileLab() {
   const canAdvance = useMemo(() => {
     switch (step) {
       case "desire": return !!answers.desire;
-      case "references": return answers.references.length > 0;
+      case "references": return true; // educational pause
       case "perception": return answers.perception.length > 0;
       case "safety": return !!answers.safety;
       case "moment": return !!answers.moment;
@@ -202,18 +204,7 @@ function SmileLab() {
             />
           )}
 
-          {step === "references" && (
-            <MultiChoiceStep
-              eyebrow="Etapa 03 — Referências"
-              title="Veja detalhes que mudam a percepção de um sorriso."
-              text="Pequenos elementos podem fazer um sorriso parecer mais natural, harmônico, marcante ou artificial. Toque nos que chamarem sua atenção."
-              items={REFERENCES}
-              value={answers.references}
-              onChange={(v) => setAnswers((a) => ({ ...a, references: v }))}
-              layout="carousel"
-              withImages
-            />
-          )}
+          {step === "references" && <ReferencesGallery items={REFERENCES} />}
 
           {step === "safety" && (
             <SingleChoiceStep
@@ -263,7 +254,13 @@ function SmileLab() {
 
       {step !== "hero" && step !== "loading" && step !== "result" && (
         <StickyCTA
-          label={step === "lead" ? "Ver meu Mapa do Sorriso" : "Continuar"}
+          label={
+            step === "lead"
+              ? "Ver meu Mapa do Sorriso"
+              : step === "references"
+                ? "Entendi, continuar"
+                : "Continuar"
+          }
           disabled={!canAdvance}
           onClick={next}
           onBack={stepIndex > 1 ? back : undefined}
@@ -449,6 +446,62 @@ function MultiChoiceStep({
           {value.length} {value.length === 1 ? "selecionado" : "selecionados"}
         </p>
       )}
+    </section>
+  );
+}
+
+/* ----------------------------- References (educational) ----------------------------- */
+
+function ReferencesGallery({ items }: { items: CardItem[] }) {
+  return (
+    <section>
+      <header className="mb-6 mt-2">
+        <p className="mb-3 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-gold">
+          <span className="h-1 w-1 rounded-full bg-gold" />
+          Etapa 03 — Pausa educativa
+        </p>
+        <h2 className="text-balance font-serif text-[28px] leading-[1.15] text-foreground sm:text-3xl">
+          Antes de seguir, observe alguns detalhes que mudam um sorriso.
+        </h2>
+        <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
+          Não é uma pergunta — é só para você ampliar o olhar. Role para conhecer cada elemento.
+        </p>
+      </header>
+
+      <div className="space-y-4">
+        {items.map((it, idx) => (
+          <article
+            key={it.id}
+            style={{ animationDelay: `${idx * 80}ms` }}
+            className="animate-fade-up overflow-hidden rounded-3xl border border-border bg-card shadow-card"
+          >
+            {it.image && (
+              <div className="relative aspect-[16/10] w-full overflow-hidden">
+                <img
+                  src={it.image}
+                  alt={it.title}
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-transparent" />
+                <span className="absolute left-4 top-4 rounded-full bg-background/90 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-foreground backdrop-blur">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+              </div>
+            )}
+            <div className="p-5">
+              <p className="font-serif text-xl leading-tight text-foreground">{it.title}</p>
+              {it.caption && (
+                <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">{it.caption}</p>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <p className="mt-6 text-center text-[12px] leading-relaxed text-muted-foreground">
+        Nenhuma escolha é necessária aqui. Quando quiser, toque em <span className="text-foreground">“Entendi, continuar”</span>.
+      </p>
     </section>
   );
 }
