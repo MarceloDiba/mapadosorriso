@@ -254,7 +254,13 @@ function SmileLab() {
 
       {step !== "hero" && step !== "loading" && step !== "result" && (
         <StickyCTA
-          label={step === "lead" ? "Ver meu Mapa do Sorriso" : "Continuar"}
+          label={
+            step === "lead"
+              ? "Ver meu Mapa do Sorriso"
+              : step === "references"
+                ? "Entendi, continuar"
+                : "Continuar"
+          }
           disabled={!canAdvance}
           onClick={next}
           onBack={stepIndex > 1 ? back : undefined}
