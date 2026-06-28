@@ -168,104 +168,117 @@ function SmileLab() {
     }
   }, [step, answers]);
 
+  const showCTA = step !== "hero" && step !== "loading" && step !== "result";
+  const showProgress = showCTA;
+
+  // Reset internal scroll on step change
+  const mainRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+  }, [stepIndex]);
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <AppHeader />
+    <div className="min-h-[100dvh] w-full overflow-x-hidden bg-muted/40 text-foreground">
+      <div className="relative mx-auto flex min-h-[100dvh] w-full max-w-[430px] flex-col overflow-hidden bg-background shadow-[0_0_60px_-20px_rgba(0,0,0,0.25)] sm:min-h-[100dvh]">
+        <AppHeader />
+        {showProgress && (
+          <ProgressBar steps={progressSteps.map((s) => s.label)} current={currentProgressIdx} />
+        )}
 
-      {step !== "hero" && step !== "loading" && step !== "result" && (
-        <ProgressBar steps={progressSteps.map((s) => s.label)} current={currentProgressIdx} />
-      )}
+        <main
+          ref={mainRef}
+          className={`flex-1 overflow-y-auto overflow-x-hidden px-5 pt-3 ${showCTA ? "pb-32" : "pb-6"}`}
+        >
+          <div key={step} className="animate-fade-up">
+            {step === "hero" && <Hero onStart={next} />}
 
-      <main className="mx-auto w-full max-w-2xl px-5 pb-40 pt-4 sm:pt-8">
-        <div key={step} className="animate-fade-up">
-          {step === "hero" && <Hero onStart={next} />}
+            {step === "desire" && (
+              <SingleChoiceStep
+                eyebrow="Etapa 01 — Desejo"
+                title="Qual sorriso mais combina com você?"
+                text="Toque na referência que mais se aproxima."
+                items={DESIRE}
+                value={answers.desire}
+                onChange={(v) => setAnswers((a) => ({ ...a, desire: v }))}
+                layout="carousel"
+                withImages
+              />
+            )}
 
-          {step === "desire" && (
-            <SingleChoiceStep
-              eyebrow="Etapa 01 — Desejo"
-              title="Qual dessas ideias mais se aproxima do sorriso que você gostaria de ter?"
-              text="Toque na referência que mais combina com o resultado que você imagina."
-              items={DESIRE}
-              value={answers.desire}
-              onChange={(v) => setAnswers((a) => ({ ...a, desire: v }))}
-              layout="carousel"
-              withImages
-            />
-          )}
+            {step === "perception" && (
+              <MultiChoiceStep
+                eyebrow="Etapa 02 — Percepção"
+                title="O que você gostaria de melhorar?"
+                text="Marque o que mais chama sua atenção. Pode escolher mais de um."
+                items={PERCEPTION}
+                value={answers.perception}
+                onChange={(v) => setAnswers((a) => ({ ...a, perception: v }))}
+              />
+            )}
 
-          {step === "perception" && (
-            <MultiChoiceStep
-              eyebrow="Etapa 02 — Percepção atual"
-              title="Qual detalhe do seu sorriso você gostaria de melhorar?"
-              text="Marque o que mais chama sua atenção hoje. Você pode escolher mais de um."
-              items={PERCEPTION}
-              value={answers.perception}
-              onChange={(v) => setAnswers((a) => ({ ...a, perception: v }))}
-            />
-          )}
+            {step === "references" && <ReferencesGallery items={REFERENCES} />}
 
-          {step === "references" && <ReferencesGallery items={REFERENCES} />}
+            {step === "safety" && (
+              <SingleChoiceStep
+                eyebrow="Etapa 04 — Segurança"
+                title="O que precisa ficar claro antes de avançar?"
+                text="Decisão estética nasce de desejo, informação e segurança."
+                items={SAFETY}
+                value={answers.safety}
+                onChange={(v) => setAnswers((a) => ({ ...a, safety: v }))}
+              />
+            )}
 
-          {step === "safety" && (
-            <SingleChoiceStep
-              eyebrow="Etapa 04 — Segurança"
-              title="O que precisa ficar claro antes de você avançar?"
-              text="Uma boa decisão estética depende de desejo, informação e segurança."
-              items={SAFETY}
-              value={answers.safety}
-              onChange={(v) => setAnswers((a) => ({ ...a, safety: v }))}
-            />
-          )}
+            {step === "moment" && (
+              <SingleChoiceStep
+                eyebrow="Etapa 05 — Momento"
+                title="Qual é o seu momento agora?"
+                text="Isso ajuda a entender o ritmo ideal para você."
+                items={MOMENT}
+                value={answers.moment}
+                onChange={(v) => setAnswers((a) => ({ ...a, moment: v }))}
+              />
+            )}
 
-          {step === "moment" && (
-            <SingleChoiceStep
-              eyebrow="Etapa 05 — Momento"
-              title="Qual é seu momento agora?"
-              text="Isso ajuda a entender se você está buscando informação, comparação ou uma avaliação."
-              items={MOMENT}
-              value={answers.moment}
-              onChange={(v) => setAnswers((a) => ({ ...a, moment: v }))}
-            />
-          )}
+            {step === "intent" && (
+              <SingleChoiceStep
+                eyebrow="Etapa 06 — Intenção"
+                title="O que faria mais sentido agora?"
+                text="Escolha o próximo passo mais confortável."
+                items={INTENT}
+                value={answers.intent}
+                onChange={(v) => setAnswers((a) => ({ ...a, intent: v }))}
+              />
+            )}
 
-          {step === "intent" && (
-            <SingleChoiceStep
-              eyebrow="Etapa 06 — Intenção"
-              title="Se uma equipe pudesse te orientar, o que faria mais sentido agora?"
-              text="Escolha o próximo passo mais confortável para você."
-              items={INTENT}
-              value={answers.intent}
-              onChange={(v) => setAnswers((a) => ({ ...a, intent: v }))}
-            />
-          )}
+            {step === "lead" && (
+              <LeadForm
+                value={answers.lead}
+                onChange={(lead) => setAnswers((a) => ({ ...a, lead }))}
+              />
+            )}
 
-          {step === "lead" && (
-            <LeadForm
-              value={answers.lead}
-              onChange={(lead) => setAnswers((a) => ({ ...a, lead }))}
-            />
-          )}
+            {step === "loading" && <LoadingMap />}
 
-          {step === "loading" && <LoadingMap />}
+            {step === "result" && <ResultMap answers={answers} onRestart={() => { setAnswers(initialAnswers); setStepIndex(0); }} />}
+          </div>
+        </main>
 
-          {step === "result" && <ResultMap answers={answers} onRestart={() => { setAnswers(initialAnswers); setStepIndex(0); }} />}
-        </div>
-      </main>
-
-      {step !== "hero" && step !== "loading" && step !== "result" && (
-        <StickyCTA
-          label={
-            step === "lead"
-              ? "Ver meu Mapa do Sorriso"
-              : step === "references"
-                ? "Entendi, continuar"
-                : "Continuar"
-          }
-          disabled={!canAdvance}
-          onClick={next}
-          onBack={stepIndex > 1 ? back : undefined}
-        />
-      )}
+        {showCTA && (
+          <StickyCTA
+            label={
+              step === "lead"
+                ? "Ver meu Mapa do Sorriso"
+                : step === "references"
+                  ? "Entendi, continuar"
+                  : "Continuar"
+            }
+            disabled={!canAdvance}
+            onClick={next}
+            onBack={stepIndex > 1 ? back : undefined}
+          />
+        )}
+      </div>
     </div>
   );
 }
