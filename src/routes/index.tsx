@@ -669,8 +669,8 @@ function LoadingMap() {
 const STYLE_LABEL: Record<string, string> = {
   natural: "Natural e elegante",
   bright: "Mais branco e iluminado",
-  proportion: "Mais proporcional",
-  confident: "Mais confiante nas fotos",
+  harmonic: "Mais harmônico",
+  confident: "Mais confiante ao sorrir",
   bold: "Mudança marcante com segurança",
 };
 
