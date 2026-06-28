@@ -563,7 +563,7 @@ function Carousel({
               onClick={() => onToggle(it.id)}
               aria-pressed={isSel}
               style={{ animationDelay: `${idx * 60}ms` }}
-              className={`animate-scale-pop relative flex w-[78%] shrink-0 snap-start flex-col overflow-hidden rounded-3xl text-left card-premium sm:w-[58%] ${isSel ? "card-selected" : ""}`}
+              className={`animate-scale-pop relative flex w-[82%] shrink-0 snap-center flex-col overflow-hidden rounded-3xl text-left card-premium ${isSel ? "card-selected" : ""}`}
             >
               {withImages && it.image && (
                 <div className="relative aspect-[4/5] w-full overflow-hidden">
