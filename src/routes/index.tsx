@@ -552,11 +552,10 @@ function Carousel({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   return (
-    <div className="-mx-5">
+    <div className="w-full">
       <div
         ref={ref}
-        className="scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 pt-2"
-        style={{ scrollPaddingLeft: "1.25rem" }}
+        className="scrollbar-hide -mr-5 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-4 pr-10 pt-2"
       >
         {items.map((it, idx) => {
           const isSel = selected.includes(it.id);
@@ -567,10 +566,10 @@ function Carousel({
               onClick={() => onToggle(it.id)}
               aria-pressed={isSel}
               style={{ animationDelay: `${idx * 60}ms` }}
-              className={`animate-scale-pop relative flex w-[82%] shrink-0 snap-center flex-col overflow-hidden rounded-3xl text-left card-premium ${isSel ? "card-selected" : ""}`}
+              className={`animate-scale-pop relative flex w-[86%] max-w-[320px] shrink-0 snap-start flex-col overflow-hidden rounded-3xl text-left card-premium ${isSel ? "card-selected" : ""}`}
             >
               {withImages && it.image && (
-                <div className="relative aspect-[3/4] w-full overflow-hidden">
+                <div className="relative aspect-[4/5] w-full overflow-hidden">
                   <img
                     src={it.image}
                     alt={it.title}
@@ -605,7 +604,6 @@ function Carousel({
             </button>
           );
         })}
-        <div className="w-2 shrink-0" />
       </div>
       <div className="mt-1 flex justify-center gap-1.5">
         {items.map((it) => (
