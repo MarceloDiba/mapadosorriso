@@ -566,7 +566,7 @@ function Carousel({
               className={`animate-scale-pop relative flex w-[82%] shrink-0 snap-center flex-col overflow-hidden rounded-3xl text-left card-premium ${isSel ? "card-selected" : ""}`}
             >
               {withImages && it.image && (
-                <div className="relative aspect-[4/5] w-full overflow-hidden">
+                <div className="relative aspect-[3/4] w-full overflow-hidden">
                   <img
                     src={it.image}
                     alt={it.title}
