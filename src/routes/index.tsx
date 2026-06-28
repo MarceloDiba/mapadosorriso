@@ -347,14 +347,6 @@ function Hero({ onStart }: { onStart: () => void }) {
         </div>
       </div>
 
-      <div className="mt-6 space-y-4">
-        <p className="text-balance font-serif text-xl leading-snug text-foreground">
-          Uma experiência visual para entender estilo, harmonia e naturalidade antes de conversar com um especialista.
-        </p>
-        <p className="text-[15px] leading-relaxed text-muted-foreground">
-          Explore referências, perceba detalhes e descubra quais pontos merecem atenção em uma avaliação estética do sorriso.
-        </p>
-      </div>
 
       <button
         type="button"
