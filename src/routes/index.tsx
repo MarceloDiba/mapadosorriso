@@ -204,18 +204,7 @@ function SmileLab() {
             />
           )}
 
-          {step === "references" && (
-            <MultiChoiceStep
-              eyebrow="Etapa 03 — Referências"
-              title="Veja detalhes que mudam a percepção de um sorriso."
-              text="Pequenos elementos podem fazer um sorriso parecer mais natural, harmônico, marcante ou artificial. Toque nos que chamarem sua atenção."
-              items={REFERENCES}
-              value={answers.references}
-              onChange={(v) => setAnswers((a) => ({ ...a, references: v }))}
-              layout="carousel"
-              withImages
-            />
-          )}
+          {step === "references" && <ReferencesGallery items={REFERENCES} />}
 
           {step === "safety" && (
             <SingleChoiceStep
