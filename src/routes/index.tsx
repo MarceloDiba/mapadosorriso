@@ -187,7 +187,7 @@ function SmileLab() {
 
         <main
           ref={mainRef}
-          className={`flex-1 min-w-0 overflow-y-auto overflow-x-hidden px-5 pt-3 ${showCTA ? "pb-36" : "pb-6"}`}
+          className={`flex-1 min-w-0 overflow-y-auto overflow-x-hidden px-4 pt-2 ${showCTA ? "pb-28" : "pb-5"}`}
         >
           <div key={step} className="animate-fade-up">
             {step === "hero" && <Hero onStart={next} />}
@@ -289,17 +289,17 @@ function SmileLab() {
 function AppHeader() {
   return (
     <header className="shrink-0 border-b border-border/60 bg-background/90 backdrop-blur-md">
-      <div className="flex w-full items-center justify-between px-5 py-3">
+      <div className="flex w-full items-center justify-between px-4 py-2.5">
         <div className="flex min-w-0 items-center gap-2.5">
-          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
+            <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8">
               <path d="M4 10c2-3 5-4 8-4s6 1 8 4c-1 6-5 9-8 9s-7-3-8-9z" />
               <path d="M8 10c1-1 2.5-1.5 4-1.5s3 .5 4 1.5" />
             </svg>
           </span>
           <div className="min-w-0 leading-tight">
-            <p className="text-[9px] uppercase tracking-[0.18em] text-muted-foreground">NOA Lead Flow Smile</p>
-            <p className="truncate font-serif text-[15px] text-foreground">Laboratório do Sorriso</p>
+            <p className="text-[8px] uppercase tracking-[0.16em] text-muted-foreground">NOA Lead Flow Smile</p>
+            <p className="truncate font-serif text-[14px] text-foreground">Laboratório do Sorriso</p>
           </div>
         </div>
       </div>
@@ -313,14 +313,14 @@ function ProgressBar({ steps, current }: { steps: string[]; current: number }) {
   const pct = ((current + 1) / steps.length) * 100;
   return (
     <div className="shrink-0 border-b border-border/60 bg-background/90 backdrop-blur-md">
-      <div className="w-full px-5 pb-3 pt-3">
-        <div className="mb-2 flex items-center justify-between gap-3">
-          <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+      <div className="w-full px-4 pb-2 pt-2">
+        <div className="mb-1.5 flex items-center justify-between gap-3">
+          <p className="text-[9px] uppercase tracking-[0.16em] text-muted-foreground">
             Etapa {String(current + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
           </p>
-          <p className="truncate font-serif text-[13px] text-foreground">{steps[current]}</p>
+          <p className="truncate font-serif text-[12px] text-foreground">{steps[current]}</p>
         </div>
-        <div className="h-[3px] w-full overflow-hidden rounded-full bg-muted">
+        <div className="h-0.5 w-full overflow-hidden rounded-full bg-muted">
           <div
             className="h-full rounded-full bg-gold transition-[width] duration-700 ease-out"
             style={{ width: `${pct}%` }}
@@ -336,7 +336,7 @@ function ProgressBar({ steps, current }: { steps: string[]; current: number }) {
 function Hero({ onStart }: { onStart: () => void }) {
   return (
     <section className="flex min-h-full flex-col pb-4 pt-1">
-      <div className="relative flex-1 overflow-hidden rounded-3xl border border-border bg-card shadow-card">
+      <div className="relative flex-1 overflow-hidden rounded-2xl border border-border bg-card shadow-card">
         <img
           src={heroSmile}
           alt="Sorriso natural editorial"
@@ -380,10 +380,10 @@ function Hero({ onStart }: { onStart: () => void }) {
 
 function StepHeader({ eyebrow, title, text }: { eyebrow: string; title: string; text: string }) {
   return (
-    <header className="mb-6 mt-2">
-      <p className="mb-3 text-[11px] uppercase tracking-[0.22em] text-gold">{eyebrow}</p>
-      <h2 className="text-balance font-serif text-[28px] leading-[1.15] text-foreground sm:text-3xl">{title}</h2>
-      <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{text}</p>
+    <header className="mb-3 mt-1">
+      <p className="mb-2 text-[10px] uppercase tracking-[0.18em] text-gold">{eyebrow}</p>
+      <h2 className="text-balance font-serif text-[24px] leading-[1.12] text-foreground sm:text-[26px]">{title}</h2>
+      <p className="mt-2 text-[13px] leading-snug text-muted-foreground">{text}</p>
     </header>
   );
 }
@@ -399,7 +399,7 @@ function SingleChoiceStep({
   return (
     <section>
       <StepHeader eyebrow={eyebrow} title={title} text={text} />
-      <div className="grid gap-3">
+      <div className="grid gap-2.5">
         {items.map((it, idx) => (
           <OptionCard
             key={it.id}
@@ -429,7 +429,7 @@ function MultiChoiceStep({
   return (
     <section>
       <StepHeader eyebrow={eyebrow} title={title} text={text} />
-      <div className="grid gap-3">
+      <div className="grid gap-2.5">
         {items.map((it, idx) => (
           <OptionCard
             key={it.id}
@@ -443,7 +443,7 @@ function MultiChoiceStep({
         ))}
       </div>
       {value.length > 0 && (
-        <p className="mt-4 text-center text-[12px] uppercase tracking-[0.18em] text-muted-foreground">
+        <p className="mt-3 text-center text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
           {value.length} {value.length === 1 ? "selecionado" : "selecionados"}
         </p>
       )}
@@ -456,28 +456,28 @@ function MultiChoiceStep({
 function ReferencesGallery({ items }: { items: CardItem[] }) {
   return (
     <section>
-      <header className="mb-4 mt-1">
+      <header className="mb-3 mt-1">
         <p className="mb-2 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-gold">
           <span className="h-1 w-1 rounded-full bg-gold" />
           Etapa 03 — Pausa educativa
         </p>
-        <h2 className="text-balance font-serif text-[24px] leading-[1.15] text-foreground">
+        <h2 className="text-balance font-serif text-[23px] leading-[1.12] text-foreground">
           Observe os detalhes que mudam um sorriso.
         </h2>
-        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+        <p className="mt-2 text-[13px] leading-snug text-muted-foreground">
           Não é uma pergunta. Role para baixo e amplie o olhar.
         </p>
       </header>
 
-      <div className="grid gap-3">
+      <div className="grid gap-2.5">
         {items.map((it, idx) => (
           <article
             key={it.id}
             style={{ animationDelay: `${idx * 60}ms` }}
-            className="animate-scale-pop flex w-full max-w-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card box-border"
+            className="animate-scale-pop flex w-full max-w-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card box-border"
           >
             {it.image && (
-              <div className="relative aspect-[16/10] w-full overflow-hidden">
+              <div className="relative aspect-[21/9] w-full overflow-hidden">
                 <img
                   src={it.image}
                   alt={it.title}
@@ -485,15 +485,15 @@ function ReferencesGallery({ items }: { items: CardItem[] }) {
                   className="h-full w-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/55 via-transparent to-transparent" />
-                <span className="absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-foreground backdrop-blur">
+                <span className="absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-[9px] uppercase tracking-[0.16em] text-foreground backdrop-blur">
                   {String(idx + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
                 </span>
               </div>
             )}
-            <div className="p-4">
-              <p className="font-serif text-lg leading-tight text-foreground">{it.title}</p>
+            <div className="p-3.5">
+              <p className="font-serif text-[17px] leading-tight text-foreground">{it.title}</p>
               {it.caption && (
-                <p className="mt-1.5 text-[13px] leading-snug text-muted-foreground">{it.caption}</p>
+                <p className="mt-1 text-[12.5px] leading-snug text-muted-foreground">{it.caption}</p>
               )}
             </div>
           </article>
@@ -515,9 +515,9 @@ function OptionCard({
         onClick={onClick}
         aria-pressed={selected}
         style={{ animationDelay: `${index * 50}ms` }}
-        className={`animate-scale-pop group relative flex w-full max-w-full flex-col overflow-hidden rounded-3xl text-left card-premium box-border ${selected ? "card-selected" : ""}`}
+        className={`animate-scale-pop group relative flex w-full max-w-full flex-col overflow-hidden rounded-2xl text-left card-premium box-border ${selected ? "card-selected" : ""}`}
       >
-        <div className="relative aspect-[16/10] w-full overflow-hidden">
+        <div className="relative aspect-[21/9] w-full overflow-hidden">
           <img
             src={item.image}
             alt={item.title}
@@ -527,16 +527,16 @@ function OptionCard({
           <div className="absolute inset-0 bg-gradient-to-t from-primary/55 via-transparent to-transparent" />
           {selected && (
             <span className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-gold text-primary shadow-gold animate-scale-pop">
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="3">
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="3">
                 <path d="M5 12l5 5L20 7" />
               </svg>
             </span>
           )}
         </div>
-        <div className="p-4">
-          <p className="font-serif text-lg leading-tight text-foreground">{item.title}</p>
+        <div className="p-3.5">
+          <p className="font-serif text-[17px] leading-tight text-foreground">{item.title}</p>
           {item.caption && (
-            <p className="mt-1.5 text-[13px] leading-snug text-muted-foreground">{item.caption}</p>
+            <p className="mt-1 text-[12.5px] leading-snug text-muted-foreground">{item.caption}</p>
           )}
         </div>
       </button>
@@ -547,17 +547,17 @@ function OptionCard({
       type="button"
       onClick={onClick}
       aria-pressed={selected}
-      className={`group relative flex w-full max-w-full items-start gap-4 rounded-2xl p-5 text-left card-premium box-border ${selected ? "card-selected" : ""}`}
+      className={`group relative flex w-full max-w-full items-start gap-3 rounded-2xl p-4 text-left card-premium box-border ${selected ? "card-selected" : ""}`}
     >
-      <span className={`mt-0.5 grid h-6 w-6 shrink-0 place-items-center ${multi ? "rounded-md" : "rounded-full"} border-2 transition-colors ${selected ? "border-gold bg-gold text-primary" : "border-border bg-background text-transparent"}`}>
+      <span className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center ${multi ? "rounded-md" : "rounded-full"} border-2 transition-colors ${selected ? "border-gold bg-gold text-primary" : "border-border bg-background text-transparent"}`}>
         <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="3">
           <path d="M5 12l5 5L20 7" />
         </svg>
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block font-serif text-lg leading-tight text-foreground">{item.title}</span>
+        <span className="block font-serif text-[17px] leading-tight text-foreground">{item.title}</span>
         {item.caption && (
-          <span className="mt-1 block text-[14px] leading-snug text-muted-foreground">{item.caption}</span>
+          <span className="mt-1 block text-[13px] leading-snug text-muted-foreground">{item.caption}</span>
         )}
       </span>
     </button>
@@ -724,7 +724,7 @@ function ResultMap({ answers, onRestart }: { answers: Answers; onRestart: () => 
   return (
     <section className="pb-12">
       <header className="mb-6 mt-2 text-center">
-        <p className="mb-3 text-[11px] uppercase tracking-[0.22em] text-gold">Resultado personalizado</p>
+        <p className="mb-2 text-[10px] uppercase tracking-[0.18em] text-gold">Resultado personalizado</p>
         <h2 className="font-serif text-[34px] leading-[1.05] text-foreground sm:text-4xl">Seu Mapa do Sorriso</h2>
         {answers.lead.name && (
           <p className="mt-2 text-[14px] text-muted-foreground">para {answers.lead.name.split(" ")[0]}</p>
@@ -759,15 +759,15 @@ function ResultMap({ answers, onRestart }: { answers: Answers; onRestart: () => 
             )}.
             O cuidado mais importante para você agora é <strong className="font-medium text-foreground">{safetyTitle.toLowerCase()}</strong>.
           </p>
-          <p className="mt-3 text-[15px] leading-relaxed text-foreground/90">{safetyNarrative(answers.safety)}</p>
-          <p className="mt-3 text-[15px] leading-relaxed text-foreground/90">
+          <p className="mt-2 text-[13px] leading-snug text-foreground/90">{safetyNarrative(answers.safety)}</p>
+          <p className="mt-2 text-[13px] leading-snug text-foreground/90">
             Em estética do sorriso, o melhor resultado não depende apenas de dentes mais brancos ou alinhados, mas de um planejamento que considere naturalidade, proporção, saúde dental e expectativa.
           </p>
         </ResultBlock>
 
         <ResultBlock eyebrow="Próximo passo recomendado">
           <p className="mt-2 text-[15px] leading-relaxed text-foreground/90">{nextStepNarrative(answers.intent)}</p>
-          <p className="mt-3 text-[15px] leading-relaxed text-foreground/90">
+          <p className="mt-2 text-[13px] leading-snug text-foreground/90">
             Pode fazer sentido conversar sobre possibilidades estéticas para o seu sorriso.
           </p>
         </ResultBlock>
@@ -824,15 +824,15 @@ function StickyCTA({
   label, disabled, onClick, onBack,
 }: { label: string; disabled?: boolean; onClick: () => void; onBack?: () => void }) {
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 bg-gradient-to-t from-background via-background/95 to-background/0 pt-6">
-      <div className="w-full px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-        <div className="pointer-events-auto flex items-center gap-2 rounded-2xl border border-border bg-card/95 p-2 shadow-card backdrop-blur">
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 bg-gradient-to-t from-background via-background/95 to-background/0 pt-4">
+      <div className="w-full px-4 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
+        <div className="pointer-events-auto flex items-center gap-2 rounded-2xl border border-border bg-card/95 p-1.5 shadow-card backdrop-blur">
           {onBack && (
             <button
               type="button"
               onClick={onBack}
               aria-label="Voltar"
-              className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-border bg-background text-foreground/70 transition-colors active:bg-muted"
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-border bg-background text-foreground/70 transition-colors active:bg-muted"
             >
               <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M19 12H5M12 5l-7 7 7 7" />
@@ -843,7 +843,7 @@ function StickyCTA({
             type="button"
             onClick={onClick}
             disabled={disabled}
-            className={`group relative flex h-12 flex-1 items-center justify-between gap-3 overflow-hidden rounded-xl px-4 text-left transition-all duration-300 ${
+            className={`group relative flex h-11 flex-1 items-center justify-between gap-3 overflow-hidden rounded-xl px-4 text-left transition-all duration-300 ${
               disabled
                 ? "cursor-not-allowed bg-muted text-muted-foreground opacity-70"
                 : "bg-primary text-primary-foreground active:scale-[0.99]"
@@ -851,7 +851,7 @@ function StickyCTA({
           >
             <span className="font-serif text-[16px]">{label}</span>
             <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg transition-transform group-hover:translate-x-0.5 ${disabled ? "bg-background/40" : "bg-gold text-primary"}`}>
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.2">
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2.2">
                 <path d="M5 12h14M13 5l7 7-7 7" />
               </svg>
             </span>
