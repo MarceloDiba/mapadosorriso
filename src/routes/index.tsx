@@ -39,38 +39,40 @@ type CardItem = {
 
 const DESIRE: CardItem[] = [
   { id: "natural", title: "Natural e elegante", caption: "Quero melhorar sem parecer artificial.", image: desireNatural },
-  { id: "bright", title: "Mais branco e iluminado", caption: "Quero um sorriso com mais presença.", image: desireBright },
-  { id: "proportion", title: "Mais proporcional", caption: "Quero melhorar formato, tamanho ou alinhamento visual.", image: desireProportion },
-  { id: "confident", title: "Mais confiante nas fotos", caption: "Quero sorrir sem ficar me preocupando.", image: desireConfident },
+  { id: "bright", title: "Mais branco e iluminado", caption: "Quero um sorriso com mais brilho e presença.", image: desireBright },
+  { id: "harmonic", title: "Mais harmônico", caption: "Quero melhorar equilíbrio, formato ou proporção.", image: desireProportion },
+  { id: "confident", title: "Mais confiante ao sorrir", caption: "Quero sorrir sem ficar me preocupando.", image: desireConfident },
   { id: "bold", title: "Uma mudança mais marcante", caption: "Quero transformar meu sorriso com segurança.", image: desireBold },
+];
+
+const PERCEPTION: CardItem[] = [
+  { id: "color", title: "Cor dos dentes" },
+  { id: "shape", title: "Formato dos dentes" },
+  { id: "size", title: "Tamanho dos dentes" },
+  { id: "spaces", title: "Espaços entre os dentes" },
+  { id: "align", title: "Dentes desalinhados" },
+  { id: "small", title: "Sorriso pequeno ou pouco aparente" },
+  { id: "gum", title: "Gengiva muito aparente" },
+  { id: "edges", title: "Bordas desgastadas ou irregulares" },
+  { id: "unsure", title: "Não sei exatamente, só quero melhorar" },
 ];
 
 const REFERENCES: CardItem[] = [
   { id: "arc", title: "Arco do sorriso", caption: "Quando acompanha a curva do lábio, o sorriso tende a parecer mais harmônico.", image: refArc },
-  { id: "proportion", title: "Proporção dos dentes", caption: "A relação de largura e altura entre os dentes influencia o equilíbrio visual.", image: refProportion },
-  { id: "shade", title: "Cor e luminosidade", caption: "Tons muito brancos podem parecer artificiais; tons quentes trazem naturalidade.", image: refShade },
-  { id: "texture", title: "Textura e brilho", caption: "Pequenas variações de superfície fazem o sorriso parecer real, não fabricado.", image: refTexture },
-  { id: "alignment", title: "Alinhamento e simetria", caption: "Linhas que conversam com o rosto criam sorrisos com estilos diferentes.", image: refAlignment },
-  { id: "exposure", title: "Exposição do sorriso", caption: "O quanto o sorriso aparece ao falar ou sorrir influencia presença e confiança.", image: refExposure },
-];
-
-const PERCEPTION: CardItem[] = [
-  { id: "shade", title: "Cor ou luminosidade" },
-  { id: "shape", title: "Formato dos dentes" },
-  { id: "size", title: "Tamanho ou proporção" },
-  { id: "spaces", title: "Espaços ou alinhamento visual" },
-  { id: "low", title: "Sorriso pouco aparente" },
-  { id: "artificial", title: "Medo de parecer artificial" },
-  { id: "unsure", title: "Ainda não sei, quero entender melhor" },
+  { id: "proportion", title: "Proporção dos dentes", caption: "Tamanho e largura influenciam equilíbrio e naturalidade.", image: refProportion },
+  { id: "shade", title: "Cor e luminosidade", caption: "O branco ideal precisa combinar com pele, rosto e estilo.", image: refShade },
+  { id: "symmetry", title: "Simetria visual", caption: "Pequenas assimetrias podem mudar a percepção do sorriso.", image: refAlignment },
+  { id: "shape", title: "Formato dos dentes", caption: "Formas mais arredondadas, retas ou alongadas comunicam estilos diferentes.", image: refTexture },
+  { id: "exposure", title: "Exposição do sorriso", caption: "O quanto o sorriso aparece ao falar ou sorrir influencia a presença visual.", image: refExposure },
 ];
 
 const SAFETY: CardItem[] = [
-  { id: "natural", title: "Quero entender se fica natural" },
-  { id: "wear", title: "Tenho receio de desgaste" },
-  { id: "fit", title: "Quero saber se combina comigo" },
-  { id: "price", title: "Quero entender investimento" },
-  { id: "pain", title: "Tenho medo de dor ou desconforto" },
-  { id: "alternatives", title: "Quero conhecer alternativas além de facetas" },
+  { id: "natural", title: "Se o resultado pode ficar natural" },
+  { id: "wear", title: "Se existe desgaste dos dentes" },
+  { id: "fit", title: "Se combina com meu rosto" },
+  { id: "price", title: "Quanto pode custar" },
+  { id: "pain", title: "Se pode doer ou causar desconforto" },
+  { id: "alternatives", title: "Quais alternativas existem além de facetas" },
 ];
 
 const MOMENT: CardItem[] = [
@@ -81,18 +83,18 @@ const MOMENT: CardItem[] = [
 ];
 
 const INTENT: CardItem[] = [
-  { id: "evaluate", title: "Quero avaliar meu caso" },
-  { id: "price", title: "Quero entender valores primeiro" },
-  { id: "doubts", title: "Quero tirar dúvidas" },
-  { id: "guidance", title: "Quero receber uma orientação inicial" },
-  { id: "research", title: "Ainda estou pesquisando" },
+  { id: "evaluate", title: "Avaliar meu caso" },
+  { id: "price", title: "Entender valores primeiro" },
+  { id: "doubts", title: "Tirar dúvidas" },
+  { id: "guidance", title: "Receber uma orientação inicial" },
+  { id: "research", title: "Continuar pesquisando" },
 ];
 
 const STEPS = [
   { key: "hero", label: "Início" },
   { key: "desire", label: "Desejo" },
-  { key: "references", label: "Referências" },
   { key: "perception", label: "Percepção" },
+  { key: "references", label: "Referências" },
   { key: "safety", label: "Segurança" },
   { key: "moment", label: "Momento" },
   { key: "intent", label: "Intenção" },
