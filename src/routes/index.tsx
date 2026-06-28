@@ -357,21 +357,23 @@ function Hero({ onStart }: { onStart: () => void }) {
       </div>
 
       <button
+        type="button"
         onClick={onStart}
-        className="group mt-8 flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-6 py-5 text-left text-primary-foreground shadow-soft transition-all duration-300 hover:translate-y-[-2px] hover:shadow-gold active:scale-[0.99]"
+        className="group relative z-10 mt-8 flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-6 py-5 text-left text-primary-foreground shadow-soft transition-all duration-300 hover:translate-y-[-2px] hover:shadow-gold active:scale-[0.99]"
       >
-        <span className="flex flex-col">
-          <span className="text-[11px] uppercase tracking-[0.2em] text-gold-soft">7 etapas · ~3 min</span>
-          <span className="mt-1 font-serif text-xl">Começar agora</span>
-        </span>
-        <span className="grid h-11 w-11 place-items-center rounded-full bg-gold text-primary transition-transform group-hover:translate-x-1">
+        <span className="font-serif text-xl">Começar agora</span>
+        <span aria-hidden className="grid h-11 w-11 place-items-center rounded-full bg-gold text-primary transition-transform group-hover:translate-x-1">
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M5 12h14M13 5l7 7-7 7" />
           </svg>
         </span>
       </button>
 
-      <p className="mt-6 text-center text-[12px] leading-relaxed text-muted-foreground">
+      <p className="mt-5 text-center text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+        7 etapas · cerca de 3 minutos
+      </p>
+
+      <p className="mt-4 text-center text-[12px] leading-relaxed text-muted-foreground">
         Esta experiência é educativa e não substitui<br className="sm:hidden" /> uma avaliação odontológica presencial.
       </p>
     </section>
