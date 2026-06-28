@@ -179,7 +179,7 @@ function SmileLab() {
 
   return (
     <div className="min-h-[100dvh] w-full overflow-x-hidden bg-muted/40 text-foreground">
-      <div className="relative mx-auto flex min-h-[100dvh] w-full max-w-[430px] flex-col overflow-hidden bg-background shadow-[0_0_60px_-20px_rgba(0,0,0,0.25)] sm:min-h-[100dvh]">
+      <div className="relative mx-auto flex min-h-[100dvh] w-full min-w-0 max-w-[430px] flex-col overflow-hidden bg-background shadow-[0_0_60px_-20px_rgba(0,0,0,0.25)] sm:min-h-[100dvh]">
         <AppHeader />
         {showProgress && (
           <ProgressBar steps={progressSteps.map((s) => s.label)} current={currentProgressIdx} />
@@ -187,7 +187,7 @@ function SmileLab() {
 
         <main
           ref={mainRef}
-          className={`flex-1 overflow-y-auto overflow-x-hidden px-5 pt-3 ${showCTA ? "pb-36" : "pb-6"}`}
+          className={`flex-1 min-w-0 overflow-y-auto overflow-x-hidden px-5 pt-3 ${showCTA ? "pb-36" : "pb-6"}`}
         >
           <div key={step} className="animate-fade-up">
             {step === "hero" && <Hero onStart={next} />}
