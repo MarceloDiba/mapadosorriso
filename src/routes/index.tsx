@@ -334,46 +334,42 @@ function ProgressBar({ steps, current }: { steps: string[]; current: number }) {
 
 function Hero({ onStart }: { onStart: () => void }) {
   return (
-    <section className="pb-8 pt-2">
-      <div className="relative overflow-hidden rounded-3xl border border-border bg-card shadow-card">
+    <section className="flex min-h-full flex-col pb-4 pt-1">
+      <div className="relative flex-1 overflow-hidden rounded-3xl border border-border bg-card shadow-card">
         <img
           src={heroSmile}
           alt="Sorriso natural editorial"
-          width={1280}
-          height={1600}
-          className="aspect-[4/5] w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/85 via-primary/30 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
-          <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-gold/60 bg-background/15 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-background backdrop-blur">
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/35 to-transparent" />
+        <div className="relative flex h-full min-h-[60vh] flex-col justify-end p-5">
+          <p className="mb-3 inline-flex w-fit items-center gap-2 rounded-full border border-gold/60 bg-background/15 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-background backdrop-blur">
             <span className="h-1 w-1 rounded-full bg-gold" /> Smile Design
           </p>
-          <h1 className="font-serif text-[34px] leading-[1.05] text-background sm:text-5xl">
+          <h1 className="font-serif text-[32px] leading-[1.05] text-background">
             Descubra o mapa<br />do seu sorriso.
           </h1>
+          <p className="mt-3 max-w-[28ch] text-[13px] leading-relaxed text-background/85">
+            Uma experiência visual e educativa antes de conversar com um especialista.
+          </p>
         </div>
       </div>
-
 
       <button
         type="button"
         onClick={onStart}
-        className="group relative z-10 mt-8 flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-6 py-5 text-left text-primary-foreground shadow-soft transition-all duration-300 hover:translate-y-[-2px] hover:shadow-gold active:scale-[0.99]"
+        className="group relative z-10 mt-5 flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-4 text-left text-primary-foreground shadow-soft transition-all duration-300 active:scale-[0.99]"
       >
-        <span className="font-serif text-xl">Começar agora</span>
-        <span aria-hidden className="grid h-11 w-11 place-items-center rounded-full bg-gold text-primary transition-transform group-hover:translate-x-1">
+        <span className="font-serif text-lg">Começar agora</span>
+        <span aria-hidden className="grid h-10 w-10 place-items-center rounded-full bg-gold text-primary transition-transform group-hover:translate-x-1">
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M5 12h14M13 5l7 7-7 7" />
           </svg>
         </span>
       </button>
 
-      <p className="mt-5 text-center text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-        7 etapas · cerca de 3 minutos
-      </p>
-
-      <p className="mt-4 text-center text-[12px] leading-relaxed text-muted-foreground">
-        Esta experiência é educativa e não substitui<br className="sm:hidden" /> uma avaliação odontológica presencial.
+      <p className="mt-3 text-center text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+        7 etapas · cerca de 3 min · educativo
       </p>
     </section>
   );
