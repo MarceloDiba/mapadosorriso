@@ -270,7 +270,9 @@ function SmileLab() {
                 ? "Ver meu Mapa do Sorriso"
                 : step === "references"
                   ? "Entendi, continuar"
-                  : "Continuar"
+                  : !canAdvance
+                    ? "Escolha uma opção para continuar"
+                    : "Continuar"
             }
             disabled={!canAdvance}
             onClick={next}
