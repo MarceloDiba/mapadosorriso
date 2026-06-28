@@ -826,36 +826,46 @@ function StickyCTA({
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 bg-gradient-to-t from-background via-background/95 to-background/0 pt-4">
       <div className="w-full px-4 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
-        <div className="pointer-events-auto flex items-center gap-2 rounded-2xl border border-border bg-card/95 p-1.5 shadow-card backdrop-blur">
-          {onBack && (
+        <div className="pointer-events-auto rounded-2xl border border-border bg-card/95 p-1.5 shadow-card backdrop-blur">
+          <div className="flex items-center gap-2">
+            {onBack && (
+              <button
+                type="button"
+                onClick={onBack}
+                aria-label="Voltar"
+                className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-border bg-background text-foreground/70 transition-colors active:bg-muted"
+              >
+                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M19 12H5M12 5l-7 7 7 7" />
+                </svg>
+              </button>
+            )}
             <button
               type="button"
-              onClick={onBack}
-              aria-label="Voltar"
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-border bg-background text-foreground/70 transition-colors active:bg-muted"
+              onClick={onClick}
+              disabled={disabled}
+              className={`group relative flex h-11 flex-1 items-center justify-between gap-3 overflow-hidden rounded-xl px-4 text-left transition-all duration-300 ${
+                disabled
+                  ? "cursor-not-allowed bg-muted text-muted-foreground opacity-70"
+                  : "bg-primary text-primary-foreground active:scale-[0.99]"
+              }`}
             >
-              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M19 12H5M12 5l-7 7 7 7" />
-              </svg>
+              <span className="font-serif text-[16px]">{label}</span>
+              <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg transition-transform group-hover:translate-x-0.5 ${disabled ? "bg-background/40" : "bg-gold text-primary"}`}>
+                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2.2">
+                  <path d="M5 12h14M13 5l7 7-7 7" />
+                </svg>
+              </span>
             </button>
-          )}
-          <button
-            type="button"
-            onClick={onClick}
-            disabled={disabled}
-            className={`group relative flex h-11 flex-1 items-center justify-between gap-3 overflow-hidden rounded-xl px-4 text-left transition-all duration-300 ${
-              disabled
-                ? "cursor-not-allowed bg-muted text-muted-foreground opacity-70"
-                : "bg-primary text-primary-foreground active:scale-[0.99]"
-            }`}
+          </div>
+          <a
+            href="https://www.noadigital.com.br/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-1.5 block text-center text-[9px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-gold"
           >
-            <span className="font-serif text-[16px]">{label}</span>
-            <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg transition-transform group-hover:translate-x-0.5 ${disabled ? "bg-background/40" : "bg-gold text-primary"}`}>
-              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2.2">
-                <path d="M5 12h14M13 5l7 7-7 7" />
-              </svg>
-            </span>
-          </button>
+            NOA Lead Flow Smile
+          </a>
         </div>
       </div>
     </div>
