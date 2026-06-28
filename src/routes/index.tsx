@@ -76,9 +76,11 @@ const SAFETY: CardItem[] = [
 ];
 
 const MOMENT: CardItem[] = [
-  { id: "soon", title: "Quero conversar com uma equipe em breve" },
+  { id: "now", title: "Quero ser atendido(a) agora" },
+  { id: "schedule", title: "Quero agendar uma avaliação" },
+  { id: "price", title: "Quero entender valores antes" },
   { id: "compare", title: "Estou comparando possibilidades" },
-  { id: "safety", title: "Tenho vontade, mas preciso de segurança" },
+  { id: "fear", title: "Tenho vontade, mas ainda tenho receios" },
   { id: "learn", title: "Quero apenas aprender por enquanto" },
 ];
 
