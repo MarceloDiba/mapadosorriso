@@ -554,57 +554,60 @@ function Carousel({
   const ref = useRef<HTMLDivElement>(null);
   return (
     <div className="w-full">
-      <div
-        ref={ref}
-        className="scrollbar-hide -mr-5 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-4 pr-10 pt-2"
-      >
-        {items.map((it, idx) => {
-          const isSel = selected.includes(it.id);
-          return (
-            <button
-              key={it.id}
-              type="button"
-              onClick={() => onToggle(it.id)}
-              aria-pressed={isSel}
-              style={{ animationDelay: `${idx * 60}ms` }}
-              className={`animate-scale-pop relative flex w-[86%] max-w-[320px] shrink-0 snap-start flex-col overflow-hidden rounded-3xl text-left card-premium ${isSel ? "card-selected" : ""}`}
-            >
-              {withImages && it.image && (
-                <div className="relative aspect-[4/5] w-full overflow-hidden">
-                  <img
-                    src={it.image}
-                    alt={it.title}
-                    width={800}
-                    height={1000}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/55 via-transparent to-transparent" />
-                  {isSel && (
-                    <span className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-gold text-primary shadow-gold animate-scale-pop">
-                      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="3">
+      <div className="relative w-full min-w-0 overflow-hidden">
+        <div
+          ref={ref}
+          className="scrollbar-hide flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-4 pt-2"
+          style={{ paddingLeft: 4, paddingRight: 40 }}
+        >
+          {items.map((it, idx) => {
+            const isSel = selected.includes(it.id);
+            return (
+              <button
+                key={it.id}
+                type="button"
+                onClick={() => onToggle(it.id)}
+                aria-pressed={isSel}
+                style={{ animationDelay: `${idx * 60}ms` }}
+                className={`animate-scale-pop relative flex basis-[calc(100%-3rem)] max-w-[320px] shrink-0 grow-0 snap-start flex-col overflow-hidden rounded-3xl text-left card-premium ${isSel ? "card-selected" : ""}`}
+              >
+                {withImages && it.image && (
+                  <div className="relative aspect-[4/5] w-full overflow-hidden">
+                    <img
+                      src={it.image}
+                      alt={it.title}
+                      width={800}
+                      height={1000}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/55 via-transparent to-transparent" />
+                    {isSel && (
+                      <span className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-gold text-primary shadow-gold animate-scale-pop">
+                        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="3">
+                          <path d="M5 12l5 5L20 7" />
+                        </svg>
+                      </span>
+                    )}
+                  </div>
+                )}
+                <div className="flex flex-1 flex-col p-5">
+                  {!withImages && (
+                    <span className={`mb-3 grid h-6 w-6 place-items-center rounded-${multi ? "md" : "full"} border-2 transition-colors ${isSel ? "border-gold bg-gold text-primary" : "border-border bg-background text-transparent"}`}>
+                      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="3">
                         <path d="M5 12l5 5L20 7" />
                       </svg>
                     </span>
                   )}
+                  <p className="font-serif text-xl leading-tight text-foreground">{it.title}</p>
+                  {it.caption && (
+                    <p className="mt-2 text-[14px] leading-snug text-muted-foreground">{it.caption}</p>
+                  )}
                 </div>
-              )}
-              <div className="flex flex-1 flex-col p-5">
-                {!withImages && (
-                  <span className={`mb-3 grid h-6 w-6 place-items-center rounded-${multi ? "md" : "full"} border-2 transition-colors ${isSel ? "border-gold bg-gold text-primary" : "border-border bg-background text-transparent"}`}>
-                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="3">
-                      <path d="M5 12l5 5L20 7" />
-                    </svg>
-                  </span>
-                )}
-                <p className="font-serif text-xl leading-tight text-foreground">{it.title}</p>
-                {it.caption && (
-                  <p className="mt-2 text-[14px] leading-snug text-muted-foreground">{it.caption}</p>
-                )}
-              </div>
-            </button>
-          );
-        })}
+              </button>
+            );
+          })}
+        </div>
       </div>
       <div className="mt-1 flex justify-center gap-1.5">
         {items.map((it) => (
