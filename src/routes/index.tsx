@@ -474,16 +474,15 @@ function ReferencesGallery({ items }: { items: CardItem[] }) {
         </p>
       </header>
 
-      <div className="-mx-5">
+      <div className="w-full">
         <div
-          className="scrollbar-hide flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-3 pt-1"
-          style={{ scrollPaddingLeft: "1.25rem" }}
+          className="scrollbar-hide -mr-5 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-3 pr-10 pt-1"
         >
           {items.map((it, idx) => (
             <article
               key={it.id}
               style={{ animationDelay: `${idx * 60}ms` }}
-              className="animate-scale-pop flex w-[82%] shrink-0 snap-center flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card"
+              className="animate-scale-pop flex w-[86%] max-w-[320px] shrink-0 snap-start flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card"
             >
               {it.image && (
                 <div className="relative aspect-[4/5] w-full overflow-hidden">
@@ -507,7 +506,6 @@ function ReferencesGallery({ items }: { items: CardItem[] }) {
               </div>
             </article>
           ))}
-          <div className="w-2 shrink-0" />
         </div>
       </div>
 
