@@ -678,34 +678,137 @@ const PERCEPTION_LABEL = Object.fromEntries(PERCEPTION.map((p) => [p.id, p.title
 const REF_LABEL = Object.fromEntries(REFERENCES.map((p) => [p.id, p.title]));
 const SAFETY_LABEL = Object.fromEntries(SAFETY.map((p) => [p.id, p.title]));
 
-function safetyNarrative(id?: string): string {
+function desireNarrative(id?: string): string {
   switch (id) {
     case "natural":
-      return "Seu mapa mostra que naturalidade é um ponto importante para você. Em estética do sorriso, evitar um resultado artificial depende de planejamento: cor, formato, proporção e linha do sorriso precisam conversar com o rosto e com a personalidade da pessoa.";
-    case "wear":
-      return "Seu mapa mostra que segurança é central para sua decisão. Antes de qualquer tratamento estético, o dentista precisa avaliar estrutura dental, saúde bucal e alternativas possíveis.";
-    case "price":
-      return "Seu mapa indica que você está avaliando o investimento com cuidado. O valor pode variar conforme planejamento, materiais, quantidade de dentes envolvidos e complexidade do caso.";
-    case "pain":
-      return "Seu mapa mostra que você quer entender melhor a experiência do procedimento. Cada caso precisa ser avaliado para explicar etapas, cuidados, previsibilidade e possíveis desconfortos.";
-    case "fit":
-      return "Seu mapa mostra que sua principal dúvida é se uma mudança estética combinaria com você. Um sorriso bonito precisa conversar com rosto, expressão, personalidade e expectativa de naturalidade.";
-    case "alternatives":
-      return "Seu mapa mostra que você ainda está em fase de descoberta. Antes de decidir por facetas, lentes ou qualquer tratamento estético, faz sentido entender possibilidades, limites e cuidados.";
+      return "Você busca uma melhora discreta, com aparência leve e integrada ao rosto. Na conversa com a clínica, vale observar principalmente naturalidade, acabamento e harmonia com sua expressão.";
+    case "bright":
+      return "Seu interesse aponta para mais luminosidade e presença no sorriso. O ponto importante é entender qual nível de clareamento, cor ou contraste combina com seu rosto sem criar um aspecto artificial.";
+    case "harmonic":
+      return "Sua escolha indica foco em equilíbrio visual. A avaliação pode explorar proporção, formato, alinhamento aparente e como esses elementos influenciam a harmonia do sorriso.";
+    case "confident":
+      return "O centro do seu mapa é confiança ao sorrir. Mais do que uma mudança específica, a conversa deve entender o que hoje faz você se controlar ao falar, rir ou aparecer em fotos.";
+    case "bold":
+      return "Você parece aberto(a) a uma mudança mais perceptível, mas com segurança. O cuidado aqui é alinhar expectativa, limite clínico e previsibilidade antes de falar em qualquer caminho estético.";
     default:
-      return "Seu mapa mostra que clareza e informação são partes importantes do seu processo. Uma avaliação ajuda a entender quais possibilidades fazem sentido para o seu sorriso.";
+      return "Seu mapa organiza os pontos que você quer observar antes de conversar com um dentista sobre possibilidades estéticas.";
   }
 }
 
-function nextStepNarrative(intent?: string): string {
-  switch (intent) {
-    case "evaluate": return "Agendar uma avaliação é o próximo passo mais indicado.";
-    case "price": return "Conversar com a equipe pode ajudar a entender faixas e possibilidades antes da avaliação.";
-    case "doubts": return "Uma conversa inicial pode esclarecer receios antes de decidir.";
-    case "guidance": return "Receber uma orientação inicial pode ajudar a organizar suas possibilidades.";
-    case "research": return "Você pode salvar seu mapa e conversar quando se sentir mais seguro.";
-    default: return "Uma conversa inicial pode ajudar a esclarecer próximos passos.";
+function perceptionNarrative(ids: string[]): string {
+  if (ids.includes("unsure") && ids.length === 1) {
+    return "Você ainda não nomeou exatamente o que incomoda, e isso é comum. A consulta pode ajudar a traduzir essa percepção geral em pontos observáveis, sem forçar uma decisão agora.";
   }
+
+  const has = (id: string) => ids.includes(id);
+  const groups: string[] = [];
+
+  if (has("color")) groups.push("luminosidade e cor");
+  if (has("shape") || has("size") || has("edges")) groups.push("formato, tamanho ou acabamento dos dentes");
+  if (has("spaces") || has("align")) groups.push("alinhamento visual e espaços");
+  if (has("small") || has("gum")) groups.push("exposição do sorriso ao falar ou sorrir");
+
+  if (groups.length === 0) {
+    return "Os pontos marcados ajudam a clínica a entender onde sua percepção estética está concentrada e quais temas merecem ser avaliados com mais calma.";
+  }
+
+  return `Os pontos que você marcou se concentram em ${formatList(groups)}. Isso não define tratamento, mas ajuda a conversa a começar pelo que você realmente percebe no espelho.`;
+}
+
+
+function perceptionInsight(title: string): string {
+  switch (title) {
+    case "Cor dos dentes":
+      return "Cor e luminosidade: entender como a tonalidade interfere na aparência do sorriso.";
+    case "Formato dos dentes":
+      return "Formato dos dentes: observar como contornos e desenho dental influenciam a personalidade do sorriso.";
+    case "Tamanho dos dentes":
+      return "Proporção: avaliar como tamanho e exposição dos dentes afetam a harmonia visual.";
+    case "Espaços entre os dentes":
+      return "Espaços: conversar sobre continuidade, simetria e equilíbrio do sorriso.";
+    case "Dentes desalinhados":
+      return "Alinhamento visual: observar sensação de continuidade, simetria e equilíbrio.";
+    case "Sorriso pequeno ou pouco aparente":
+      return "Exposição do sorriso: entender como os dentes aparecem ao falar ou sorrir.";
+    case "Gengiva muito aparente":
+      return "Gengiva: analisar com cuidado a relação entre dentes, gengiva e exposição ao sorrir.";
+    case "Bordas desgastadas ou irregulares":
+      return "Bordas e acabamento: observar contornos que podem influenciar a percepção estética.";
+    case "Não sei exatamente, só quero melhorar":
+      return "Dúvida geral: transformar percepções soltas em perguntas claras para a avaliação profissional.";
+    default:
+      return title;
+  }
+}
+
+function safetyNarrative(id?: string): string {
+  switch (id) {
+    case "natural":
+      return "Sua principal trava é evitar um resultado artificial. A conversa deve priorizar referências de naturalidade, cor compatível, proporção e acabamento.";
+    case "wear":
+      return "Sua preocupação está ligada à preservação dos dentes. Antes de qualquer plano, o dentista precisa avaliar estrutura dental, saúde bucal e alternativas possíveis.";
+    case "price":
+      return "Você quer clareza sobre investimento antes de avançar. A equipe pode explicar fatores que influenciam valores, sem fechar indicação sem avaliação.";
+    case "pain":
+      return "Você precisa entender conforto, etapas e cuidados. Essa é uma dúvida importante para levar à avaliação, porque a experiência varia conforme cada caso.";
+    case "fit":
+      return "Sua dúvida principal é se uma mudança combinaria com você. A avaliação deve considerar rosto, expressão, personalidade e expectativa de naturalidade.";
+    case "alternatives":
+      return "Você quer entender caminhos possíveis antes de pensar em facetas. Faz sentido comparar alternativas, limites e cuidados com orientação profissional.";
+    default:
+      return "Você busca mais clareza antes de decidir. Esse mapa ajuda a organizar a conversa inicial, mas a análise clínica vem depois.";
+  }
+}
+
+function momentNarrative(moment?: string, intent?: string): string {
+  if (moment === "now") {
+    return "Como seu momento é de ação, o melhor próximo passo é conversar com a equipe e levar esse mapa como resumo inicial do que você procura.";
+  }
+  if (moment === "schedule" || intent === "evaluate") {
+    return "Como você já considera uma avaliação, use este mapa para chegar com mais clareza sobre desejo, incômodos e dúvidas.";
+  }
+  if (moment === "price" || intent === "price") {
+    return "Se valores ainda são decisivos, a conversa pode começar pelos fatores que influenciam investimento e pela necessidade de avaliação antes de qualquer estimativa séria.";
+  }
+  if (moment === "compare") {
+    return "Como você está comparando possibilidades, este mapa ajuda a diferenciar desejo estético, dúvidas clínicas e critérios para escolher com segurança.";
+  }
+  if (moment === "fear" || intent === "doubts") {
+    return "Como ainda existem receios, a prioridade é esclarecer dúvidas antes de decidir. Uma conversa inicial pode reduzir insegurança sem pressionar por tratamento.";
+  }
+  if (moment === "learn" || intent === "research") {
+    return "Como você ainda está aprendendo, salve este mapa como ponto de partida e avance apenas quando fizer sentido conversar com um profissional.";
+  }
+  if (intent === "guidance") {
+    return "Uma orientação inicial pode ajudar a organizar possibilidades e entender que tipo de avaliação faria sentido para você.";
+  }
+  return "O próximo passo mais seguro é conversar com a equipe para entender possibilidades, dúvidas e critérios de avaliação.";
+}
+
+function formatList(items: string[]): string {
+  if (items.length <= 1) return items[0] ?? "";
+  if (items.length === 2) return `${items[0]} e ${items[1]}`;
+  return `${items.slice(0, -1).join(", ")} e ${items[items.length - 1]}`;
+}
+
+function buildClinicBrief(answers: Answers, styleLabel: string, perceived: string[], safetyTitle: string): string {
+  const parts = [
+    `Desejo principal: ${styleLabel}.`,
+    perceived.length ? `Pontos percebidos: ${formatList(perceived.slice(0, 5))}.` : "Pontos percebidos: não especificados.",
+    `Dúvida central: ${safetyTitle}.`,
+  ];
+
+  if (answers.moment) {
+    const momentLabel = MOMENT.find((m) => m.id === answers.moment)?.title;
+    if (momentLabel) parts.push(`Momento: ${momentLabel}.`);
+  }
+
+  if (answers.intent) {
+    const intentLabel = INTENT.find((m) => m.id === answers.intent)?.title;
+    if (intentLabel) parts.push(`Intenção: ${intentLabel}.`);
+  }
+
+  return parts.join(" ");
 }
 
 function ResultMap({ answers, onRestart }: { answers: Answers; onRestart: () => void }) {
@@ -715,8 +818,9 @@ function ResultMap({ answers, onRestart }: { answers: Answers; onRestart: () => 
   const attention = [...refs, ...perceived].slice(0, 4);
   const safetyTitle = answers.safety ? SAFETY_LABEL[answers.safety] : "Mais informação";
 
+  const clinicBrief = buildClinicBrief(answers, styleLabel, perceived, safetyTitle);
   const wppMessage = encodeURIComponent(
-    `Olá! Fiz o Laboratório do Sorriso Ideal e meu mapa indicou ${styleLabel.toLowerCase()}. Gostaria de entender quais possibilidades podem fazer sentido para meu sorriso em uma avaliação.`
+    `Olá! Acabei de preencher meu Mapa do Sorriso e gostaria de entender quais pontos podem ser avaliados em uma consulta. ${clinicBrief}`
   );
   const wppNumber = answers.lead.whatsapp.replace(/\D/g, "");
   const wppHref = `https://wa.me/?text=${wppMessage}${wppNumber ? `` : ``}`;
@@ -738,9 +842,9 @@ function ResultMap({ answers, onRestart }: { answers: Answers; onRestart: () => 
           {attention.length > 0 ? (
             <ul className="mt-2 space-y-2">
               {attention.map((t) => (
-                <li key={t} className="flex items-start gap-2.5 text-[15px] text-foreground">
+                <li key={t} className="flex items-start gap-2.5 text-[13.5px] leading-relaxed text-foreground/90">
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
-                  <span>{t}</span>
+                  <span>{perceptionInsight(t)}</span>
                 </li>
               ))}
             </ul>
@@ -751,31 +855,30 @@ function ResultMap({ answers, onRestart }: { answers: Answers; onRestart: () => 
 
         <ResultBlock eyebrow="Cuidado principal" title={safetyTitle} />
 
-        <ResultBlock eyebrow="O que seu mapa revela">
-          <p className="mt-2 text-[15px] leading-relaxed text-foreground/90">
-            Pelo que você explorou, seu objetivo parece estar ligado a um sorriso <strong className="font-medium text-foreground">{styleLabel.toLowerCase()}</strong>
-            {attention.length > 0 && (
-              <>, com atenção especial a <strong className="font-medium text-foreground">{attention.slice(0, 2).join(" e ").toLowerCase()}</strong></>
-            )}.
-            O cuidado mais importante para você agora é <strong className="font-medium text-foreground">{safetyTitle.toLowerCase()}</strong>.
-          </p>
-          <p className="mt-2 text-[13px] leading-snug text-foreground/90">{safetyNarrative(answers.safety)}</p>
-          <p className="mt-2 text-[13px] leading-snug text-foreground/90">
-            Em estética do sorriso, o melhor resultado não depende apenas de dentes mais brancos ou alinhados, mas de um planejamento que considere naturalidade, proporção, saúde dental e expectativa.
-          </p>
+        <ResultBlock eyebrow="Leitura do seu perfil">
+          <div className="mt-3 space-y-3 text-[14px] leading-relaxed text-foreground/90">
+            <p>{desireNarrative(answers.desire)}</p>
+            <p>{perceptionNarrative(answers.perception)}</p>
+            <p>{safetyNarrative(answers.safety)}</p>
+          </div>
         </ResultBlock>
 
-        <ResultBlock eyebrow="Próximo passo recomendado">
-          <p className="mt-2 text-[15px] leading-relaxed text-foreground/90">{nextStepNarrative(answers.intent)}</p>
-          <p className="mt-2 text-[13px] leading-snug text-foreground/90">
-            Pode fazer sentido conversar sobre possibilidades estéticas para o seu sorriso.
+        <ResultBlock eyebrow="Como usar este mapa na avaliação">
+          <p className="mt-3 text-[14px] leading-relaxed text-foreground/90">
+            {momentNarrative(answers.moment, answers.intent)}
           </p>
+          <div className="mt-4 rounded-2xl bg-muted/60 p-4">
+            <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Resumo para a equipe</p>
+            <p className="mt-2 text-[13px] leading-relaxed text-foreground/90">{clinicBrief}</p>
+          </div>
         </ResultBlock>
 
         <div className="rounded-3xl border border-dashed border-border bg-muted/50 p-5">
-          <p className="text-[13px] leading-relaxed text-muted-foreground">
-            <strong className="font-medium text-foreground">Este mapa é educativo</strong> e não substitui uma avaliação odontológica. O plano ideal depende de análise clínica feita por um dentista.
-          </p>
+          <div className="space-y-2 text-[12.5px] leading-relaxed text-muted-foreground">
+            <p>Este mapa é educativo e não substitui uma avaliação odontológica.</p>
+            <p>O plano ideal depende de análise clínica feita por um dentista.</p>
+            <p>Não há indicação de tratamento sem avaliação profissional.</p>
+          </div>
         </div>
       </div>
 
@@ -783,11 +886,11 @@ function ResultMap({ answers, onRestart }: { answers: Answers; onRestart: () => 
         href={wppHref}
         target="_blank"
         rel="noopener noreferrer"
-        className="group mt-8 flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-6 py-5 text-left text-primary-foreground shadow-soft transition-all duration-300 hover:translate-y-[-2px] hover:shadow-gold active:scale-[0.99]"
+        className="group mt-6 flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-4 text-left text-primary-foreground shadow-soft transition-all duration-300 hover:translate-y-[-2px] hover:shadow-gold active:scale-[0.99]"
       >
         <span className="flex flex-col">
           <span className="text-[11px] uppercase tracking-[0.2em] text-gold-soft">Próximo passo</span>
-          <span className="mt-1 font-serif text-xl">Conversar com a equipe</span>
+          <span className="mt-1 font-serif text-[17px] leading-tight">Enviar meu Mapa do Sorriso para a clínica</span>
         </span>
         <span className="grid h-11 w-11 place-items-center rounded-full bg-gold text-primary transition-transform group-hover:translate-x-1">
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
@@ -798,7 +901,7 @@ function ResultMap({ answers, onRestart }: { answers: Answers; onRestart: () => 
 
       <button
         onClick={onRestart}
-        className="mt-3 w-full rounded-2xl border border-border bg-card px-5 py-4 text-[14px] text-muted-foreground transition-colors hover:text-foreground"
+        className="mt-3 w-full rounded-2xl border border-border bg-card px-5 py-3.5 text-[14px] text-muted-foreground transition-colors hover:text-foreground"
       >
         Refazer minha experiência
       </button>
@@ -810,9 +913,9 @@ function ResultBlock({
   eyebrow, title, children, accent = false,
 }: { eyebrow: string; title?: string; children?: React.ReactNode; accent?: boolean }) {
   return (
-    <article className={`rounded-3xl border bg-card p-5 ${accent ? "border-gold shadow-gold" : "border-border shadow-card"}`}>
+    <article className={`rounded-3xl border bg-card p-4 ${accent ? "border-gold shadow-gold" : "border-border shadow-card"}`}>
       <p className={`text-[11px] uppercase tracking-[0.2em] ${accent ? "text-gold" : "text-muted-foreground"}`}>{eyebrow}</p>
-      {title && <p className="mt-2 font-serif text-2xl leading-tight text-foreground">{title}</p>}
+      {title && <p className="mt-2 font-serif text-[22px] leading-tight text-foreground">{title}</p>}
       {children}
     </article>
   );
