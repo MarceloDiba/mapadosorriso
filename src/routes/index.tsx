@@ -41,32 +41,27 @@ const DESIRE: CardItem[] = [
   {
     id: "natural",
     title: "Quero um resultado natural",
-    caption: "Melhorar sem parecer artificial ou padronizado.",
     image: desireNatural,
   },
   {
     id: "bright",
-    title: "Quero dentes mais claros",
-    caption: "Mais luminosidade, sem exagerar no branco.",
+    title: "Busco dentes mais brancos",
     image: desireBright,
   },
   {
     id: "harmonic",
-    title: "Quero mais harmonia",
-    caption: "Melhorar equilíbrio, formato, tamanho ou proporção.",
+    title: "Dentes em harmonia com minha boca",
     image: desireProportion,
   },
   {
-    id: "confident",
-    title: "Ainda não sei explicar bem",
-    caption: "Só sinto que algo no meu sorriso poderia melhorar.",
-    image: desireConfident,
+    id: "bold",
+    title: "Quero uma mudança radical",
+    image: desireBold,
   },
   {
-    id: "bold",
-    title: "Quero uma transformação maior",
-    caption: "Mudar o sorriso com segurança, planejamento e naturalidade.",
-    image: desireBold,
+    id: "confident",
+    title: "Ainda não sei explicar",
+    image: desireConfident,
   },
 ];
 
@@ -261,8 +256,7 @@ function SmileLab() {
             {step === "desire" && (
               <SingleChoiceStep
                 eyebrow="Etapa 01 — Desejo"
-                title="O que você gostaria de perceber diferente no seu sorriso?"
-                text="Não precisa saber o nome do procedimento. A ideia é organizar o que você sente quando se vê sorrindo."
+                title="O que você gostaria de mudar no seu sorriso?"
                 items={DESIRE}
                 value={answers.desire}
                 onChange={(v) => setAnswers((a) => ({ ...a, desire: v }))}
@@ -281,8 +275,7 @@ function SmileLab() {
             {step === "perception" && (
               <MultiChoiceStep
                 eyebrow="Etapa 03 — Percepção"
-                title="Quando você olha seu sorriso, o que mais interfere na harmonia?"
-                text="Pode marcar mais de um. A ideia não é fechar diagnóstico, mas traduzir sua percepção em pontos para uma conversa melhor."
+                title="O que mais lhe incomoda no seu sorriso atualmente?"
                 items={PERCEPTION}
                 value={answers.perception}
                 onChange={(v) => setAnswers((a) => ({ ...a, perception: v }))}
@@ -292,8 +285,7 @@ function SmileLab() {
             {step === "safety" && (
               <MultiChoiceStep
                 eyebrow="Etapa 04 — Segurança"
-                title="Quais dúvidas precisam ficar claras antes de pensar em facetas?"
-                text="Pode marcar mais de uma. Essas dúvidas costumam definir se a pessoa decide com segurança ou compara apenas preço."
+                title="Quais são suas principais dúvidas quando o assunto é faceta?"
                 items={SAFETY}
                 value={answers.safety}
                 onChange={(v) => setAnswers((a) => ({ ...a, safety: v }))}
@@ -303,8 +295,7 @@ function SmileLab() {
             {step === "moment" && (
               <SingleChoiceStep
                 eyebrow="Etapa 05 — Momento"
-                title="Em que ponto da sua decisão você está?"
-                text="Isso ajuda a entender se você está pesquisando, comparando caminhos ou pronto para conversar com um dentista."
+                title="Em que fase você está hoje?"
                 items={MOMENT}
                 value={answers.moment}
                 onChange={(v) => setAnswers((a) => ({ ...a, moment: v }))}
@@ -314,8 +305,7 @@ function SmileLab() {
             {step === "intent" && (
               <SingleChoiceStep
                 eyebrow="Etapa 06 — Intenção"
-                title="O que você gostaria de levar para a conversa com a clínica?"
-                text="A avaliação não serve só para dizer preço. Ela deve ajudar você a entender possibilidades, limites e próximos passos."
+                title="O que você quer levar da conversa com a clínica?"
                 items={INTENT}
                 value={answers.intent}
                 onChange={(v) => setAnswers((a) => ({ ...a, intent: v }))}
@@ -443,8 +433,7 @@ function Hero({ onStart }: { onStart: () => void }) {
             entenda seu sorriso.
           </h1>
           <p className="mt-3 max-w-[31ch] text-[13px] leading-relaxed text-background/85">
-            Uma experiência educativa para entender naturalidade, segurança e valor antes de falar
-            em facetas.
+            Organize sua percepção antes de conversar com a clínica.
           </p>
         </div>
       </div>
@@ -452,7 +441,7 @@ function Hero({ onStart }: { onStart: () => void }) {
       <button
         type="button"
         onClick={onStart}
-        className="group relative z-10 mt-5 flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-4 text-left text-primary-foreground shadow-soft transition-all duration-300 active:scale-[0.99]"
+        className="group relative z-10 mt-4 flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-4 text-left text-primary-foreground shadow-soft transition-all duration-300 active:scale-[0.99]"
       >
         <span className="font-serif text-lg">Começar meu mapa</span>
         <span
@@ -471,7 +460,7 @@ function Hero({ onStart }: { onStart: () => void }) {
         </span>
       </button>
 
-      <p className="mt-3 text-center text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+      <p className="mt-2 text-center text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
         Educativo · sem diagnóstico · sem indicação de tratamento
       </p>
     </section>
@@ -480,16 +469,20 @@ function Hero({ onStart }: { onStart: () => void }) {
 
 /* ----------------------------- Step shells ----------------------------- */
 
-function StepHeader({ eyebrow, title, text }: { eyebrow: string; title: string; text: string }) {
+function StepHeader({ eyebrow, title, text }: { eyebrow: string; title: string; text?: string }) {
   return (
-    <header className="mb-3 mt-1">
-      <p className="mb-2 text-[10px] uppercase tracking-[0.18em] text-gold">{eyebrow}</p>
-      <h2 className="text-balance font-serif text-[24px] leading-[1.12] text-foreground sm:text-[26px]">
+    <header className="mb-2 mt-1">
+      <p className="mb-1.5 text-[10px] uppercase tracking-[0.18em] text-gold">{eyebrow}</p>
+      <h2 className="text-balance font-serif text-[24px] leading-[1.08] text-foreground sm:text-[26px]">
         {title}
       </h2>
-      <p className="mt-2 text-[13px] leading-snug text-muted-foreground">{text}</p>
+      {text && <p className="mt-1.5 text-[12.5px] leading-snug text-muted-foreground">{text}</p>}
     </header>
   );
+}
+
+function CompactNote({ children }: { children: React.ReactNode }) {
+  return <p className="mt-1.5 text-[11.5px] leading-relaxed text-muted-foreground">{children}</p>;
 }
 
 function SingleChoiceStep({
@@ -503,7 +496,7 @@ function SingleChoiceStep({
 }: {
   eyebrow: string;
   title: string;
-  text: string;
+  text?: string;
   items: CardItem[];
   value?: string;
   onChange: (v: string) => void;
@@ -512,7 +505,7 @@ function SingleChoiceStep({
   return (
     <section>
       <StepHeader eyebrow={eyebrow} title={title} text={text} />
-      <div className="grid gap-2.5">
+      <div className="grid gap-2">
         {items.map((it, idx) => (
           <OptionCard
             key={it.id}
@@ -524,12 +517,9 @@ function SingleChoiceStep({
           />
         ))}
       </div>
-      <div className="mt-3 rounded-2xl border border-gold/30 bg-gold/10 p-3.5">
-        <p className="text-[12.5px] leading-relaxed text-foreground/85">
-          Essa escolha não define tratamento. Ela só ajuda a clínica a entender o tipo de resultado
-          que você imagina.
-        </p>
-      </div>
+      <CompactNote>
+        Essa escolha não define tratamento. Ela só ajuda a clínica a entender o que você imagina.
+      </CompactNote>
     </section>
   );
 }
@@ -545,7 +535,7 @@ function MultiChoiceStep({
 }: {
   eyebrow: string;
   title: string;
-  text: string;
+  text?: string;
   items: CardItem[];
   value: string[];
   onChange: (v: string[]) => void;
@@ -596,31 +586,24 @@ function ReferencesGallery({
 
   return (
     <section>
-      <header className="mb-3 mt-1">
-        <p className="mb-2 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-gold">
+      <header className="mb-2 mt-1">
+        <p className="mb-1.5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-gold">
           <span className="h-1 w-1 rounded-full bg-gold" />
-          Etapa 02 — Pausa educativa
+          Etapa 02 — Referências
         </p>
-        <h2 className="text-balance font-serif text-[23px] leading-[1.12] text-foreground">
-          Antes de pensar em procedimento, observe o que pesa no sorriso.
+        <h2 className="text-balance font-serif text-[23px] leading-[1.08] text-foreground">
+          Compare com calma.
         </h2>
-        <p className="mt-2 text-[13px] leading-snug text-muted-foreground">
-          Sorriso bonito não é só dente branco. Se alguma referência fizer sentido para você,
-          marque. Se quiser apenas observar, pode continuar.
+        <p className="mt-1.5 text-[12.5px] leading-snug text-muted-foreground">
+          Naturalidade, proporção, cor e presença contam mais do que pressa.
         </p>
       </header>
-
-      <div className="mb-3 rounded-2xl border border-gold/30 bg-gold/10 p-3.5">
-        <p className="text-[12.5px] leading-relaxed text-foreground/85">
-          Facetas não são uma peça isolada. Cor, formato, proporção, exposição e naturalidade
-          precisam conversar com rosto, gengiva, lábios e personalidade.
-        </p>
-      </div>
 
       <div
         className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2 snap-x snap-mandatory"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
+        <div className="shrink-0 w-4" aria-hidden="true" />
         {items.map((it, idx) => {
           const selected = value.includes(it.id);
           return (
