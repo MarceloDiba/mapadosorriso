@@ -1075,8 +1075,8 @@ function ResultMap({ answers, onRestart }: { answers: Answers; onRestart: () => 
   const wppMessage = encodeURIComponent(
     `Olá! Acabei de preencher meu Mapa do Sorriso. ${clinicBrief} Gostaria de entender, com orientação da clínica, quais possibilidades podem fazer sentido antes de comparar apenas valores.`,
   );
-  const wppNumber = answers.lead.whatsapp.replace(/\D/g, "");
-  const wppHref = `https://wa.me/?text=${wppMessage}${wppNumber ? `` : ``}`;
+  const clinicWhatsappNumber = "351911056526";
+  const wppHref = `https://wa.me/${clinicWhatsappNumber}?text=${wppMessage}`;
 
   return (
     <section className="pb-12">
