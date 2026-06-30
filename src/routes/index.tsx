@@ -617,7 +617,10 @@ function ReferencesGallery({
         </p>
       </div>
 
-      <div className="grid gap-2.5">
+      <div
+        className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2 snap-x snap-mandatory"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
         {items.map((it, idx) => {
           const selected = value.includes(it.id);
           return (
@@ -627,10 +630,10 @@ function ReferencesGallery({
               onClick={() => toggle(it.id)}
               aria-pressed={selected}
               style={{ animationDelay: `${idx * 60}ms` }}
-              className={`animate-scale-pop relative flex w-full max-w-full flex-col overflow-hidden rounded-2xl border bg-card text-left shadow-card box-border ${selected ? "border-gold shadow-gold" : "border-border"}`}
+              className={`animate-scale-pop relative flex min-w-[82%] snap-start flex-col overflow-hidden rounded-2xl border bg-card text-left shadow-card sm:min-w-[72%] ${selected ? "border-gold shadow-gold" : "border-border"}`}
             >
               {it.image && (
-                <div className="relative aspect-[21/9] w-full overflow-hidden">
+                <div className="relative aspect-[4/3] w-full overflow-hidden">
                   <img
                     src={it.image}
                     alt={it.title}
