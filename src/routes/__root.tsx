@@ -79,15 +79,35 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { name: "theme-color", content: "#f6f1e6" },
       { title: "Laboratório do Sorriso Ideal" },
-      { name: "description", content: "Uma experiência visual para explorar estilo, harmonia e naturalidade do seu sorriso antes de conversar com um especialista." },
+      {
+        name: "description",
+        content:
+          "Uma experiência visual para explorar estilo, harmonia e naturalidade do seu sorriso antes de conversar com um especialista.",
+      },
       { property: "og:title", content: "Laboratório do Sorriso Ideal" },
-      { property: "og:description", content: "Uma experiência visual para explorar estilo, harmonia e naturalidade do seu sorriso antes de conversar com um especialista." },
+      {
+        property: "og:description",
+        content:
+          "Uma experiência visual para explorar estilo, harmonia e naturalidade do seu sorriso antes de conversar com um especialista.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Laboratório do Sorriso Ideal" },
-      { name: "twitter:description", content: "Uma experiência visual para explorar estilo, harmonia e naturalidade do seu sorriso antes de conversar com um especialista." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/5ac8a6af-e90d-441e-ad19-3c91e9c08a83/id-preview-526e1aad--e26858c9-089b-4c61-ad83-84c8dede1917.lovable.app-1782657177442.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/5ac8a6af-e90d-441e-ad19-3c91e9c08a83/id-preview-526e1aad--e26858c9-089b-4c61-ad83-84c8dede1917.lovable.app-1782657177442.png" },
+      {
+        name: "twitter:description",
+        content:
+          "Uma experiência visual para explorar estilo, harmonia e naturalidade do seu sorriso antes de conversar com um especialista.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/5ac8a6af-e90d-441e-ad19-3c91e9c08a83/id-preview-526e1aad--e26858c9-089b-4c61-ad83-84c8dede1917.lovable.app-1782657177442.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/5ac8a6af-e90d-441e-ad19-3c91e9c08a83/id-preview-526e1aad--e26858c9-089b-4c61-ad83-84c8dede1917.lovable.app-1782657177442.png",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
