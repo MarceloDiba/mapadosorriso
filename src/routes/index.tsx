@@ -196,7 +196,7 @@ function SmileLab() {
 
         <main
           ref={mainRef}
-          className={`flex-1 min-w-0 overflow-y-auto overflow-x-hidden px-4 pt-2 ${showCTA ? "pb-28" : "pb-5"}`}
+          className={`flex-1 min-w-0 overflow-y-auto overflow-x-hidden px-4 pt-2 ${showCTA ? "pb-24" : "pb-5"}`}
         >
           <div key={step} className="animate-fade-up">
             {step === "hero" && <Hero onStart={next} />}
@@ -446,12 +446,14 @@ function SingleChoiceStep({
   showHelper?: boolean;
 }) {
   return (
-    <section>
+    <section
+      className={layout === "carousel" ? "flex min-h-[calc(100dvh-18rem)] flex-col" : undefined}
+    >
       <StepHeader eyebrow={eyebrow} title={title} text={text} />
       <div
         className={
           layout === "carousel"
-            ? "-mx-4 flex gap-3 overflow-x-auto px-4 pb-2 snap-x snap-mandatory"
+            ? "-mx-4 mt-2 flex flex-1 items-stretch gap-3 overflow-x-auto px-4 pb-2 snap-x snap-mandatory"
             : "grid gap-2"
         }
         style={
@@ -632,9 +634,11 @@ function OptionCard({
         onClick={onClick}
         aria-pressed={selected}
         style={{ animationDelay: `${index * 50}ms` }}
-        className={`animate-scale-pop group relative ${carousel ? "min-w-[84%] snap-start" : "w-full max-w-full"} flex flex-col overflow-hidden rounded-2xl text-left card-premium box-border ${selected ? "card-selected" : ""}`}
+        className={`animate-scale-pop group relative ${carousel ? "min-w-[88%] min-h-[46vh] snap-start" : "w-full max-w-full"} flex flex-col overflow-hidden rounded-2xl text-left card-premium box-border ${selected ? "card-selected" : ""}`}
       >
-        <div className="relative aspect-[21/9] w-full overflow-hidden">
+        <div
+          className={`relative w-full overflow-hidden ${carousel ? "min-h-[35vh] flex-1" : "aspect-[21/9]"}`}
+        >
           <img
             src={item.image}
             alt={item.title}
@@ -1077,16 +1081,16 @@ function StickyCTA({
   onBack?: () => void;
 }) {
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 bg-gradient-to-t from-background via-background/95 to-background/0 pt-4">
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 bg-gradient-to-t from-background via-background/95 to-background/0 pt-2">
       <div className="w-full px-4 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
-        <div className="pointer-events-auto rounded-2xl border border-border bg-card/95 p-1.5 shadow-card backdrop-blur">
+        <div className="pointer-events-auto rounded-2xl border border-border bg-card/95 p-1 shadow-card backdrop-blur">
           <div className="flex items-center gap-2">
             {onBack && (
               <button
                 type="button"
                 onClick={onBack}
                 aria-label="Voltar"
-                className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-border bg-background text-foreground/70 transition-colors active:bg-muted"
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-border bg-background text-foreground/70 transition-colors active:bg-muted"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -1103,13 +1107,13 @@ function StickyCTA({
               type="button"
               onClick={onClick}
               disabled={disabled}
-              className={`group relative flex h-11 flex-1 items-center justify-between gap-3 overflow-hidden rounded-xl px-4 text-left transition-all duration-300 ${
+              className={`group relative flex h-10 flex-1 items-center justify-between gap-3 overflow-hidden rounded-xl px-4 text-left transition-all duration-300 ${
                 disabled
                   ? "cursor-not-allowed bg-muted text-muted-foreground opacity-70"
                   : "bg-primary text-primary-foreground active:scale-[0.99]"
               }`}
             >
-              <span className="font-serif text-[16px]">{label}</span>
+              <span className="font-serif text-[15px]">{label}</span>
               <span
                 className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg transition-transform group-hover:translate-x-0.5 ${disabled ? "bg-background/40" : "bg-gold text-primary"}`}
               >
@@ -1125,14 +1129,6 @@ function StickyCTA({
               </span>
             </button>
           </div>
-          <a
-            href="https://www.noadigital.com.br/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-1.5 block text-center text-[9px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-gold"
-          >
-            NOA Lead Flow Smile
-          </a>
         </div>
       </div>
     </div>
