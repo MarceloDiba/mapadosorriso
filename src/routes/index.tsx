@@ -39,10 +39,10 @@ type CardItem = {
 
 const DESIRE: CardItem[] = [
   { id: "natural", title: "Quero um resultado natural", image: desireNatural },
-  { id: "bright", title: "Busco dentes mais brancos", image: desireBright },
-  { id: "harmonic", title: "Dentes em harmonia com minha boca", image: desireProportion },
-  { id: "bold", title: "Quero uma mudança radical", image: desireBold },
-  { id: "confident", title: "Ainda não sei explicar", image: desireConfident },
+  { id: "bright", title: "Quero dentes mais brancos", image: desireBright },
+  { id: "harmonic", title: "Quero mais harmonia no sorriso", image: desireProportion },
+  { id: "bold", title: "Quero uma mudança mais marcante", image: desireBold },
+  { id: "confident", title: "Ainda não sei dizer", image: desireConfident },
 ];
 
 const RESULT_CARDS = [
@@ -70,42 +70,12 @@ const PERCEPTION: CardItem[] = [
 ];
 
 const REFERENCES: CardItem[] = [
-  {
-    id: "arc",
-    title: "Arco do sorriso",
-    caption: "Quando acompanha a curva do lábio, o sorriso tende a parecer mais harmônico.",
-    image: refArc,
-  },
-  {
-    id: "proportion",
-    title: "Proporção dos dentes",
-    caption: "Tamanho e largura influenciam equilíbrio e naturalidade.",
-    image: refProportion,
-  },
-  {
-    id: "shade",
-    title: "Cor e luminosidade",
-    caption: "O branco ideal precisa combinar com pele, rosto e estilo.",
-    image: refShade,
-  },
-  {
-    id: "symmetry",
-    title: "Simetria visual",
-    caption: "Pequenas assimetrias podem mudar a percepção do sorriso.",
-    image: refAlignment,
-  },
-  {
-    id: "shape",
-    title: "Formato dos dentes",
-    caption: "Formas mais arredondadas, retas ou alongadas comunicam estilos diferentes.",
-    image: refTexture,
-  },
-  {
-    id: "exposure",
-    title: "Exposição do sorriso",
-    caption: "O quanto o sorriso aparece ao falar ou sorrir influencia a presença visual.",
-    image: refExposure,
-  },
+  { id: "arc", title: "Arco do sorriso", image: refArc },
+  { id: "proportion", title: "Proporção dos dentes", image: refProportion },
+  { id: "shade", title: "Cor dos dentes", image: refShade },
+  { id: "symmetry", title: "Simetria", image: refAlignment },
+  { id: "shape", title: "Formato dos dentes", image: refTexture },
+  { id: "exposure", title: "Exposição ao sorrir", image: refExposure },
 ];
 
 const SAFETY: CardItem[] = [
