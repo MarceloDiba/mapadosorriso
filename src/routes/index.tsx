@@ -17,7 +17,7 @@ import refExposure from "@/assets/ref-exposure.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Laboratório do Sorriso Ideal — NOA Lead Flow Smile" },
+      { title: "NOA Smile — Mapa do Sorriso" },
       {
         name: "description",
         content:
@@ -38,42 +38,33 @@ type CardItem = {
 };
 
 const DESIRE: CardItem[] = [
+  { id: "natural", title: "Quero um resultado natural", image: desireNatural },
+  { id: "bright", title: "Busco dentes mais brancos", image: desireBright },
+  { id: "harmonic", title: "Dentes em harmonia com minha boca", image: desireProportion },
+  { id: "bold", title: "Quero uma mudança radical", image: desireBold },
+  { id: "confident", title: "Ainda não sei explicar", image: desireConfident },
+];
+
+const RESULT_CARDS = [
   {
-    id: "natural",
-    title: "Quero um resultado natural",
-    image: desireNatural,
+    eyebrow: "Desejo principal",
+    text: "Seu objetivo estético apareceu com clareza.",
   },
   {
-    id: "bright",
-    title: "Busco dentes mais brancos",
-    image: desireBright,
+    eyebrow: "Pontos de atenção",
+    text: "Os pontos marcados ajudam a conversa a começar no que importa.",
   },
   {
-    id: "harmonic",
-    title: "Dentes em harmonia com minha boca",
-    image: desireProportion,
-  },
-  {
-    id: "bold",
-    title: "Quero uma mudança radical",
-    image: desireBold,
-  },
-  {
-    id: "confident",
-    title: "Ainda não sei explicar",
-    image: desireConfident,
+    eyebrow: "Próximo passo",
+    text: "Levar esse mapa para a avaliação com mais contexto.",
   },
 ];
 
 const PERCEPTION: CardItem[] = [
   { id: "color", title: "Cor amarelada ou escura" },
   { id: "shape", title: "Formato irregular dos dentes" },
-  { id: "size", title: "Dentes pequenos, curtos ou desproporcionais" },
   { id: "spaces", title: "Espaços entre os dentes" },
-  { id: "align", title: "Dentes tortos ou desalinhados" },
-  { id: "small", title: "Sorriso pequeno ou pouco aparente" },
   { id: "gum", title: "Gengiva muito aparente" },
-  { id: "edges", title: "Bordas desgastadas ou irregulares" },
   { id: "stains", title: "Manchas, restaurações ou marcas antigas" },
   { id: "unsure", title: "Não sei exatamente, só quero melhorar" },
 ];
@@ -129,20 +120,11 @@ const SAFETY: CardItem[] = [
 ];
 
 const MOMENT: CardItem[] = [
-  { id: "now", title: "Estou pronto(a) para uma avaliação" },
-  { id: "schedule", title: "Quero entender possibilidades antes de decidir" },
+  { id: "evaluate", title: "Estou querendo uma avaliação" },
   { id: "price", title: "Quero entender investimento com mais contexto" },
   { id: "compare", title: "Estou comparando clínicas ou tratamentos" },
   { id: "fear", title: "Tenho vontade, mas ainda tenho medo de errar" },
   { id: "learn", title: "Estou só começando a pesquisar" },
-];
-
-const INTENT: CardItem[] = [
-  { id: "evaluate", title: "Saber quais possibilidades combinam com meu caso" },
-  { id: "price", title: "Entender o que influencia o valor" },
-  { id: "doubts", title: "Saber como evitar um resultado artificial" },
-  { id: "guidance", title: "Entender limites, cuidados e próximos passos" },
-  { id: "research", title: "Comparar alternativas antes de escolher" },
 ];
 
 const STEPS = [
@@ -152,7 +134,6 @@ const STEPS = [
   { key: "references", label: "Referências" },
   { key: "safety", label: "Segurança" },
   { key: "moment", label: "Momento" },
-  { key: "intent", label: "Intenção" },
   { key: "lead", label: "Mapa" },
   { key: "loading", label: "Mapa" },
   { key: "result", label: "Mapa" },
@@ -168,15 +149,14 @@ type Answers = {
   perception: string[];
   safety: string[];
   moment?: string;
-  intent?: string;
-  lead: { name: string; whatsapp: string; city: string; time: string };
+  lead: { name: string; whatsapp: string };
 };
 
 const initialAnswers: Answers = {
   references: [],
   perception: [],
   safety: [],
-  lead: { name: "", whatsapp: "", city: "", time: "" },
+  lead: { name: "", whatsapp: "" },
 };
 
 /* ----------------------------- Component ----------------------------- */
@@ -217,8 +197,6 @@ function SmileLab() {
         return answers.safety.length > 0;
       case "moment":
         return !!answers.moment;
-      case "intent":
-        return !!answers.intent;
       case "lead":
         return (
           answers.lead.name.trim().length > 1 &&
@@ -255,12 +233,23 @@ function SmileLab() {
 
             {step === "desire" && (
               <SingleChoiceStep
-                eyebrow="Etapa 01 — Desejo"
                 title="O que você gostaria de mudar no seu sorriso?"
                 items={DESIRE}
                 value={answers.desire}
                 onChange={(v) => setAnswers((a) => ({ ...a, desire: v }))}
                 withImages
+                layout="carousel"
+                showHelper={false}
+              />
+            )}
+
+            {step === "perception" && (
+              <MultiChoiceStep
+                title="O que mais lhe incomoda no seu sorriso atualmente?"
+                items={PERCEPTION}
+                value={answers.perception}
+                onChange={(v) => setAnswers((a) => ({ ...a, perception: v }))}
+                showCount={false}
               />
             )}
 
@@ -272,43 +261,23 @@ function SmileLab() {
               />
             )}
 
-            {step === "perception" && (
-              <MultiChoiceStep
-                eyebrow="Etapa 03 — Percepção"
-                title="O que mais lhe incomoda no seu sorriso atualmente?"
-                items={PERCEPTION}
-                value={answers.perception}
-                onChange={(v) => setAnswers((a) => ({ ...a, perception: v }))}
-              />
-            )}
-
             {step === "safety" && (
               <MultiChoiceStep
-                eyebrow="Etapa 04 — Segurança"
                 title="Quais são suas principais dúvidas quando o assunto é faceta?"
                 items={SAFETY}
                 value={answers.safety}
                 onChange={(v) => setAnswers((a) => ({ ...a, safety: v }))}
+                showCount={false}
               />
             )}
 
             {step === "moment" && (
               <SingleChoiceStep
-                eyebrow="Etapa 05 — Momento"
                 title="Em que fase você está hoje?"
                 items={MOMENT}
                 value={answers.moment}
                 onChange={(v) => setAnswers((a) => ({ ...a, moment: v }))}
-              />
-            )}
-
-            {step === "intent" && (
-              <SingleChoiceStep
-                eyebrow="Etapa 06 — Intenção"
-                title="O que você quer levar da conversa com a clínica?"
-                items={INTENT}
-                value={answers.intent}
-                onChange={(v) => setAnswers((a) => ({ ...a, intent: v }))}
+                showHelper={false}
               />
             )}
 
@@ -375,11 +344,9 @@ function AppHeader() {
           </span>
           <div className="min-w-0 leading-tight">
             <p className="text-[8px] uppercase tracking-[0.16em] text-muted-foreground">
-              NOA Lead Flow Smile
+              NOA Smile
             </p>
-            <p className="truncate font-serif text-[14px] text-foreground">
-              Laboratório do Sorriso
-            </p>
+            <p className="truncate font-serif text-[14px] text-foreground">Mapa do Sorriso</p>
           </div>
         </div>
       </div>
@@ -428,12 +395,12 @@ function Hero({ onStart }: { onStart: () => void }) {
             <span className="h-1 w-1 rounded-full bg-gold" /> Smile Design
           </p>
           <h1 className="font-serif text-[30px] leading-[1.05] text-background">
-            Antes de comparar preço,
+            Antes de decidir,
             <br />
             entenda seu sorriso.
           </h1>
           <p className="mt-3 max-w-[31ch] text-[13px] leading-relaxed text-background/85">
-            Organize sua percepção antes de conversar com a clínica.
+            Entenda o que mudar e o que você quer em suas facetas.
           </p>
         </div>
       </div>
@@ -469,10 +436,12 @@ function Hero({ onStart }: { onStart: () => void }) {
 
 /* ----------------------------- Step shells ----------------------------- */
 
-function StepHeader({ eyebrow, title, text }: { eyebrow: string; title: string; text?: string }) {
+function StepHeader({ eyebrow, title, text }: { eyebrow?: string; title: string; text?: string }) {
   return (
     <header className="mb-2 mt-1">
-      <p className="mb-1.5 text-[10px] uppercase tracking-[0.18em] text-gold">{eyebrow}</p>
+      {eyebrow && (
+        <p className="mb-1.5 text-[10px] uppercase tracking-[0.18em] text-gold">{eyebrow}</p>
+      )}
       <h2 className="text-balance font-serif text-[24px] leading-[1.08] text-foreground sm:text-[26px]">
         {title}
       </h2>
@@ -493,19 +462,33 @@ function SingleChoiceStep({
   value,
   onChange,
   withImages = false,
+  layout = "grid",
+  showHelper = true,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   text?: string;
   items: CardItem[];
   value?: string;
   onChange: (v: string) => void;
   withImages?: boolean;
+  layout?: "grid" | "carousel";
+  showHelper?: boolean;
 }) {
   return (
     <section>
       <StepHeader eyebrow={eyebrow} title={title} text={text} />
-      <div className="grid gap-2">
+      <div
+        className={
+          layout === "carousel"
+            ? "-mx-4 flex gap-3 overflow-x-auto px-4 pb-2 snap-x snap-mandatory"
+            : "grid gap-2"
+        }
+        style={
+          layout === "carousel" ? { scrollbarWidth: "none", msOverflowStyle: "none" } : undefined
+        }
+      >
+        {layout === "carousel" && <div className="shrink-0 w-4" aria-hidden="true" />}
         {items.map((it, idx) => (
           <OptionCard
             key={it.id}
@@ -514,12 +497,15 @@ function SingleChoiceStep({
             onClick={() => onChange(it.id)}
             withImage={withImages}
             index={idx}
+            carousel={layout === "carousel"}
           />
         ))}
       </div>
-      <CompactNote>
-        Essa escolha não define tratamento. Ela só ajuda a clínica a entender o que você imagina.
-      </CompactNote>
+      {showHelper && (
+        <CompactNote>
+          Essa escolha não define tratamento. Ela só ajuda a clínica a entender o que você imagina.
+        </CompactNote>
+      )}
     </section>
   );
 }
@@ -532,14 +518,16 @@ function MultiChoiceStep({
   value,
   onChange,
   withImages = false,
+  showCount = true,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   text?: string;
   items: CardItem[];
   value: string[];
   onChange: (v: string[]) => void;
   withImages?: boolean;
+  showCount?: boolean;
 }) {
   const toggle = (id: string) => {
     onChange(value.includes(id) ? value.filter((v) => v !== id) : [...value, id]);
@@ -560,7 +548,7 @@ function MultiChoiceStep({
           />
         ))}
       </div>
-      {value.length > 0 && (
+      {showCount && value.length > 0 && (
         <p className="mt-3 text-center text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
           {value.length} {value.length === 1 ? "selecionado" : "selecionados"}
         </p>
@@ -586,17 +574,10 @@ function ReferencesGallery({
 
   return (
     <section>
-      <header className="mb-2 mt-1">
-        <p className="mb-1.5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-gold">
-          <span className="h-1 w-1 rounded-full bg-gold" />
-          Etapa 02 — Referências
-        </p>
+      <header className="mb-3 mt-1">
         <h2 className="text-balance font-serif text-[23px] leading-[1.08] text-foreground">
-          Compare com calma.
+          Esses são os principais pontos para um lindo sorriso
         </h2>
-        <p className="mt-1.5 text-[12.5px] leading-snug text-muted-foreground">
-          Naturalidade, proporção, cor e presença contam mais do que pressa.
-        </p>
       </header>
 
       <div
@@ -613,7 +594,7 @@ function ReferencesGallery({
               onClick={() => toggle(it.id)}
               aria-pressed={selected}
               style={{ animationDelay: `${idx * 60}ms` }}
-              className={`animate-scale-pop relative flex min-w-[82%] snap-start flex-col overflow-hidden rounded-2xl border bg-card text-left shadow-card sm:min-w-[72%] ${selected ? "border-gold shadow-gold" : "border-border"}`}
+              className={`animate-scale-pop relative flex min-w-[84%] snap-start flex-col overflow-hidden rounded-2xl border bg-card text-left shadow-card sm:min-w-[72%] ${selected ? "border-gold shadow-gold" : "border-border"}`}
             >
               {it.image && (
                 <div className="relative aspect-[4/3] w-full overflow-hidden">
@@ -624,9 +605,6 @@ function ReferencesGallery({
                     className="h-full w-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary/55 via-transparent to-transparent" />
-                  <span className="absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-[9px] uppercase tracking-[0.16em] text-foreground backdrop-blur">
-                    {String(idx + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
-                  </span>
                   {selected && (
                     <span className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-gold text-primary shadow-gold animate-scale-pop">
                       <svg
@@ -654,12 +632,6 @@ function ReferencesGallery({
           );
         })}
       </div>
-
-      <p className="mt-3 text-center text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-        {value.length > 0
-          ? `${value.length} ${value.length === 1 ? "referência marcada" : "referências marcadas"}`
-          : "Marcar referências é opcional"}
-      </p>
     </section>
   );
 }
@@ -673,6 +645,7 @@ function OptionCard({
   multi = false,
   withImage = false,
   index = 0,
+  carousel = false,
 }: {
   item: CardItem;
   selected: boolean;
@@ -680,6 +653,7 @@ function OptionCard({
   multi?: boolean;
   withImage?: boolean;
   index?: number;
+  carousel?: boolean;
 }) {
   if (withImage && item.image) {
     return (
@@ -688,7 +662,7 @@ function OptionCard({
         onClick={onClick}
         aria-pressed={selected}
         style={{ animationDelay: `${index * 50}ms` }}
-        className={`animate-scale-pop group relative flex w-full max-w-full flex-col overflow-hidden rounded-2xl text-left card-premium box-border ${selected ? "card-selected" : ""}`}
+        className={`animate-scale-pop group relative ${carousel ? "min-w-[84%] snap-start" : "w-full max-w-full"} flex flex-col overflow-hidden rounded-2xl text-left card-premium box-border ${selected ? "card-selected" : ""}`}
       >
         <div className="relative aspect-[21/9] w-full overflow-hidden">
           <img
@@ -775,12 +749,8 @@ function LeadForm({
   const upd = (k: keyof Answers["lead"], v: string) => onChange({ ...value, [k]: v });
   return (
     <section>
-      <StepHeader
-        eyebrow="Etapa 07 — Mapa"
-        title="Seu Mapa do Sorriso está pronto para ser organizado."
-        text="Informe seus dados para receber um resumo educativo do que você observou e, se fizer sentido, continuar a conversa com mais clareza."
-      />
-      <div className="space-y-3 rounded-3xl border border-border bg-card p-5 shadow-card">
+      <StepHeader title="Seu Mapa do Sorriso está pronto." />
+      <div className="space-y-3 rounded-3xl border border-border bg-card p-4 shadow-card">
         <Field label="Nome" required>
           <input
             type="text"
@@ -800,28 +770,9 @@ function LeadForm({
             className="w-full bg-transparent text-[16px] text-foreground outline-none placeholder:text-muted-foreground/60"
           />
         </Field>
-        <Field label="Cidade">
-          <input
-            type="text"
-            value={value.city}
-            onChange={(e) => upd("city", e.target.value.slice(0, 60))}
-            placeholder="Opcional"
-            className="w-full bg-transparent text-[16px] text-foreground outline-none placeholder:text-muted-foreground/60"
-          />
-        </Field>
-        <Field label="Melhor horário para contato">
-          <input
-            type="text"
-            value={value.time}
-            onChange={(e) => upd("time", e.target.value.slice(0, 60))}
-            placeholder="Ex.: manhã, depois das 18h"
-            className="w-full bg-transparent text-[16px] text-foreground outline-none placeholder:text-muted-foreground/60"
-          />
-        </Field>
       </div>
-      <p className="mt-4 text-center text-[12px] leading-relaxed text-muted-foreground">
-        Você não está autorizando diagnóstico pelo WhatsApp. O mapa apenas organiza seus interesses
-        para uma conversa mais clara.
+      <p className="mt-3 text-center text-[12px] leading-relaxed text-muted-foreground">
+        O mapa organiza seu perfil antes da conversa com a clínica.
       </p>
     </section>
   );
@@ -983,27 +934,21 @@ function safetyNarrative(ids: string[]): string {
   return `Suas principais dúvidas giram em torno de ${formatList(parts)}. Elas são boas perguntas para levar à avaliação, porque evitam decidir só pelo preço ou por promessa estética.`;
 }
 
-function momentNarrative(moment?: string, intent?: string): string {
-  if (moment === "now") {
-    return "Como seu momento é de ação, o melhor próximo passo é conversar com a equipe e levar esse mapa como resumo inicial do que você procura.";
+function momentNarrative(moment?: string): string {
+  if (moment === "evaluate") {
+    return "Como você já quer uma avaliação, o melhor próximo passo é levar esse mapa para uma conversa mais objetiva com a clínica.";
   }
-  if (moment === "schedule" || intent === "evaluate") {
-    return "Como você já considera uma avaliação, use este mapa para chegar com mais clareza sobre desejo, incômodos e dúvidas.";
-  }
-  if (moment === "price" || intent === "price") {
-    return "Se valores ainda são decisivos, a conversa pode começar pelos fatores que influenciam investimento e pela necessidade de avaliação antes de qualquer estimativa séria.";
+  if (moment === "price") {
+    return "Se investimento ainda pesa na decisão, a conversa pode começar pelos fatores que influenciam valor antes de qualquer comparação rasa.";
   }
   if (moment === "compare") {
-    return "Como você está comparando possibilidades, este mapa ajuda a diferenciar desejo estético, dúvidas clínicas e critérios para escolher com segurança.";
+    return "Como você está comparando clínicas ou tratamentos, este mapa ajuda a diferenciar desejo estético, dúvidas clínicas e critérios de escolha.";
   }
-  if (moment === "fear" || intent === "doubts") {
-    return "Como ainda existem receios, a prioridade é esclarecer dúvidas antes de decidir. Uma conversa inicial pode reduzir insegurança sem pressionar por tratamento.";
+  if (moment === "fear") {
+    return "Como ainda existem receios, a prioridade é esclarecer dúvidas antes de decidir, sem pressão por tratamento.";
   }
-  if (moment === "learn" || intent === "research") {
-    return "Como você ainda está aprendendo, salve este mapa como ponto de partida e avance apenas quando fizer sentido conversar com um profissional.";
-  }
-  if (intent === "guidance") {
-    return "Uma orientação inicial pode ajudar a organizar possibilidades e entender que tipo de avaliação faria sentido para você.";
+  if (moment === "learn") {
+    return "Como você ainda está começando a pesquisar, este mapa serve como ponto de partida para uma conversa mais clara.";
   }
   return "O próximo passo mais seguro é conversar com a equipe para entender possibilidades, dúvidas e critérios de avaliação.";
 }
@@ -1039,11 +984,6 @@ function buildClinicBrief(
     if (momentLabel) parts.push(`Momento: ${momentLabel}.`);
   }
 
-  if (answers.intent) {
-    const intentLabel = INTENT.find((m) => m.id === answers.intent)?.title;
-    if (intentLabel) parts.push(`Intenção: ${intentLabel}.`);
-  }
-
   return parts.join(" ");
 }
 
@@ -1051,12 +991,7 @@ function ResultMap({ answers, onRestart }: { answers: Answers; onRestart: () => 
   const styleLabel = answers.desire ? STYLE_LABEL[answers.desire] : "Equilibrado";
   const refs = answers.references.map((id) => REF_LABEL[id]).filter(Boolean);
   const perceived = answers.perception.map((id) => PERCEPTION_LABEL[id]).filter(Boolean);
-  const attention = [...refs, ...perceived].slice(0, 4);
   const safetyTitles = answers.safety.map((id) => SAFETY_LABEL[id]).filter(Boolean);
-  const safetyTitle = safetyTitles.length
-    ? formatList(safetyTitles.slice(0, 3))
-    : "Mais informação";
-
   const clinicBrief = buildClinicBrief(answers, styleLabel, refs, perceived, safetyTitles);
   const wppMessage = encodeURIComponent(
     `Olá! Acabei de preencher meu Mapa do Sorriso. ${clinicBrief} Gostaria de entender, com orientação da clínica, quais possibilidades podem fazer sentido antes de comparar apenas valores.`,
@@ -1066,7 +1001,7 @@ function ResultMap({ answers, onRestart }: { answers: Answers; onRestart: () => 
 
   return (
     <section className="pb-12">
-      <header className="mb-6 mt-2 text-center">
+      <header className="mb-5 mt-2 text-center">
         <p className="mb-2 text-[10px] uppercase tracking-[0.18em] text-gold">
           Resultado personalizado
         </p>
@@ -1080,104 +1015,30 @@ function ResultMap({ answers, onRestart }: { answers: Answers; onRestart: () => 
         )}
       </header>
 
-      <div className="space-y-4">
-        <ResultBlock eyebrow="Estilo predominante" title={styleLabel} accent />
+      <div className="space-y-3">
+        {RESULT_CARDS.map((card) => (
+          <ResultBlock
+            key={card.eyebrow}
+            eyebrow={card.eyebrow}
+            title={card.text}
+            accent={card.eyebrow === "Desejo principal"}
+          />
+        ))}
 
-        <ResultBlock eyebrow="Pontos que chamaram sua atenção">
-          {attention.length > 0 ? (
-            <ul className="mt-2 space-y-2">
-              {attention.map((t) => (
-                <li
-                  key={t}
-                  className="flex items-start gap-2.5 text-[13.5px] leading-relaxed text-foreground/90"
-                >
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
-                  <span>{perceptionInsight(t)}</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="mt-2 text-[14px] text-muted-foreground">
-              Você preferiu observar sem destacar pontos específicos — também é uma escolha válida.
-            </p>
-          )}
-        </ResultBlock>
-
-        <ResultBlock eyebrow="Cuidado principal" title={safetyTitle} />
-
-        <ResultBlock eyebrow="Leitura do seu perfil">
-          <div className="mt-3 space-y-3 text-[14px] leading-relaxed text-foreground/90">
-            <p>{desireNarrative(answers.desire)}</p>
-            <p>{perceptionNarrative(answers.perception)}</p>
-            <p>{safetyNarrative(answers.safety)}</p>
-          </div>
-        </ResultBlock>
-
-        <ResultBlock eyebrow="Como usar este mapa na avaliação">
-          <p className="mt-3 text-[14px] leading-relaxed text-foreground/90">
-            {momentNarrative(answers.moment, answers.intent)}
-          </p>
-          <div className="mt-4 rounded-2xl bg-muted/60 p-4">
-            <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-              Resumo para a equipe
-            </p>
-            <p className="mt-2 text-[13px] leading-relaxed text-foreground/90">{clinicBrief}</p>
-          </div>
-        </ResultBlock>
-
-        <ResultBlock eyebrow="Antes de comparar preço, observe estes critérios">
-          <ul className="mt-3 space-y-2 text-[13.5px] leading-relaxed text-foreground/90">
-            <li>
-              <span className="font-medium text-foreground">Naturalidade:</span> o sorriso precisa
-              conversar com rosto, expressão e personalidade.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Planejamento:</span> cor, formato,
-              proporção e exposição devem ser pensados juntos.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Segurança:</span> qualquer possibilidade
-              depende de avaliação clínica.
-            </li>
-            <li>
-              <span className="font-medium text-foreground">Valor:</span> investimento muda conforme
-              complexidade, materiais e previsibilidade desejada.
-            </li>
-          </ul>
-          <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
-            Seu próximo passo não precisa ser decidir agora. Pode ser entender, com um dentista, o
-            que faz sentido para o seu caso antes de comparar apenas valores.
-          </p>
-        </ResultBlock>
-
-        <ResultBlock eyebrow="Perguntas para levar à avaliação">
-          <ul className="mt-3 space-y-2 text-[13.5px] leading-relaxed text-foreground/90">
-            <li>O que mais influencia essa percepção no meu sorriso?</li>
-            <li>Existem caminhos mais conservadores para o meu caso?</li>
-            <li>O que dá para melhorar sem perder naturalidade?</li>
-            <li>Quais limites preciso entender antes de decidir?</li>
-          </ul>
-        </ResultBlock>
-
-        <div className="rounded-3xl border border-dashed border-border bg-muted/50 p-5">
-          <div className="space-y-2 text-[12.5px] leading-relaxed text-muted-foreground">
-            <p>Este mapa é educativo e não substitui uma avaliação odontológica.</p>
-            <p>O plano ideal depende de análise clínica feita por um dentista.</p>
-            <p>Não há indicação de tratamento sem avaliação profissional.</p>
-          </div>
+        <div className="rounded-3xl border border-dashed border-border bg-muted/50 p-4 text-[12.5px] leading-relaxed text-muted-foreground">
+          Este mapa é educativo e não substitui uma avaliação odontológica.
         </div>
       </div>
 
-      <p className="mt-5 text-center text-[12.5px] leading-relaxed text-muted-foreground">
-        Envie seu mapa para que a equipe entenda seu desejo, seus receios e o que você quer
-        esclarecer antes da avaliação.
+      <p className="mt-4 text-center text-[12.5px] leading-relaxed text-muted-foreground">
+        Envie seu mapa para a clínica receber seu perfil resumido antes da avaliação.
       </p>
 
       <a
         href={wppHref}
         target="_blank"
         rel="noopener noreferrer"
-        className="group mt-6 flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-4 text-left text-primary-foreground shadow-soft transition-all duration-300 hover:translate-y-[-2px] hover:shadow-gold active:scale-[0.99]"
+        className="group mt-5 flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-4 text-left text-primary-foreground shadow-soft transition-all duration-300 hover:translate-y-[-2px] hover:shadow-gold active:scale-[0.99]"
       >
         <span className="flex flex-col">
           <span className="text-[11px] uppercase tracking-[0.2em] text-gold-soft">
