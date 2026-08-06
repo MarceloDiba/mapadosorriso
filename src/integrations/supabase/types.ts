@@ -14,16 +14,143 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      clinic_sessions: {
+        Row: {
+          clinic_id: string
+          completed: boolean
+          concerns: string[]
+          created_at: string
+          decision: string | null
+          id: string
+          objection: string | null
+          style: string | null
+          updated_at: string
+          whatsapp_clicked: boolean
+        }
+        Insert: {
+          clinic_id: string
+          completed?: boolean
+          concerns?: string[]
+          created_at?: string
+          decision?: string | null
+          id?: string
+          objection?: string | null
+          style?: string | null
+          updated_at?: string
+          whatsapp_clicked?: boolean
+        }
+        Update: {
+          clinic_id?: string
+          completed?: boolean
+          concerns?: string[]
+          created_at?: string
+          decision?: string | null
+          id?: string
+          objection?: string | null
+          style?: string | null
+          updated_at?: string
+          whatsapp_clicked?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clinic_sessions_clinic_id_fkey"
+            columns: ["clinic_id"]
+            isOneToOne: false
+            referencedRelation: "clinics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clinics: {
+        Row: {
+          city: string | null
+          contract_end: string | null
+          contract_start: string | null
+          copy: Json
+          created_at: string
+          font_pair: string
+          id: string
+          images: Json
+          is_active: boolean
+          logo_url: string | null
+          name: string
+          palette: string
+          slug: string
+          updated_at: string
+          whatsapp: string
+        }
+        Insert: {
+          city?: string | null
+          contract_end?: string | null
+          contract_start?: string | null
+          copy?: Json
+          created_at?: string
+          font_pair?: string
+          id?: string
+          images?: Json
+          is_active?: boolean
+          logo_url?: string | null
+          name: string
+          palette?: string
+          slug: string
+          updated_at?: string
+          whatsapp?: string
+        }
+        Update: {
+          city?: string | null
+          contract_end?: string | null
+          contract_start?: string | null
+          copy?: Json
+          created_at?: string
+          font_pair?: string
+          id?: string
+          images?: Json
+          is_active?: boolean
+          logo_url?: string | null
+          name?: string
+          palette?: string
+          slug?: string
+          updated_at?: string
+          whatsapp?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +277,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin"],
+    },
   },
 } as const
