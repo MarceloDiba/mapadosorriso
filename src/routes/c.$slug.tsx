@@ -74,16 +74,20 @@ function ClinicQuizPage() {
   const resolution = Route.useLoaderData();
   const clinic = resolution?.clinic ?? null;
   const sessionId = useRef<string | null>(null);
+  const sessionToken = useRef<string | null>(null);
   const starting = useRef(false);
   const answers = useRef<Answers>({ concerns: [] });
   const pending = useRef<Record<string, unknown> | null>(null);
 
   const flush = useCallback(() => {
     const id = sessionId.current;
-    if (!id || !pending.current) return;
+    const token = sessionToken.current;
+    if (!id || !token || !pending.current) return;
     const patch = pending.current;
     pending.current = null;
-    void updateSession({ data: { sessionId: id, ...patch } as never }).catch(() => undefined);
+    void updateSession({
+      data: { sessionId: id, sessionToken: token, ...patch } as never,
+    }).catch(() => undefined);
   }, []);
 
   // A sessão só nasce na primeira interação real — evita contar bots e visitas próprias.
@@ -101,10 +105,12 @@ function ClinicQuizPage() {
     })
       .then((r) => {
         sessionId.current = r.id;
+        sessionToken.current = r.token;
         flush();
       })
       .catch(() => undefined);
   }, [clinic?.id, flush]);
+
 
   useEffect(() => {
     return () => {
