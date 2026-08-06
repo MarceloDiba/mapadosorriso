@@ -1,35 +1,55 @@
-## Diagnóstico
+# Refatoração para 5 telas — Mapa do Sorriso
 
-O vazamento horizontal vem do trilho do carrossel em duas etapas (`Carousel` na Etapa 1 e `ReferencesGallery` na Etapa 3), em `src/routes/index.tsx`:
+Reestruturação do fluxo atual (8 etapas) para 5 telas limpas, mantendo o shell mobile de 430px centralizado, a identidade visual e os cards verticais estáveis (sem carrossel).
 
-1. **`-mr-5` no trilho** (linhas 558 e 479): puxa o track 20px além do `padding-right` do `<main>`. Mesmo com `overflow-x-hidden` no `<main>`, combinado com `pr-10` interno e cards `w-[86%]`, o cálculo deixa de respeitar o shell de 430px.
-2. **Cards medidos em `%` da largura do pai expandido**: `w-[86%]` referencia a largura real do track (incluindo o `-mr-5`), não a viewport útil.
-3. **Faltam barreiras explícitas**: o shell tem `overflow-hidden` mas não há um wrapper de clipping local em cada carrossel.
+## Novo fluxo
 
-## Plano de correção (apenas overflow/carrossel)
+**Tela 1 — Objetivo / Desejo** (Passo 1 de 5 · Seu objetivo)
+- Título: "Qual estilo de sorriso você deseja conquistar?" / Subtítulo: "Selecione o estilo visual que mais se aproxima do seu ideal."
+- 4 cards com foto: Natural & Harmônico, Rejuvenescido & Claro, Amplo & Simétrico, Ultra Radiante / Hollywood — cada um com a descrição indicada.
+- Grid de 2 colunas em telas ≥ 380px dentro do shell, 1 coluna abaixo disso (o shell continua com 430px máx.; sem grid larga de desktop).
+- Link discreto no rodapé do conteúdo: "Ainda não sei meu estilo, quero orientação em consulta" (seleciona um perfil "orientação" e avança).
 
-### `src/routes/index.tsx`
+**Tela 2 — Incômodo** (Passo 2 de 5 · Diagnóstico de Queixas)
+- Seleção múltipla limitada a 2, com as 5 queixas indicadas. Ao tentar marcar a 3ª, a opção fica desabilitada com aviso "Selecione até 2 opções principais."
+- CTA "Avançar" ativa com 1 ou 2 itens.
 
-1. **Shell e main — reforçar contenção**: adicionar `min-w-0` no shell e no `<main>` para impedir que filhos flex forcem expansão.
+**Tela 3 — Objeção** (Passo 3 de 5 · Esclarecimentos)
+- Lista de rádio única com as 5 dúvidas indicadas.
 
-2. **`Carousel` (linhas 546–618)**
-   - Remover `-mr-5` do track.
-   - Envolver o track em `<div className="relative w-full min-w-0 overflow-hidden">` (barreira de clipping local).
-   - Track interno: `flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth scrollbar-hide pb-4 pt-2` com `paddingLeft: 4, paddingRight: 40` via style.
-   - Cards: trocar `w-[86%] max-w-[320px]` por `basis-[calc(100%-3rem)] max-w-[320px] shrink-0 grow-0 snap-start`.
-   - Manter dots de progresso.
+**Tela 4 — Estágio de decisão** (Passo 4 de 5 · Momento Atual)
+- 4 cards de seleção única: Pronto para Agendar, Planejando Investimento, Comparando Opções, Apenas Pesquisando.
 
-3. **`ReferencesGallery` (linhas 461–517)**: mesma refatoração (wrapper de clipping + cards com `basis-[calc(100%-3rem)]`).
+**Tela 5 — Mapa do Sorriso** (Análise Concluída)
+- Bloco 1: selo de perfil derivado da Tela 1 + resumo (Objetivo, Principal Queixa, Prioridade Técnica).
+- Bloco 2: "O Padrão de Qualidade do Seu Planejamento" com os 3 bullets (Design Digital, Laminados Ultra-finos, Porcelana Pura).
+- Bloco 3: CTA dinâmico de WhatsApp com texto e mensagem variando conforme a Tela 4 (agendar / investimento / comparando / pesquisando).
+- Mantém a tela de "gerando mapa" (loading) antes do resultado e o aviso clínico (sem diagnóstico, sem promessa de resultado, autoridade final é o dentista).
+
+## Decisões confirmadas
+
+- A etapa de captura Nome/WhatsApp é **removida**; o lead se identifica direto no WhatsApp.
+- O shell permanece **mobile fixo de 430px** centralizado; nada de layout desktop alargado.
+- As 4 fotos dos estilos serão **geradas novas** (retratos editoriais de sorriso, mesma direção estética atual).
+
+## Detalhes técnicos (`src/routes/index.tsx`)
+
+- `STEPS` passa a ser: hero → style → concerns → objection → decision → loading → result. Barra de progresso mostra "Passo X de 5".
+- Constantes reescritas: `DESIRE` → `STYLES` (4 itens + flag de orientação), `PERCEPTION` → `CONCERNS`, `SAFETY` → `OBJECTIONS`, `MOMENT` → `DECISION`. `REFERENCES` e o componente `ReferencesGallery` são removidos (o conteúdo educativo vira o Bloco 2 do resultado).
+- `Answers` vira `{ style?, concerns: string[], objection?, decision? }`; remove `lead`, `references`, `LeadForm`, `Field`, `maskPhone`.
+- `MultiChoiceStep` ganha prop `max={2}`.
+- Novo mapa `ctaConfig` (buttonText + message por decisão) usado pelo botão final do WhatsApp; funções de narrativa (`desireNarrative`, `perceptionNarrative`, etc.) e `buildClinicBrief` são ajustadas aos novos ids.
+- 4 novas imagens em `src/assets/style-*.jpg`; as antigas `desire-*` / `ref-*` não usadas são removidas.
 
 ## Riscos
 
-- Cards ficam ~312px em telas de 360px e capados em 320px acima disso — peek consistente em todas as larguras.
-- Wrapper local com `overflow-hidden` esconde sombras laterais no eixo X — aceitável.
+- Copy e ids mudam bastante — a lógica de narrativa do mapa precisa ser remapeada por completo (não é só renomear).
+- Grid 2 colunas dentro de 430px deixa cards menores; imagens em proporção 1:1 para manter legibilidade.
 
-## Checklist de teste (Playwright headless)
+## Checklist de teste
 
-- Desktop 1440×900: `scrollWidth === innerWidth`; nenhum card fora do shell de 430px.
-- iPhone 390×844: sem scroll horizontal de página; carrossel rola só internamente.
-- Android 360×800: cards não excedem viewport.
-- Etapa 3: mesmo comportamento; CTA não sobrepõe.
-- Avançar todas as etapas confirmando que o shell nunca expande.
+- Zero scroll horizontal em 360, 390 e 1440 px.
+- Progresso mostra Passo 1..4 de 5 e conclui no Mapa.
+- Tela 2 bloqueia a 3ª seleção; CTA ativa com 1–2.
+- Link "Ainda não sei meu estilo" avança normalmente.
+- Cada uma das 4 decisões gera o texto de botão e a mensagem de WhatsApp corretos.
