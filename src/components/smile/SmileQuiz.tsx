@@ -91,7 +91,7 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
     track?.(patch);
   };
 
-  const map = buildSmileMap(answers);
+  const map = buildSmileMap(answers, clinic.name);
 
   return (
     <div
