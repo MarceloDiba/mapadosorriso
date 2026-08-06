@@ -46,6 +46,48 @@ export const DEFAULT_COPY: Record<string, string> = {
   resultTitle: "Seu Mapa do Sorriso está pronto!",
 };
 
+/** Blocos do painel: imagem + textos da mesma etapa, juntos. */
+export const STEP_BLOCKS: {
+  key: string;
+  title: string;
+  hint?: string;
+  images: string[];
+  fields: string[];
+}[] = [
+  {
+    key: "hero",
+    title: "Capa",
+    hint: "Primeira tela que o paciente vê ao abrir o link.",
+    images: ["hero"],
+    fields: ["heroTitle", "heroSubtitle", "heroCta"],
+  },
+  {
+    key: "style",
+    title: "Tela 1 — Estilos de sorriso",
+    hint: "As quatro imagens de referência do grid.",
+    images: ["natural", "rejuvenescido", "amplo", "hollywood"],
+    fields: ["step1Title"],
+  },
+  { key: "concerns", title: "Tela 2 — O que incomoda", images: [], fields: ["step2Title"] },
+  { key: "objection", title: "Tela 3 — Segurança", images: [], fields: ["step3Title"] },
+  { key: "decision", title: "Tela 4 — Momento", images: [], fields: ["step4Title"] },
+  {
+    key: "result",
+    title: "Tela 5 — Mapa de Transformação",
+    hint: "Resultado personalizado e chamada para o WhatsApp.",
+    images: [],
+    fields: ["resultTitle"],
+  },
+];
+
+export const IMAGE_LABELS: Record<string, string> = Object.fromEntries(
+  IMAGE_SLOTS.map((s) => [s.key, s.label]),
+);
+
+export const COPY_LABELS: Record<string, string> = Object.fromEntries(
+  COPY_FIELDS.map((f) => [f.key, f.label]),
+);
+
 export function copyOf(clinicCopy: Record<string, unknown> | null | undefined, key: string) {
   const v = clinicCopy?.[key];
   return typeof v === "string" && v.trim() ? v : DEFAULT_COPY[key];
