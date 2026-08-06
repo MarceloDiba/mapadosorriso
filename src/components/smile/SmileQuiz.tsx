@@ -13,8 +13,17 @@ import {
 } from "@/config/quiz";
 import { themeStyle } from "@/config/theme";
 import type { PublicClinic } from "@/lib/clinics.functions";
+import { formatLocalPhone, whatsappLink } from "@/lib/phone";
 
-type Track = (patch: Partial<Answers> & { completed?: boolean; whatsappClicked?: boolean }) => void;
+type Track = (
+  patch: Partial<Answers> & {
+    completed?: boolean;
+    whatsappClicked?: boolean;
+    funnelStep?: string;
+    leadName?: string;
+    leadPhone?: string;
+  },
+) => void;
 
 const STEPS = [
   { key: "hero", label: "Início" },
