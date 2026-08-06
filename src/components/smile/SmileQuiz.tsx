@@ -59,7 +59,8 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
   }, [stepIndex]);
 
   useEffect(() => {
-    if (step === "result") track?.({ completed: true });
+    if (step === "hero" || step === "loading") return;
+    track?.(step === "result" ? { completed: true, funnelStep: "result" } : { funnelStep: step });
   }, [step]);
 
   const progressSteps = STEPS.slice(1, 6);
