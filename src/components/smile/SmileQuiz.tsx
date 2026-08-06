@@ -170,14 +170,79 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
                   setStepIndex(0);
                 }}
               />
-
             )}
           </div>
         </main>
+
+        {/* Elementos flutuantes ficam fora da cena animada (transform criaria um novo contexto). */}
+        {step === "concerns" && answers.concerns.length === 1 && (
+          <FloatingBar>
+            <button
+              type="button"
+              onClick={next}
+              className="flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-3.5 text-primary-foreground shadow-soft transition-all active:scale-[0.99]"
+            >
+              <span className="font-serif text-[16px]">Seguir com esta</span>
+              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gold text-primary">
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.2">
+                  <path d="M5 12h14M13 5l7 7-7 7" />
+                </svg>
+              </span>
+            </button>
+          </FloatingBar>
+        )}
+
+        {step === "result" && (
+          <FloatingBar>
+            <button
+              type="button"
+              onClick={() => setSheet(true)}
+              className="group flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-4 text-left text-primary-foreground shadow-soft transition-all active:scale-[0.99]"
+            >
+              <span className="flex min-w-0 flex-col">
+                <span className="text-[10px] uppercase tracking-[0.2em] text-gold-soft">Próximo passo</span>
+                <span className="mt-1 truncate font-serif text-[16px] leading-tight">{map.ctaButton}</span>
+              </span>
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gold text-primary transition-transform group-hover:translate-x-1">
+                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
+                  <path d="M20 3.5A11.5 11.5 0 003 19l-1 4 4.2-1.1A11.5 11.5 0 1020 3.5zm-8.5 18a9.5 9.5 0 01-4.9-1.4l-.3-.2-2.5.7.7-2.4-.2-.4A9.5 9.5 0 1111.5 21.5z" />
+                </svg>
+              </span>
+            </button>
+          </FloatingBar>
+        )}
+
+        {sheet && (
+          <LeadSheet
+            href={whatsappLink(
+              clinic.whatsapp,
+              lead.name ? `${map.whatsappMessage}\n\nMeu nome: ${lead.name}.` : map.whatsappMessage,
+            )}
+            name={lead.name}
+            phone={lead.phone}
+            setName={(v) => setLead((l) => ({ ...l, name: v }))}
+            setPhone={(v) => setLead((l) => ({ ...l, phone: v }))}
+            onClose={() => setSheet(false)}
+            onGo={() => {
+              if (lead.name.trim() || lead.phone.trim())
+                track?.({ leadName: lead.name.trim(), leadPhone: lead.phone });
+              track?.({ whatsappClicked: true });
+            }}
+          />
+        )}
       </div>
     </div>
   );
 }
+
+function FloatingBar({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 bg-gradient-to-t from-background via-background/95 to-transparent px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-8">
+      <div className="pointer-events-auto animate-fade-up">{children}</div>
+    </div>
+  );
+}
+
 
 /* ------------------------------ Chrome ------------------------------ */
 
