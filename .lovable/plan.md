@@ -82,7 +82,27 @@ A Tela 5 deixa de ser técnica e passa a ser inspiradora, positiva e focada em t
 
 O nome da clínica é interpolado nos blocos ("O protocolo exclusivo da [clínica]"), e todos os textos continuam editáveis no painel.
 
+## 12. Métricas confiáveis e origem do tráfego
+
+- A sessão só é criada na **primeira interação real** do visitante (não no carregamento), eliminando bots e visitas próprias da contagem.
+- Captura de `utm_source`, `utm_medium` e `utm_campaign` do link do anúncio, com quebra por origem no analytics da clínica.
+
+## 13. Alertas de contrato e link amigável
+
+- Destaque no painel para contratos **vencendo em até 15 dias**, **vencidos** e **ainda não iniciados**.
+- Verificação de disponibilidade do link enquanto digita, com sugestão automática quando o slug já existir (sem erro técnico do banco).
+
+## 14. QR code e duplicar clínica
+
+- Botão "QR code" gera o código do link da clínica para uso em material impresso e stories, com download em PNG.
+- Botão "Duplicar" cria uma nova clínica copiando paleta, fontes, imagens e textos — só nome, link e WhatsApp precisam ser preenchidos.
+
+## 15. Captura opcional de contato antes do CTA
+
+Na Tela 5, antes do botão de WhatsApp, um bloco discreto e opcional pede nome e telefone ("para a clínica guardar seu mapa"). Se preenchido, o lead fica registrado mesmo que a pessoa não envie a mensagem, e aparece no histórico e no PDF. Nunca bloqueia o acesso ao resultado.
+
 ---
+
 
 
 ## Detalhes técnicos
