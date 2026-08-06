@@ -96,17 +96,18 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
   return (
     <div
       style={themeStyle(clinic.palette, clinic.font_pair)}
-      className="min-h-[100dvh] w-full overflow-x-hidden bg-muted/40 text-foreground"
+      className="h-[100dvh] w-full overflow-hidden bg-muted/40 text-foreground"
     >
-      <div className="relative mx-auto flex min-h-[100dvh] w-full min-w-0 max-w-[430px] flex-col overflow-hidden bg-background surface-texture shadow-[0_0_60px_-20px_rgba(0,0,0,0.25)]">
+      <div className="relative mx-auto flex h-[100dvh] w-full min-w-0 max-w-[430px] flex-col overflow-hidden bg-background surface-texture shadow-[0_0_60px_-20px_rgba(0,0,0,0.25)]">
         <Header clinic={clinic} onBack={stepIndex > 0 && step !== "building" ? back : undefined} />
 
         {showRail && <StepRail current={sceneIdx} total={SCENE_KEYS.length} />}
 
         <main
           ref={mainRef}
-          className={`min-w-0 flex-1 overflow-y-auto overflow-x-hidden ${showRail ? "pl-9 pr-4" : "px-4"} pb-6 pt-1`}
+          className={`min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-hidden ${showRail ? "pl-9 pr-4" : "px-4"} pb-6 pt-1`}
         >
+
           <div key={step} className="animate-scene-in">
             {step === "hero" && (
               <Hero
