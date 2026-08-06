@@ -59,7 +59,7 @@ Ficha de cada clínica:
 - **Contato**: número de WhatsApp e, opcionalmente, o texto base da mensagem
 - **Contrato**: data inicial, data final, ativo sim/não
 - **Visual**: 5 imagens (capa + 4 estilos), paleta de cores escolhida de uma lista pronta, e uma das 3 fontes
-- **Textos**: títulos, subtítulos e rótulos das 5 telas, com valores padrão preenchidos automaticamente para não precisar escrever tudo
+- **Textos**: títulos, subtítulos e rótulos das 5 telas (Desejo, Problema, Segurança, Momento, Resultado), com valores padrão preenchidos automaticamente para não precisar escrever tudo
 
 Paletas prontas: Marfim & Dourado (atual), Noir & Gold, Esmeralda Prestígio, Rosé & Areia.
 Fontes: Cormorant + Karla, Playfair + Inter, Outfit + DM Sans.
