@@ -134,6 +134,21 @@
   50% { opacity: 1; transform: scale(1.04); }
 }
 
+@keyframes scene-in {
+  from { opacity: 0; transform: translateY(26px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sheet-up {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @utility animate-fade-up {
   animation: fade-up 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
@@ -143,3 +158,50 @@
 @utility animate-pulse-ring {
   animation: pulse-ring 2.2s ease-in-out infinite;
 }
+@utility animate-scene-in {
+  animation: scene-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@utility animate-reveal-up {
+  animation: reveal-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@utility animate-sheet-up {
+  animation: sheet-up 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Faixa de escolha — vocabulário editorial, sem radio/checkbox. */
+@utility band {
+  position: relative;
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  background: var(--color-card);
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+@utility band-selected {
+  border-color: var(--color-gold);
+  background: color-mix(in oklab, var(--gold) 16%, var(--card));
+  box-shadow: var(--shadow-gold);
+  transform: translateY(-1px) scale(1.005);
+}
+
+@utility surface-texture {
+  background-image:
+    radial-gradient(circle at 12% 8%, color-mix(in oklab, var(--gold) 12%, transparent), transparent 42%),
+    radial-gradient(circle at 88% 92%, color-mix(in oklab, var(--primary) 8%, transparent), transparent 46%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
