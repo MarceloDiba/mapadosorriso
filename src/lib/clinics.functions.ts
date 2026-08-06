@@ -87,7 +87,8 @@ export const startSession = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const trim = (v?: string | null) => (v ? String(v).slice(0, 80) : null);
-    const { data: row } = await publicClient()
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row } = await supabaseAdmin
       .from("clinic_sessions")
       .insert({
         clinic_id: data.clinicId,
@@ -95,15 +96,17 @@ export const startSession = createServerFn({ method: "POST" })
         utm_medium: trim(data.utmMedium),
         utm_campaign: trim(data.utmCampaign),
       })
-      .select("id")
+      .select("id, session_token")
       .maybeSingle();
-    return { id: row?.id ?? null };
+    // O token é o comprovante de propriedade da sessão: sem ele, ninguém altera esta sessão.
+    return { id: row?.id ?? null, token: row?.session_token ?? null };
   });
 
 export const updateSession = createServerFn({ method: "POST" })
   .inputValidator(
     (data: {
       sessionId: string;
+      sessionToken: string;
       style?: string | null;
       concerns?: string[];
       objection?: string | null;
@@ -116,6 +119,10 @@ export const updateSession = createServerFn({ method: "POST" })
     }) => data,
   )
   .handler(async ({ data }) => {
+    const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuid.test(String(data.sessionId)) || !uuid.test(String(data.sessionToken))) {
+      return { ok: false };
+    }
     const patch: Record<string, unknown> = {};
     if (data.style !== undefined) patch["style"] = data.style;
     if (data.concerns !== undefined) patch["concerns"] = data.concerns.slice(0, 5);
@@ -130,19 +137,29 @@ export const updateSession = createServerFn({ method: "POST" })
     if (data.leadName) patch["lead_name"] = String(data.leadName).slice(0, 80);
     if (data.leadPhone) patch["lead_phone"] = String(data.leadPhone).slice(0, 30);
     if (Object.keys(patch).length === 0) return { ok: true };
-    await publicClient()
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin
       .from("clinic_sessions")
       .update(patch as never)
-      .eq("id", data.sessionId);
-    return { ok: true };
+      .eq("id", data.sessionId)
+      .eq("session_token", data.sessionToken)
+      .gte("created_at", new Date(Date.now() - 6 * 3600_000).toISOString());
+    return { ok: !error };
   });
 
 /* ------------------------------- Admin ------------------------------- */
 
 async function assertAdmin(supabase: ReturnType<typeof publicClient>, userId: string) {
-  const { data } = await supabase.rpc("has_role", { _user_id: userId, _role: "admin" });
+  const { data } = await supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", userId)
+    .eq("role", "admin")
+    .maybeSingle();
   if (!data) throw new Error("Acesso restrito a administradores.");
 }
+
 
 export const isAdmin = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
