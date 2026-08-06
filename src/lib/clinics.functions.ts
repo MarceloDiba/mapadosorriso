@@ -208,16 +208,15 @@ export const getOverview = createServerFn({ method: "GET" })
     const completed = s.filter((r) => r.completed).length;
     const clicks = s.filter((r) => r.whatsapp_clicked).length;
 
-    const STEP_ORDER = ["style", "concerns", "objection", "decision", "result"];
     const dropoff: Record<string, number> = {};
-    for (const step of STEP_ORDER) dropoff[step] = 0;
+    for (const step of FUNNEL_STEPS) dropoff[step.key] = 0;
     for (const row of s) {
-      const step = row.funnel_step && STEP_ORDER.includes(row.funnel_step) ? row.funnel_step : null;
-      if (step && !row.whatsapp_clicked) dropoff[step] = (dropoff[step] ?? 0) + 1;
+      const step = FUNNEL_STEPS.find((f) => f.value === row.funnel_step);
+      if (step && !row.whatsapp_clicked) dropoff[step.key] = (dropoff[step.key] ?? 0) + 1;
     }
-    const bottleneck = STEP_ORDER.slice(0, 4).reduce(
-      (best, step) => ((dropoff[step] ?? 0) > (dropoff[best] ?? 0) ? step : best),
-      STEP_ORDER[0],
+    const bottleneck = FUNNEL_STEPS.slice(0, 4).reduce(
+      (best, step) => ((dropoff[step.key] ?? 0) > (dropoff[best] ?? 0) ? step.key : best),
+      FUNNEL_STEPS[0].key,
     );
 
     const sales = list.filter((c) => c.sale_date && c.sale_date >= sinceDay);
