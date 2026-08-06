@@ -123,7 +123,10 @@ export const updateSession = createServerFn({ method: "POST" })
     if (data.decision !== undefined) patch["decision"] = data.decision;
     if (data.completed !== undefined) patch["completed"] = data.completed;
     if (data.whatsappClicked !== undefined) patch["whatsapp_clicked"] = data.whatsappClicked;
-    if (data.funnelStep) patch["funnel_step"] = String(data.funnelStep).slice(0, 30);
+    if (data.funnelStep) {
+      const v = funnelValue(String(data.funnelStep));
+      if (v !== null) patch["funnel_step"] = v;
+    }
     if (data.leadName) patch["lead_name"] = String(data.leadName).slice(0, 80);
     if (data.leadPhone) patch["lead_phone"] = String(data.leadPhone).slice(0, 30);
     if (Object.keys(patch).length === 0) return { ok: true };
