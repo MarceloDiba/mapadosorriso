@@ -176,8 +176,10 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
               <ResultMap
                 title={text("resultTitle")}
                 map={map}
+                clinicName={clinic.name}
                 whatsapp={clinic.whatsapp}
                 onWhatsapp={() => track?.({ whatsappClicked: true })}
+                onLead={(lead) => track?.({ leadName: lead.name, leadPhone: lead.phone })}
                 onRestart={() => {
                   setAnswers({ concerns: [] });
                   setStepIndex(0);
