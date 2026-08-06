@@ -55,7 +55,35 @@ Nova área no topo de `/admin`:
 
 Login e área administrativa passam a usar **Instrument Sans** (interface neutra e legível). A experiência do paciente (`/c/:slug`) mantém a identidade premium atual, sem alteração.
 
+## 11. Tela 5 — Mapa de Transformação (nova linguagem)
+
+A Tela 5 deixa de ser técnica e passa a ser inspiradora, positiva e focada em transformação pessoal — sem diagnóstico e sem promessa de resultado.
+
+**Nova estrutura da tela**
+1. **Cabeçalho aspiracional** — "Seu Mapa de Transformação do Sorriso está pronto!" + nome elegante do perfil.
+2. **A sua jornada de mudança** — resumo motivador que costura estilo escolhido, queixas e receio, em linguagem emocional.
+3. **Por que dar este passo transforma sua vida** — bloco fixo de impacto na autoestima, confiança, presença pessoal e profissional.
+4. **O protocolo exclusivo da clínica** — três pilares: visão artística e proporção áurea; tecnologia guiada de mínima intervenção; previsibilidade total (teste do sorriso antes de iniciar).
+5. **Tranquilização positiva** — o receio marcado na Tela 3 vira mensagem de segurança sobre métodos modernos e confortáveis conduzidos pelo cirurgião-dentista.
+6. **Nota de autoridade** — a avaliação presencial com o especialista é onde arte e odontologia definem o plano definitivo.
+7. **CTA WhatsApp** — "Agendar Minha Avaliação no WhatsApp", com mensagem dinâmica pelo momento da Tela 4.
+
+**Títulos de perfil aspiracionais**
+
+| Estilo | Novo título |
+| --- | --- |
+| Natural | Harmonia Invisível & Elegância Discreta |
+| Rejuvenescido | Luminosidade Jovem & Vitalidade Facial |
+| Amplo | Presença Marcante & Equilíbrio Facial |
+| Hollywood | Presença Marcante & Alta Expressão Estética |
+| Não tenho certeza | Descoberta Personalizada do Seu Estilo |
+
+**Objeções reescritas em tom positivo** — nada de "desgaste biológico" ou jargão clínico; cada receio vira uma frase de tranquilidade sobre técnicas modernas, mínimas e confortáveis conduzidas pelo especialista.
+
+O nome da clínica é interpolado nos blocos ("O protocolo exclusivo da [clínica]"), e todos os textos continuam editáveis no painel.
+
 ---
+
 
 ## Detalhes técnicos
 
