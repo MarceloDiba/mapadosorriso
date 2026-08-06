@@ -774,38 +774,8 @@ function ResultMap({
           Refazer minha experiência
         </button>
       </div>
-
-      {/* CTA flutuante, alcançável desde o topo do resultado */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 bg-gradient-to-t from-background via-background/95 to-transparent px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-8">
-        <button
-          type="button"
-          onClick={() => setSheet(true)}
-          className="group pointer-events-auto flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-4 text-left text-primary-foreground shadow-soft transition-all active:scale-[0.99]"
-        >
-          <span className="flex min-w-0 flex-col">
-            <span className="text-[10px] uppercase tracking-[0.2em] text-gold-soft">Próximo passo</span>
-            <span className="mt-1 truncate font-serif text-[16px] leading-tight">{map.ctaButton}</span>
-          </span>
-          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gold text-primary transition-transform group-hover:translate-x-1">
-            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
-              <path d="M20 3.5A11.5 11.5 0 003 19l-1 4 4.2-1.1A11.5 11.5 0 1020 3.5zm-8.5 18a9.5 9.5 0 01-4.9-1.4l-.3-.2-2.5.7.7-2.4-.2-.4A9.5 9.5 0 1111.5 21.5z" />
-            </svg>
-          </span>
-        </button>
-      </div>
-
-      {sheet && (
-        <LeadSheet
-          href={href}
-          name={name}
-          phone={phone}
-          setName={setName}
-          setPhone={setPhone}
-          onClose={() => setSheet(false)}
-          onGo={go}
-        />
-      )}
     </section>
+
   );
 }
 
