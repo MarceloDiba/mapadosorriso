@@ -54,17 +54,26 @@ O fluxo segue uma progressão psicológica clara: **desejo → problema → obje
 
 Lista de clínicas com: nome, link, status (ativo/inativo/vencido), início e fim de contrato, e botão de ativar/desativar. Ações: criar, editar, copiar o link pronto para o anúncio.
 
-Ficha de cada clínica:
-- **Identificação**: nome, slug do link, cidade
+Ficha de cada clínica (`/admin/clinicas/:id`), em abas:
+
+**Aba Dados**
+- **Identificação**: nome, slug do link, cidade, logo
 - **Contato**: número de WhatsApp e, opcionalmente, o texto base da mensagem
 - **Contrato**: data inicial, data final, ativo sim/não
 - **Visual**: 5 imagens (capa + 4 estilos), paleta de cores escolhida de uma lista pronta, e uma das 3 fontes
 - **Textos**: títulos, subtítulos e rótulos das 5 telas (Desejo, Problema, Segurança, Momento, Resultado), com valores padrão preenchidos automaticamente para não precisar escrever tudo
 
+**Aba Analytics**
+- Cartões de métricas: Total de visualizações, Taxa de conclusão (%), Cliques no WhatsApp
+- Distribuição percentual das respostas da Tela 4 (Quero agendar / Planejando custos / Comparando clínicas / Apenas pesquisando), em barras horizontais
+- Tabela de histórico das respostas concluídas: data, estilo escolhido, queixas, objeção, momento e se clicou no WhatsApp
+- Filtro simples por período (7 / 30 / 90 dias)
+
 Paletas prontas: Marfim & Dourado (atual), Noir & Gold, Esmeralda Prestígio, Rosé & Areia.
 Fontes: Cormorant + Karla, Playfair + Inter, Outfit + DM Sans.
 
 Imagens: pode colar um link (mais rápido e barato) ou fazer upload pelo painel.
+
 
 ## Login
 
@@ -76,11 +85,12 @@ Página `/admin/login` com e-mail e senha. Somente contas marcadas como administ
 - Tabelas: `clinics` (slug único, nome, cidade, whatsapp, datas de contrato, `is_active`, `theme`, `fonts`, `images` e `copy` em JSON) e `user_roles` (papel `admin`, separado do perfil, com função `has_role` para as políticas de acesso).
 - Políticas de acesso: leitura pública apenas das colunas necessárias e somente de clínicas ativas e dentro do contrato; escrita restrita a administradores.
 - Bucket de imagens para uploads do painel.
-- Rota pública `/c/$slug` carrega a clínica no servidor e aplica tema, fonte e textos via variáveis CSS; a lógica do fluxo de 5 telas e o Mapa do Sorriso permanecem exatamente como estão.
+- Rota pública `/c/$slug` carrega a clínica no servidor e aplica tema, fonte e textos via variáveis CSS; a lógica do fluxo de 5 telas e o Mapa do Sorriso permanecem exatamente como estão. Clínica inativa ou com contrato vencido mostra "Esta página está temporariamente indisponível".
 - CTA final monta o link do WhatsApp com o número da clínica, mantendo a mensagem dinâmica por momento de decisão.
 - Rotas do painel protegidas por login + verificação de papel no servidor.
+- Analytics: tabela `clinic_sessions` (clínica, início, conclusão, respostas das 4 telas em JSON, clique no WhatsApp, data). Registro anônimo, sem dados pessoais. Escrita pública restrita a inserir/atualizar a própria sessão; leitura somente para administradores. As métricas do painel são calculadas por consulta agregada.
 - Uma clínica de exemplo já cadastrada para você ver funcionando de imediato.
 
 ## Fora de escopo agora
 
-Login para as próprias clínicas, métricas/relatórios de leads por clínica e cobrança automática. Dá para adicionar depois sobre essa mesma base.
+Login para as próprias clínicas, exportação de relatórios e cobrança automática. Dá para adicionar depois sobre essa mesma base.
