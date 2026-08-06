@@ -215,9 +215,9 @@ export const getOverview = createServerFn({ method: "GET" })
       const step = FUNNEL_STEPS.find((f) => f.value === row.funnel_step);
       if (step && !row.whatsapp_clicked) dropoff[step.key] = (dropoff[step.key] ?? 0) + 1;
     }
-    const bottleneck = FUNNEL_STEPS.slice(0, 4).reduce(
+    const bottleneck = FUNNEL_STEPS.slice(0, 4).reduce<string>(
       (best, step) => ((dropoff[step.key] ?? 0) > (dropoff[best] ?? 0) ? step.key : best),
-      FUNNEL_STEPS[0].key,
+      FUNNEL_STEPS[0].key as string,
     );
 
     const sales = list.filter((c) => c.sale_date && c.sale_date >= sinceDay);
