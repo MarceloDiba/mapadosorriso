@@ -26,6 +26,7 @@ export type Database = {
           lead_name: string | null
           lead_phone: string | null
           objection: string | null
+          session_token: string
           style: string | null
           updated_at: string
           utm_campaign: string | null
@@ -44,6 +45,7 @@ export type Database = {
           lead_name?: string | null
           lead_phone?: string | null
           objection?: string | null
+          session_token?: string
           style?: string | null
           updated_at?: string
           utm_campaign?: string | null
@@ -62,6 +64,7 @@ export type Database = {
           lead_name?: string | null
           lead_phone?: string | null
           objection?: string | null
+          session_token?: string
           style?: string | null
           updated_at?: string
           utm_campaign?: string | null
