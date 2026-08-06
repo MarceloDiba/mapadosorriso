@@ -82,12 +82,32 @@ A Tela 5 deixa de ser técnica e passa a ser inspiradora, positiva e focada em t
 
 O nome da clínica é interpolado nos blocos ("O protocolo exclusivo da [clínica]"), e todos os textos continuam editáveis no painel.
 
+## 12. Métricas confiáveis e origem do tráfego
+
+- A sessão só é criada na **primeira interação real** do visitante (não no carregamento), eliminando bots e visitas próprias da contagem.
+- Captura de `utm_source`, `utm_medium` e `utm_campaign` do link do anúncio, com quebra por origem no analytics da clínica.
+
+## 13. Alertas de contrato e link amigável
+
+- Destaque no painel para contratos **vencendo em até 15 dias**, **vencidos** e **ainda não iniciados**.
+- Verificação de disponibilidade do link enquanto digita, com sugestão automática quando o slug já existir (sem erro técnico do banco).
+
+## 14. QR code e duplicar clínica
+
+- Botão "QR code" gera o código do link da clínica para uso em material impresso e stories, com download em PNG.
+- Botão "Duplicar" cria uma nova clínica copiando paleta, fontes, imagens e textos — só nome, link e WhatsApp precisam ser preenchidos.
+
+## 15. Captura opcional de contato antes do CTA
+
+Na Tela 5, antes do botão de WhatsApp, um bloco discreto e opcional pede nome e telefone ("para a clínica guardar seu mapa"). Se preenchido, o lead fica registrado mesmo que a pessoa não envie a mensagem, e aparece no histórico e no PDF. Nunca bloqueia o acesso ao resultado.
+
 ---
+
 
 
 ## Detalhes técnicos
 
-- **Banco**: novas colunas em `clinics` — `contract_value` (numeric, valor da nossa venda) e `sale_date` (data da venda/assinatura); `funnel_step` (smallint) em `clinic_sessions` para registrar a última tela alcançada; GRANTs mantidos.
+- **Banco**: novas colunas em `clinics` — `contract_value` (numeric, valor da nossa venda) e `sale_date` (data da venda/assinatura); em `clinic_sessions` — `funnel_step` (smallint), `utm_source`/`utm_medium`/`utm_campaign` (text) e `lead_name`/`lead_phone` (text, opcionais); GRANTs mantidos.
 - **Gargalo**: `SmileQuiz` passa a gravar `funnel_step` a cada avanço via `updateSession`; o painel agrega a maior queda entre telas.
 - **Novas server functions**: `getDashboardOverview` (agregados globais por período) e extensão de `getClinicAnalytics` com dados do funil.
 - **UI**: `ClinicForm` reorganizado em blocos por etapa + `ClinicPreview` (reaproveita `SmileQuiz` em modo somente leitura dentro de um mock 430px). Máscara de telefone em util própria em `src/lib/phone.ts`.
