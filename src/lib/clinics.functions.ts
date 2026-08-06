@@ -37,11 +37,19 @@ export type PublicClinic = {
   copy: Record<string, string>;
 };
 
+export type ClinicStatusReason = "ok" | "not_found" | "inactive" | "scheduled" | "expired";
+
+export type ClinicResolution = {
+  clinic: PublicClinic | null;
+  reason: ClinicStatusReason;
+  startsAt?: string | null;
+};
+
 /* ------------------------------ Público ------------------------------ */
 
 export const getClinicBySlug = createServerFn({ method: "GET" })
   .inputValidator((data: { slug: string }) => ({ slug: String(data.slug).slice(0, 80) }))
-  .handler(async ({ data }): Promise<PublicClinic | null> => {
+  .handler(async ({ data }): Promise<ClinicResolution> => {
     const { data: row } = await publicClient()
       .from("clinics")
       .select(
@@ -49,24 +57,43 @@ export const getClinicBySlug = createServerFn({ method: "GET" })
       )
       .eq("slug", data.slug)
       .maybeSingle();
-    if (!row || !row.is_active) return null;
+    if (!row) return { clinic: null, reason: "not_found" };
+    if (!row.is_active) return { clinic: null, reason: "inactive" };
     const today = new Date().toISOString().slice(0, 10);
-    if (row.contract_start && row.contract_start > today) return null;
-    if (row.contract_end && row.contract_end < today) return null;
+    if (row.contract_start && row.contract_start > today) {
+      return { clinic: null, reason: "scheduled", startsAt: row.contract_start };
+    }
+    if (row.contract_end && row.contract_end < today) return { clinic: null, reason: "expired" };
 
     return {
-      ...row,
-      images: (row.images ?? {}) as Record<string, string>,
-      copy: (row.copy ?? {}) as Record<string, string>,
-    } as PublicClinic;
+      reason: "ok",
+      clinic: {
+        ...row,
+        images: (row.images ?? {}) as Record<string, string>,
+        copy: (row.copy ?? {}) as Record<string, string>,
+      } as PublicClinic,
+    };
   });
 
 export const startSession = createServerFn({ method: "POST" })
-  .inputValidator((data: { clinicId: string }) => ({ clinicId: String(data.clinicId) }))
+  .inputValidator(
+    (data: {
+      clinicId: string;
+      utmSource?: string | null;
+      utmMedium?: string | null;
+      utmCampaign?: string | null;
+    }) => data,
+  )
   .handler(async ({ data }) => {
+    const trim = (v?: string | null) => (v ? String(v).slice(0, 80) : null);
     const { data: row } = await publicClient()
       .from("clinic_sessions")
-      .insert({ clinic_id: data.clinicId })
+      .insert({
+        clinic_id: data.clinicId,
+        utm_source: trim(data.utmSource),
+        utm_medium: trim(data.utmMedium),
+        utm_campaign: trim(data.utmCampaign),
+      })
       .select("id")
       .maybeSingle();
     return { id: row?.id ?? null };
@@ -82,6 +109,9 @@ export const updateSession = createServerFn({ method: "POST" })
       decision?: string | null;
       completed?: boolean;
       whatsappClicked?: boolean;
+      funnelStep?: string | null;
+      leadName?: string | null;
+      leadPhone?: string | null;
     }) => data,
   )
   .handler(async ({ data }) => {
@@ -92,13 +122,15 @@ export const updateSession = createServerFn({ method: "POST" })
     if (data.decision !== undefined) patch["decision"] = data.decision;
     if (data.completed !== undefined) patch["completed"] = data.completed;
     if (data.whatsappClicked !== undefined) patch["whatsapp_clicked"] = data.whatsappClicked;
+    if (data.funnelStep) patch["funnel_step"] = String(data.funnelStep).slice(0, 30);
+    if (data.leadName) patch["lead_name"] = String(data.leadName).slice(0, 80);
+    if (data.leadPhone) patch["lead_phone"] = String(data.leadPhone).slice(0, 30);
     if (Object.keys(patch).length === 0) return { ok: true };
     await publicClient()
       .from("clinic_sessions")
       .update(patch as never)
       .eq("id", data.sessionId);
     return { ok: true };
-
   });
 
 /* ------------------------------- Admin ------------------------------- */
