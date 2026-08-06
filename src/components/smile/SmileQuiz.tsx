@@ -513,40 +513,56 @@ function LoadingMap() {
 function ResultMap({
   title,
   map,
+  clinicName,
   whatsapp,
   onWhatsapp,
+  onLead,
   onRestart,
 }: {
   title: string;
   map: ReturnType<typeof buildSmileMap>;
+  clinicName: string;
   whatsapp: string;
   onWhatsapp: () => void;
+  onLead: (lead: { name: string; phone: string }) => void;
   onRestart: () => void;
 }) {
-  const href = `https://wa.me/${whatsapp}?text=${encodeURIComponent(map.whatsappMessage)}`;
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const message = name ? `${map.whatsappMessage}\n\nMeu nome: ${name}.` : map.whatsappMessage;
+  const href = whatsappLink(whatsapp, message);
+
   return (
     <section className="pb-10">
       <header className="mb-5 mt-2 text-center">
         <p className="mb-2 inline-flex items-center gap-2 rounded-full border border-gold/60 bg-gold-soft/30 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-foreground">
-          <span className="h-1 w-1 rounded-full bg-gold" /> Análise concluída
+          <span className="h-1 w-1 rounded-full bg-gold" /> Mapa concluído
         </p>
         <h2 className="font-serif text-[30px] leading-[1.05] text-foreground">{title}</h2>
       </header>
 
       <article className="rounded-3xl border border-gold bg-card p-4 shadow-gold">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-gold">Perfil</p>
+        <p className="text-[11px] uppercase tracking-[0.2em] text-gold">Seu perfil inspiracional</p>
         <p className="mt-1.5 font-serif text-[22px] leading-tight text-foreground">{map.profile}</p>
-        <p className="mt-3 border-t border-border pt-3 text-[12.5px] leading-snug text-muted-foreground">
-          {map.summary}
+        <p className="mt-3 border-t border-border pt-3 text-[14px] leading-snug text-foreground/80">
+          {map.journey}
         </p>
       </article>
 
       <article className="mt-3 rounded-3xl border border-border bg-card p-4 shadow-card">
         <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-          Pilares recomendados
+          Por que este passo transforma
+        </p>
+        <p className="mt-2 text-[13.5px] leading-relaxed text-muted-foreground">{map.impact}</p>
+      </article>
+
+      <article className="mt-3 rounded-3xl border border-border bg-card p-4 shadow-card">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+          O protocolo da {clinicName}
         </p>
         <ul className="mt-3.5 space-y-3">
-          {map.pillars.map((p) => (
+          {map.protocol.map((p) => (
             <li key={p.title} className="flex items-start gap-2.5">
               <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
               <span className="min-w-0">
@@ -563,21 +579,47 @@ function ResultMap({
       </article>
 
       <article className="mt-3 rounded-3xl border border-gold/50 bg-gold-soft/20 p-4">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-gold">Sobre sua principal dúvida</p>
-        <p className="mt-1.5 text-[14px] leading-snug text-foreground">{map.safetyNote}</p>
+        <p className="text-[11px] uppercase tracking-[0.2em] text-gold">Fique tranquilo(a)</p>
+        <p className="mt-1.5 text-[14px] leading-snug text-foreground">{map.reassurance}</p>
       </article>
 
       <div className="mt-3 rounded-3xl border border-dashed border-border bg-muted/50 p-4 text-[12.5px] leading-relaxed text-muted-foreground">
-        Este mapa é educativo, não representa diagnóstico nem promessa de resultado. A indicação
-        final é sempre do dentista, após avaliação clínica.
+        {map.authority}
+      </div>
+
+      <div className="mt-4 rounded-3xl border border-border bg-card p-4 shadow-card">
+        <p className="font-serif text-[16px] leading-tight text-foreground">
+          Quer que a clínica retome o contato?
+        </p>
+        <p className="mt-1 text-[12.5px] text-muted-foreground">
+          Opcional — deixe seus dados e siga para o WhatsApp.
+        </p>
+        <div className="mt-3 grid gap-2">
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value.slice(0, 60))}
+            placeholder="Seu nome"
+            className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-[14px] text-foreground outline-none focus:border-gold"
+          />
+          <input
+            value={phone}
+            inputMode="numeric"
+            onChange={(e) => setPhone(formatLocalPhone(e.target.value))}
+            placeholder="(11) 99999-9999"
+            className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-[14px] text-foreground outline-none focus:border-gold"
+          />
+        </div>
       </div>
 
       <a
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={onWhatsapp}
-        className="group mt-5 flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-4 text-left text-primary-foreground shadow-soft transition-all duration-300 active:scale-[0.99]"
+        onClick={() => {
+          if (name.trim() || phone.trim()) onLead({ name: name.trim(), phone });
+          onWhatsapp();
+        }}
+        className="group mt-4 flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-4 text-left text-primary-foreground shadow-soft transition-all duration-300 active:scale-[0.99]"
       >
         <span className="flex min-w-0 flex-col">
           <span className="text-[11px] uppercase tracking-[0.2em] text-gold-soft">Próximo passo</span>
@@ -600,6 +642,7 @@ function ResultMap({
     </section>
   );
 }
+
 
 function StickyCTA({
   label,
