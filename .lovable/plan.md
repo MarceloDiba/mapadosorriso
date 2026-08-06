@@ -107,7 +107,7 @@ Na Tela 5, antes do botão de WhatsApp, um bloco discreto e opcional pede nome e
 
 ## Detalhes técnicos
 
-- **Banco**: novas colunas em `clinics` — `contract_value` (numeric, valor da nossa venda) e `sale_date` (data da venda/assinatura); `funnel_step` (smallint) em `clinic_sessions` para registrar a última tela alcançada; GRANTs mantidos.
+- **Banco**: novas colunas em `clinics` — `contract_value` (numeric, valor da nossa venda) e `sale_date` (data da venda/assinatura); em `clinic_sessions` — `funnel_step` (smallint), `utm_source`/`utm_medium`/`utm_campaign` (text) e `lead_name`/`lead_phone` (text, opcionais); GRANTs mantidos.
 - **Gargalo**: `SmileQuiz` passa a gravar `funnel_step` a cada avanço via `updateSession`; o painel agrega a maior queda entre telas.
 - **Novas server functions**: `getDashboardOverview` (agregados globais por período) e extensão de `getClinicAnalytics` com dados do funil.
 - **UI**: `ClinicForm` reorganizado em blocos por etapa + `ClinicPreview` (reaproveita `SmileQuiz` em modo somente leitura dentro de um mock 430px). Máscara de telefone em util própria em `src/lib/phone.ts`.
