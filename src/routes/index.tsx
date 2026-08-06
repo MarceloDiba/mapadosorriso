@@ -2,17 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import heroSmile from "@/assets/hero-smile.jpg";
-import desireNatural from "@/assets/desire-natural.jpg";
-import desireBright from "@/assets/desire-bright.jpg";
-import desireProportion from "@/assets/desire-proportion.jpg";
-import desireConfident from "@/assets/desire-confident.jpg";
-import desireBold from "@/assets/desire-bold.jpg";
-import refArc from "@/assets/ref-arc.jpg";
-import refProportion from "@/assets/ref-proportion.jpg";
-import refShade from "@/assets/ref-shade.jpg";
-import refTexture from "@/assets/ref-texture.jpg";
-import refAlignment from "@/assets/ref-alignment.jpg";
-import refExposure from "@/assets/ref-exposure.jpg";
+import styleNatural from "@/assets/style-natural.jpg";
+import styleBright from "@/assets/style-bright.jpg";
+import styleWide from "@/assets/style-wide.jpg";
+import styleHollywood from "@/assets/style-hollywood.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,6 +16,14 @@ export const Route = createFileRoute("/")({
         content:
           "Uma experiência visual para explorar estilo, harmonia e naturalidade do seu sorriso antes de conversar com um especialista.",
       },
+      { property: "og:title", content: "NOA Smile — Mapa do Sorriso" },
+      {
+        property: "og:description",
+        content:
+          "Descubra seu estilo de sorriso, organize suas dúvidas e leve um mapa personalizado para a avaliação.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: SmileLab,
@@ -37,76 +38,95 @@ type CardItem = {
   image?: string;
 };
 
-const DESIRE: CardItem[] = [
-  { id: "natural", title: "Quero um resultado natural", image: desireNatural },
-  { id: "bright", title: "Quero dentes mais brancos", image: desireBright },
-  { id: "harmonic", title: "Quero mais harmonia no sorriso", image: desireProportion },
-  { id: "bold", title: "Quero uma mudança mais marcante", image: desireBold },
-  { id: "confident", title: "Ainda não sei dizer", image: desireConfident },
-];
-
-const RESULT_CARDS = [
+const STYLES: CardItem[] = [
   {
-    eyebrow: "Desejo principal",
-    text: "Seu objetivo estético apareceu com clareza.",
+    id: "natural",
+    title: "Natural & Harmônico",
+    caption: "Linhas suaves e tom elegante que preserva a anatomia do dente.",
+    image: styleNatural,
   },
   {
-    eyebrow: "Pontos de atenção",
-    text: "Os pontos marcados ajudam a conversa a começar no que importa.",
+    id: "bright",
+    title: "Rejuvenescido & Claro",
+    caption: "Destaque de cor e jovialidade mantendo a proporção.",
+    image: styleBright,
   },
   {
-    eyebrow: "Próximo passo",
-    text: "Levar esse mapa para a avaliação com mais contexto.",
+    id: "wide",
+    title: "Amplo & Simétrico",
+    caption: "Correção de espaços, diastemas e preenchimento dos lábios.",
+    image: styleWide,
+  },
+  {
+    id: "hollywood",
+    title: "Ultra Radiante / Hollywood",
+    caption: "Máximo contraste, alinhamento perfeito e destaque estético.",
+    image: styleHollywood,
   },
 ];
 
-const PERCEPTION: CardItem[] = [
-  { id: "color", title: "Cor amarelada ou escura" },
-  { id: "shape", title: "Formato irregular dos dentes" },
-  { id: "spaces", title: "Espaços entre os dentes" },
-  { id: "gum", title: "Gengiva muito aparente" },
-  { id: "stains", title: "Manchas, restaurações ou marcas antigas" },
-  { id: "unsure", title: "Não sei exatamente, só quero melhorar" },
+const CONCERNS: CardItem[] = [
+  { id: "color", title: "Cor amarelada ou manchas difíceis de clarear" },
+  { id: "shape", title: "Formato, tamanho irregular ou dentes desgastados" },
+  { id: "spaces", title: "Espaços entre os dentes (diastemas) ou desalinhamento" },
+  { id: "gum", title: "Excesso de gengiva ao sorrir ou contorno desalinhado" },
+  { id: "restorations", title: "Restaurações antigas com alteração de cor" },
 ];
 
-const REFERENCES: CardItem[] = [
-  { id: "arc", title: "Arco do sorriso", image: refArc },
-  { id: "proportion", title: "Proporção dos dentes", image: refProportion },
-  { id: "shade", title: "Cor dos dentes", image: refShade },
-  { id: "symmetry", title: "Simetria", image: refAlignment },
-  { id: "shape", title: "Formato dos dentes", image: refTexture },
-  { id: "exposure", title: "Exposição ao sorrir", image: refExposure },
+const OBJECTIONS: CardItem[] = [
+  { id: "wear", title: "Precisa desgastar muito o dente natural?" },
+  { id: "durability", title: "Qual a durabilidade e como é a manutenção?" },
+  { id: "investment", title: "Como funciona a estimativa de investimento e pagamento?" },
+  { id: "artificial", title: 'Tenho medo do resultado parecer artificial ("dente de chiclete")' },
+  { id: "pain", title: "O procedimento causa dor ou sensibilidade?" },
 ];
 
-const SAFETY: CardItem[] = [
-  { id: "natural", title: "Se o resultado pode ficar natural" },
-  { id: "wear", title: "Se precisa desgastar meus dentes" },
-  { id: "fit", title: "Se combina com meu rosto e minha expressão" },
-  { id: "price", title: "Por que os valores variam tanto" },
-  { id: "pain", title: "Se dói, incomoda ou exige recuperação" },
-  { id: "durability", title: "Quanto tempo dura e quais cuidados exige" },
-  { id: "alternatives", title: "Se existem alternativas antes de facetas" },
-  { id: "indication", title: "Se meu caso realmente precisa de facetas" },
+const DECISION: CardItem[] = [
+  {
+    id: "agendar",
+    title: "Pronto para Agendar",
+    caption: "Quero realizar uma avaliação e iniciar meu planejamento.",
+  },
+  {
+    id: "investimento",
+    title: "Planejando Investimento",
+    caption: "Quero entender valores e formas de pagamento antes de agendar.",
+  },
+  {
+    id: "comparando",
+    title: "Comparando Opções",
+    caption: "Estou pesquisando clínicas e conhecendo técnicas.",
+  },
+  {
+    id: "pesquisando",
+    title: "Apenas Pesquisando",
+    caption: "Tenho dúvidas/receio e quero apenas informações iniciais.",
+  },
 ];
 
-const MOMENT: CardItem[] = [
-  { id: "evaluate", title: "Estou querendo uma avaliação" },
-  { id: "price", title: "Quero entender investimento com mais contexto" },
-  { id: "compare", title: "Estou comparando clínicas ou tratamentos" },
-  { id: "fear", title: "Tenho vontade, mas ainda tenho medo de errar" },
-  { id: "learn", title: "Estou só começando a pesquisar" },
+const QUALITY_POINTS = [
+  {
+    title: "Design Digital",
+    text: "Teste o sorriso no seu rosto antes de encostar no dente.",
+  },
+  {
+    title: "Laminados Ultra-finos",
+    text: "Mínimo desgaste, preservando a estrutura biológica.",
+  },
+  {
+    title: "Porcelana Pura",
+    text: "Estabilidade de cor definitiva (não amarela com o tempo).",
+  },
 ];
 
 const STEPS = [
   { key: "hero", label: "Início" },
-  { key: "desire", label: "Desejo" },
-  { key: "perception", label: "Percepção" },
-  { key: "references", label: "Referências" },
-  { key: "safety", label: "Segurança" },
-  { key: "moment", label: "Momento" },
-  { key: "lead", label: "Mapa" },
-  { key: "loading", label: "Mapa" },
-  { key: "result", label: "Mapa" },
+  { key: "style", label: "Seu objetivo" },
+  { key: "concerns", label: "Diagnóstico de Queixas" },
+  { key: "objection", label: "Esclarecimentos" },
+  { key: "decision", label: "Momento Atual" },
+  { key: "loading", label: "Mapa do Sorriso" },
+  { key: "result", label: "Mapa do Sorriso" },
 ] as const;
 
 type StepKey = (typeof STEPS)[number]["key"];
@@ -114,19 +134,43 @@ type StepKey = (typeof STEPS)[number]["key"];
 /* ----------------------------- State ----------------------------- */
 
 type Answers = {
-  desire?: string;
-  references: string[];
-  perception: string[];
-  safety: string[];
-  moment?: string;
-  lead: { name: string; whatsapp: string };
+  style?: string;
+  concerns: string[];
+  objection?: string;
+  decision?: string;
 };
 
 const initialAnswers: Answers = {
-  references: [],
-  perception: [],
-  safety: [],
-  lead: { name: "", whatsapp: "" },
+  concerns: [],
+};
+
+const CLINIC_WHATSAPP = "351911056526";
+
+const CTA_CONFIG: Record<string, { buttonText: string; message: string }> = {
+  agendar: {
+    buttonText: "Ver Agenda & Solicitar Avaliação no WhatsApp",
+    message:
+      "Olá! Concluí meu Mapa do Sorriso e gostaria de agendar uma avaliação presencial.",
+  },
+  investimento: {
+    buttonText: "Enviar Mapa & Receber Guia de Investimento",
+    message:
+      "Olá! Concluí meu Mapa do Sorriso e gostaria de entender os valores e condições.",
+  },
+  comparando: {
+    buttonText: "Enviar Meu Mapa & Comparar Possibilidades",
+    message:
+      "Olá! Concluí meu Mapa do Sorriso e gostaria de entender as técnicas e diferenciais da clínica.",
+  },
+  pesquisando: {
+    buttonText: "Receber Meu Mapa + Tirar Dúvidas",
+    message: "Olá! Fiz o Mapa do Sorriso e gostaria de tirar uma dúvida sobre facetas.",
+  },
+};
+
+const DEFAULT_CTA = {
+  buttonText: "Enviar Meu Mapa do Sorriso no WhatsApp",
+  message: "Olá! Concluí meu Mapa do Sorriso e gostaria de conversar com a clínica.",
 };
 
 /* ----------------------------- Component ----------------------------- */
@@ -136,7 +180,6 @@ function SmileLab() {
   const [answers, setAnswers] = useState<Answers>(initialAnswers);
   const step: StepKey = STEPS[stepIndex].key;
 
-  // Loading -> result auto-advance
   useEffect(() => {
     if (step === "loading") {
       const t = setTimeout(() => setStepIndex((i) => i + 1), 2200);
@@ -144,12 +187,11 @@ function SmileLab() {
     }
   }, [step]);
 
-  // Scroll to top on step change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [stepIndex]);
 
-  const progressSteps = STEPS.slice(1, 8); // Desejo .. Mapa
+  const progressSteps = STEPS.slice(1, 6); // 5 telas: objetivo .. mapa
   const currentProgressIdx = Math.min(Math.max(stepIndex - 1, 0), progressSteps.length - 1);
 
   const next = () => setStepIndex((i) => Math.min(i + 1, STEPS.length - 1));
@@ -157,21 +199,14 @@ function SmileLab() {
 
   const canAdvance = useMemo(() => {
     switch (step) {
-      case "desire":
-        return !!answers.desire;
-      case "references":
-        return true; // educational pause
-      case "perception":
-        return answers.perception.length > 0;
-      case "safety":
-        return answers.safety.length > 0;
-      case "moment":
-        return !!answers.moment;
-      case "lead":
-        return (
-          answers.lead.name.trim().length > 1 &&
-          answers.lead.whatsapp.replace(/\D/g, "").length >= 10
-        );
+      case "style":
+        return !!answers.style;
+      case "concerns":
+        return answers.concerns.length > 0;
+      case "objection":
+        return !!answers.objection;
+      case "decision":
+        return !!answers.decision;
       default:
         return true;
     }
@@ -180,7 +215,6 @@ function SmileLab() {
   const showCTA = step !== "hero" && step !== "loading" && step !== "result";
   const showProgress = showCTA;
 
-  // Reset internal scroll on step change
   const mainRef = useRef<HTMLElement>(null);
   useEffect(() => {
     mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
@@ -188,73 +222,65 @@ function SmileLab() {
 
   return (
     <div className="min-h-[100dvh] w-full overflow-x-hidden bg-muted/40 text-foreground">
-      <div className="relative mx-auto flex min-h-[100dvh] w-full min-w-0 max-w-[430px] flex-col overflow-hidden bg-background shadow-[0_0_60px_-20px_rgba(0,0,0,0.25)] sm:min-h-[100dvh]">
+      <div className="relative mx-auto flex min-h-[100dvh] w-full min-w-0 max-w-[430px] flex-col overflow-hidden bg-background shadow-[0_0_60px_-20px_rgba(0,0,0,0.25)]">
         <AppHeader />
         {showProgress && (
-          <ProgressBar steps={progressSteps.map((s) => s.label)} current={currentProgressIdx} />
+          <ProgressBar
+            label={progressSteps[currentProgressIdx].label}
+            current={currentProgressIdx}
+            total={progressSteps.length}
+          />
         )}
 
         <main
           ref={mainRef}
-          className={`flex-1 min-w-0 overflow-y-auto overflow-x-hidden px-4 pt-2 ${showCTA ? "pb-24" : "pb-5"}`}
+          className={`min-w-0 flex-1 overflow-y-auto overflow-x-hidden px-4 pt-2 ${showCTA ? "pb-24" : "pb-5"}`}
         >
           <div key={step} className="animate-fade-up">
             {step === "hero" && <Hero onStart={next} />}
 
-            {step === "desire" && (
-              <SingleChoiceStep
-                title="O que você gostaria de mudar no seu sorriso?"
-                items={DESIRE}
-                value={answers.desire}
-                onChange={(v) => setAnswers((a) => ({ ...a, desire: v }))}
-                withImages
-                layout="carousel"
-                showHelper={false}
+            {step === "style" && (
+              <StyleStep
+                value={answers.style}
+                onChange={(v) => setAnswers((a) => ({ ...a, style: v }))}
+                onGuidance={() => {
+                  setAnswers((a) => ({ ...a, style: "orientacao" }));
+                  next();
+                }}
               />
             )}
 
-            {step === "perception" && (
+            {step === "concerns" && (
               <MultiChoiceStep
-                title="O que mais lhe incomoda no seu sorriso atualmente?"
-                items={PERCEPTION}
-                value={answers.perception}
-                onChange={(v) => setAnswers((a) => ({ ...a, perception: v }))}
-                showCount={false}
+                eyebrow="Diagnóstico de queixas"
+                title="O que mais te incomoda no seu sorriso hoje?"
+                text="Selecione até 2 opções principais."
+                items={CONCERNS}
+                value={answers.concerns}
+                max={2}
+                onChange={(v) => setAnswers((a) => ({ ...a, concerns: v }))}
               />
             )}
 
-            {step === "references" && (
-              <ReferencesGallery
-                items={REFERENCES}
-                value={answers.references}
-                onChange={(references) => setAnswers((a) => ({ ...a, references }))}
-              />
-            )}
-
-            {step === "safety" && (
-              <MultiChoiceStep
-                title="Quais são suas principais dúvidas quando o assunto é faceta?"
-                items={SAFETY}
-                value={answers.safety}
-                onChange={(v) => setAnswers((a) => ({ ...a, safety: v }))}
-                showCount={false}
-              />
-            )}
-
-            {step === "moment" && (
+            {step === "objection" && (
               <SingleChoiceStep
-                title="Em que fase você está hoje?"
-                items={MOMENT}
-                value={answers.moment}
-                onChange={(v) => setAnswers((a) => ({ ...a, moment: v }))}
-                showHelper={false}
+                eyebrow="Esclarecimentos"
+                title="Qual é a sua principal dúvida sobre facetas?"
+                text="Usamos essa informação para personalizar suas explicações."
+                items={OBJECTIONS}
+                value={answers.objection}
+                onChange={(v) => setAnswers((a) => ({ ...a, objection: v }))}
               />
             )}
 
-            {step === "lead" && (
-              <LeadForm
-                value={answers.lead}
-                onChange={(lead) => setAnswers((a) => ({ ...a, lead }))}
+            {step === "decision" && (
+              <SingleChoiceStep
+                eyebrow="Momento atual"
+                title="Em qual momento de decisão você está agora?"
+                text="Selecione a opção que reflete seu interesse atual."
+                items={DECISION}
+                value={answers.decision}
+                onChange={(v) => setAnswers((a) => ({ ...a, decision: v }))}
               />
             )}
 
@@ -275,13 +301,13 @@ function SmileLab() {
         {showCTA && (
           <StickyCTA
             label={
-              step === "lead"
-                ? "Ver meu Mapa do Sorriso"
-                : step === "references"
-                  ? "Entendi, continuar"
-                  : !canAdvance
-                    ? "Escolha uma opção para continuar"
-                    : "Continuar"
+              !canAdvance
+                ? step === "concerns"
+                  ? "Selecione até 2 opções"
+                  : "Escolha uma opção para continuar"
+                : step === "decision"
+                  ? "Ver meu Mapa do Sorriso"
+                  : "Avançar"
             }
             disabled={!canAdvance}
             onClick={next}
@@ -326,16 +352,24 @@ function AppHeader() {
 
 /* ----------------------------- Progress ----------------------------- */
 
-function ProgressBar({ steps, current }: { steps: string[]; current: number }) {
-  const pct = ((current + 1) / steps.length) * 100;
+function ProgressBar({
+  label,
+  current,
+  total,
+}: {
+  label: string;
+  current: number;
+  total: number;
+}) {
+  const pct = ((current + 1) / total) * 100;
   return (
     <div className="shrink-0 border-b border-border/60 bg-background/90 backdrop-blur-md">
       <div className="w-full px-4 pb-2 pt-2">
         <div className="mb-1.5 flex items-center justify-between gap-3">
           <p className="text-[9px] uppercase tracking-[0.16em] text-muted-foreground">
-            Etapa {String(current + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
+            Passo {current + 1} de {total}
           </p>
-          <p className="truncate font-serif text-[12px] text-foreground">{steps[current]}</p>
+          <p className="truncate font-serif text-[12px] text-foreground">{label}</p>
         </div>
         <div className="h-0.5 w-full overflow-hidden rounded-full bg-muted">
           <div
@@ -408,11 +442,11 @@ function Hero({ onStart }: { onStart: () => void }) {
 
 function StepHeader({ eyebrow, title, text }: { eyebrow?: string; title: string; text?: string }) {
   return (
-    <header className="mb-2 mt-1">
+    <header className="mb-3 mt-1">
       {eyebrow && (
         <p className="mb-1.5 text-[10px] uppercase tracking-[0.18em] text-gold">{eyebrow}</p>
       )}
-      <h2 className="text-balance font-serif text-[24px] leading-[1.08] text-foreground sm:text-[26px]">
+      <h2 className="text-balance font-serif text-[24px] leading-[1.08] text-foreground">
         {title}
       </h2>
       {text && <p className="mt-1.5 text-[12.5px] leading-snug text-muted-foreground">{text}</p>}
@@ -420,8 +454,79 @@ function StepHeader({ eyebrow, title, text }: { eyebrow?: string; title: string;
   );
 }
 
-function CompactNote({ children }: { children: React.ReactNode }) {
-  return <p className="mt-1.5 text-[11.5px] leading-relaxed text-muted-foreground">{children}</p>;
+function StyleStep({
+  value,
+  onChange,
+  onGuidance,
+}: {
+  value?: string;
+  onChange: (v: string) => void;
+  onGuidance: () => void;
+}) {
+  return (
+    <section>
+      <StepHeader
+        eyebrow="Seu objetivo"
+        title="Qual estilo de sorriso você deseja conquistar?"
+        text="Selecione o estilo visual que mais se aproxima do seu ideal."
+      />
+
+      <div className="grid grid-cols-1 gap-2.5 min-[380px]:grid-cols-2">
+        {STYLES.map((it, idx) => {
+          const selected = value === it.id;
+          return (
+            <button
+              key={it.id}
+              type="button"
+              onClick={() => onChange(it.id)}
+              aria-pressed={selected}
+              style={{ animationDelay: `${idx * 50}ms` }}
+              className={`animate-scale-pop group relative flex w-full max-w-full flex-col overflow-hidden rounded-2xl text-left card-premium box-border ${selected ? "card-selected" : ""}`}
+            >
+              <div className="relative aspect-square w-full overflow-hidden">
+                <img
+                  src={it.image}
+                  alt={it.title}
+                  width={800}
+                  height={800}
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/50 via-transparent to-transparent" />
+                {selected && (
+                  <span className="absolute right-2.5 top-2.5 grid h-8 w-8 place-items-center rounded-full bg-gold text-primary shadow-gold animate-scale-pop">
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="h-3.5 w-3.5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                    >
+                      <path d="M5 12l5 5L20 7" />
+                    </svg>
+                  </span>
+                )}
+              </div>
+              <div className="p-3">
+                <p className="font-serif text-[15px] leading-tight text-foreground">{it.title}</p>
+                <p className="mt-1 text-[11.5px] leading-snug text-muted-foreground">
+                  {it.caption}
+                </p>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      <button
+        type="button"
+        onClick={onGuidance}
+        className="mt-4 w-full text-center text-[12.5px] leading-snug text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground"
+      >
+        Ainda não sei meu estilo, quero orientação em consulta
+      </button>
+    </section>
+  );
 }
 
 function SingleChoiceStep({
@@ -431,9 +536,6 @@ function SingleChoiceStep({
   items,
   value,
   onChange,
-  withImages = false,
-  layout = "grid",
-  showHelper = true,
 }: {
   eyebrow?: string;
   title: string;
@@ -441,43 +543,20 @@ function SingleChoiceStep({
   items: CardItem[];
   value?: string;
   onChange: (v: string) => void;
-  withImages?: boolean;
-  layout?: "grid" | "carousel";
-  showHelper?: boolean;
 }) {
   return (
-    <section
-      className={layout === "carousel" ? "flex min-h-[calc(100dvh-18rem)] flex-col" : undefined}
-    >
+    <section>
       <StepHeader eyebrow={eyebrow} title={title} text={text} />
-      <div
-        className={
-          layout === "carousel"
-            ? "-mx-4 mt-2 flex flex-1 items-stretch gap-3 overflow-x-auto px-4 pb-2 snap-x snap-mandatory"
-            : "grid gap-2"
-        }
-        style={
-          layout === "carousel" ? { scrollbarWidth: "none", msOverflowStyle: "none" } : undefined
-        }
-      >
-        {layout === "carousel" && <div className="shrink-0 w-4" aria-hidden="true" />}
-        {items.map((it, idx) => (
+      <div className="grid gap-2.5">
+        {items.map((it) => (
           <OptionCard
             key={it.id}
             item={it}
             selected={value === it.id}
             onClick={() => onChange(it.id)}
-            withImage={withImages}
-            index={idx}
-            carousel={layout === "carousel"}
           />
         ))}
       </div>
-      {showHelper && (
-        <CompactNote>
-          Essa escolha não define tratamento. Ela só ajuda a clínica a entender o que você imagina.
-        </CompactNote>
-      )}
     </section>
   );
 }
@@ -489,8 +568,7 @@ function MultiChoiceStep({
   items,
   value,
   onChange,
-  withImages = false,
-  showCount = true,
+  max,
 }: {
   eyebrow?: string;
   title: string;
@@ -498,112 +576,42 @@ function MultiChoiceStep({
   items: CardItem[];
   value: string[];
   onChange: (v: string[]) => void;
-  withImages?: boolean;
-  showCount?: boolean;
+  max?: number;
 }) {
   const toggle = (id: string) => {
-    onChange(value.includes(id) ? value.filter((v) => v !== id) : [...value, id]);
+    if (value.includes(id)) {
+      onChange(value.filter((v) => v !== id));
+      return;
+    }
+    if (max && value.length >= max) return;
+    onChange([...value, id]);
   };
+
+  const reachedMax = !!max && value.length >= max;
+
   return (
     <section>
       <StepHeader eyebrow={eyebrow} title={title} text={text} />
       <div className="grid gap-2.5">
-        {items.map((it, idx) => (
-          <OptionCard
-            key={it.id}
-            item={it}
-            selected={value.includes(it.id)}
-            onClick={() => toggle(it.id)}
-            multi
-            withImage={withImages}
-            index={idx}
-          />
-        ))}
-      </div>
-      {showCount && value.length > 0 && (
-        <p className="mt-3 text-center text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-          {value.length} {value.length === 1 ? "selecionado" : "selecionados"}
-        </p>
-      )}
-    </section>
-  );
-}
-
-/* ----------------------------- References (educational) ----------------------------- */
-
-function ReferencesGallery({
-  items,
-  value,
-  onChange,
-}: {
-  items: CardItem[];
-  value: string[];
-  onChange: (v: string[]) => void;
-}) {
-  const toggle = (id: string) => {
-    onChange(value.includes(id) ? value.filter((v) => v !== id) : [...value, id]);
-  };
-
-  return (
-    <section>
-      <header className="mb-3 mt-1">
-        <h2 className="text-balance font-serif text-[23px] leading-[1.08] text-foreground">
-          Esses são os principais pontos para um lindo sorriso
-        </h2>
-      </header>
-
-      <div
-        className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2 snap-x snap-mandatory"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-        <div className="shrink-0 w-4" aria-hidden="true" />
-        {items.map((it, idx) => {
+        {items.map((it) => {
           const selected = value.includes(it.id);
           return (
-            <button
-              type="button"
+            <OptionCard
               key={it.id}
+              item={it}
+              selected={selected}
               onClick={() => toggle(it.id)}
-              aria-pressed={selected}
-              style={{ animationDelay: `${idx * 60}ms` }}
-              className={`animate-scale-pop relative flex min-w-[84%] snap-start flex-col overflow-hidden rounded-2xl border bg-card text-left shadow-card sm:min-w-[72%] ${selected ? "border-gold shadow-gold" : "border-border"}`}
-            >
-              {it.image && (
-                <div className="relative aspect-[4/3] w-full overflow-hidden">
-                  <img
-                    src={it.image}
-                    alt={it.title}
-                    loading="lazy"
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/55 via-transparent to-transparent" />
-                  {selected && (
-                    <span className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-gold text-primary shadow-gold animate-scale-pop">
-                      <svg
-                        viewBox="0 0 24 24"
-                        className="h-3.5 w-3.5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="3"
-                      >
-                        <path d="M5 12l5 5L20 7" />
-                      </svg>
-                    </span>
-                  )}
-                </div>
-              )}
-              <div className="p-3.5">
-                <p className="font-serif text-[17px] leading-tight text-foreground">{it.title}</p>
-                {it.caption && (
-                  <p className="mt-1 text-[12.5px] leading-snug text-muted-foreground">
-                    {it.caption}
-                  </p>
-                )}
-              </div>
-            </button>
+              multi
+              disabled={reachedMax && !selected}
+            />
           );
         })}
       </div>
+      {reachedMax && (
+        <p className="mt-3 text-center text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+          Selecione até {max} opções principais
+        </p>
+      )}
     </section>
   );
 }
@@ -615,66 +623,21 @@ function OptionCard({
   selected,
   onClick,
   multi = false,
-  withImage = false,
-  index = 0,
-  carousel = false,
+  disabled = false,
 }: {
   item: CardItem;
   selected: boolean;
   onClick: () => void;
   multi?: boolean;
-  withImage?: boolean;
-  index?: number;
-  carousel?: boolean;
+  disabled?: boolean;
 }) {
-  if (withImage && item.image) {
-    return (
-      <button
-        type="button"
-        onClick={onClick}
-        aria-pressed={selected}
-        style={{ animationDelay: `${index * 50}ms` }}
-        className={`animate-scale-pop group relative ${carousel ? "min-w-[88%] min-h-[46vh] snap-start" : "w-full max-w-full"} flex flex-col overflow-hidden rounded-2xl text-left card-premium box-border ${selected ? "card-selected" : ""}`}
-      >
-        <div
-          className={`relative w-full overflow-hidden ${carousel ? "min-h-[35vh] flex-1" : "aspect-[21/9]"}`}
-        >
-          <img
-            src={item.image}
-            alt={item.title}
-            loading="lazy"
-            className="h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/55 via-transparent to-transparent" />
-          {selected && (
-            <span className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-gold text-primary shadow-gold animate-scale-pop">
-              <svg
-                viewBox="0 0 24 24"
-                className="h-3.5 w-3.5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-              >
-                <path d="M5 12l5 5L20 7" />
-              </svg>
-            </span>
-          )}
-        </div>
-        <div className="p-3.5">
-          <p className="font-serif text-[17px] leading-tight text-foreground">{item.title}</p>
-          {item.caption && (
-            <p className="mt-1 text-[12.5px] leading-snug text-muted-foreground">{item.caption}</p>
-          )}
-        </div>
-      </button>
-    );
-  }
   return (
     <button
       type="button"
       onClick={onClick}
+      disabled={disabled}
       aria-pressed={selected}
-      className={`group relative flex w-full max-w-full items-start gap-3 rounded-2xl p-4 text-left card-premium box-border ${selected ? "card-selected" : ""}`}
+      className={`group relative flex w-full max-w-full items-start gap-3 rounded-2xl p-4 text-left card-premium box-border ${selected ? "card-selected" : ""} ${disabled ? "opacity-45" : ""}`}
     >
       <span
         className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center ${multi ? "rounded-md" : "rounded-full"} border-2 transition-colors ${selected ? "border-gold bg-gold text-primary" : "border-border bg-background text-transparent"}`}
@@ -703,74 +666,6 @@ function OptionCard({
   );
 }
 
-/* ----------------------------- Lead form ----------------------------- */
-
-function maskPhone(v: string) {
-  const d = v.replace(/\D/g, "").slice(0, 11);
-  if (d.length <= 2) return d;
-  if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
-  if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
-  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
-}
-
-function LeadForm({
-  value,
-  onChange,
-}: {
-  value: Answers["lead"];
-  onChange: (v: Answers["lead"]) => void;
-}) {
-  const upd = (k: keyof Answers["lead"], v: string) => onChange({ ...value, [k]: v });
-  return (
-    <section>
-      <StepHeader title="Seu Mapa do Sorriso está pronto." />
-      <div className="space-y-3 rounded-3xl border border-border bg-card p-4 shadow-card">
-        <Field label="Nome" required>
-          <input
-            type="text"
-            value={value.name}
-            onChange={(e) => upd("name", e.target.value.slice(0, 80))}
-            placeholder="Como podemos te chamar"
-            className="w-full bg-transparent text-[16px] text-foreground outline-none placeholder:text-muted-foreground/60"
-          />
-        </Field>
-        <Field label="WhatsApp" required>
-          <input
-            type="tel"
-            inputMode="numeric"
-            value={value.whatsapp}
-            onChange={(e) => upd("whatsapp", maskPhone(e.target.value))}
-            placeholder="(11) 99999-9999"
-            className="w-full bg-transparent text-[16px] text-foreground outline-none placeholder:text-muted-foreground/60"
-          />
-        </Field>
-      </div>
-      <p className="mt-3 text-center text-[12px] leading-relaxed text-muted-foreground">
-        O mapa organiza seu perfil antes da conversa com a clínica.
-      </p>
-    </section>
-  );
-}
-
-function Field({
-  label,
-  required,
-  children,
-}: {
-  label: string;
-  required?: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <label className="block rounded-2xl border border-border bg-background px-4 py-3 transition-colors focus-within:border-gold">
-      <span className="block text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-        {label} {required && <span className="text-gold">*</span>}
-      </span>
-      <div className="mt-1">{children}</div>
-    </label>
-  );
-}
-
 /* ----------------------------- Loading ----------------------------- */
 
 function LoadingMap() {
@@ -796,8 +691,7 @@ function LoadingMap() {
       </div>
       <p className="mt-8 font-serif text-2xl text-foreground">Organizando seu Mapa do Sorriso…</p>
       <p className="mt-3 max-w-xs text-[14px] text-muted-foreground">
-        Reunindo desejos, percepções e dúvidas para transformar respostas em clareza antes da
-        decisão.
+        Reunindo objetivo, queixas e dúvidas para transformar respostas em clareza antes da decisão.
       </p>
     </section>
   );
@@ -805,127 +699,41 @@ function LoadingMap() {
 
 /* ----------------------------- Result ----------------------------- */
 
-const STYLE_LABEL: Record<string, string> = {
-  natural: "Resultado natural",
-  bright: "Dentes mais claros",
-  harmonic: "Mais harmonia",
-  confident: "Desejo ainda em descoberta",
-  bold: "Transformação maior com segurança",
+const PROFILE_LABEL: Record<string, string> = {
+  natural: "Harmonização Discreta",
+  bright: "Rejuvenescimento Cromático",
+  wide: "Amplitude & Simetria",
+  hollywood: "Alta Performance Estética",
+  orientacao: "Descoberta Guiada",
 };
 
-const PERCEPTION_LABEL = Object.fromEntries(PERCEPTION.map((p) => [p.id, p.title]));
-const REF_LABEL = Object.fromEntries(REFERENCES.map((p) => [p.id, p.title]));
-const SAFETY_LABEL = Object.fromEntries(SAFETY.map((p) => [p.id, p.title]));
+const GOAL_LABEL: Record<string, string> = {
+  natural: "Sorriso Natural & Harmônico",
+  bright: "Sorriso Rejuvenescido & Claro",
+  wide: "Sorriso Amplo & Simétrico",
+  hollywood: "Sorriso Ultra Radiante / Hollywood",
+  orientacao: "Orientação de estilo em consulta",
+};
 
-function desireNarrative(id?: string): string {
-  switch (id) {
-    case "natural":
-      return "Você busca uma melhora discreta, com aparência leve e integrada ao rosto. Na conversa com a clínica, vale observar principalmente naturalidade, acabamento e harmonia com sua expressão.";
-    case "bright":
-      return "Seu interesse aponta para mais luminosidade e presença no sorriso. O ponto importante é entender qual nível de clareamento, cor ou contraste combina com seu rosto sem criar um aspecto artificial.";
-    case "harmonic":
-      return "Sua escolha indica foco em equilíbrio visual. A avaliação pode explorar proporção, formato, alinhamento aparente e como esses elementos influenciam a harmonia do sorriso.";
-    case "confident":
-      return "Seu mapa mostra que você ainda está organizando a percepção sobre o sorriso. Isso é comum: muitas pessoas sentem que algo poderia melhorar antes de saber se o ponto está na cor, no formato, na proporção ou na harmonia geral.";
-    case "bold":
-      return "Você parece aberto(a) a uma mudança mais perceptível, mas com segurança. O cuidado aqui é alinhar expectativa, limite clínico e previsibilidade antes de falar em qualquer caminho estético.";
-    default:
-      return "Seu mapa organiza os pontos que você quer observar antes de conversar com um dentista sobre possibilidades estéticas.";
-  }
-}
+const CONCERN_SHORT: Record<string, string> = {
+  color: "Cor",
+  shape: "Formato",
+  spaces: "Espaços e alinhamento",
+  gum: "Gengiva",
+  restorations: "Restaurações antigas",
+};
 
-function perceptionNarrative(ids: string[]): string {
-  if (ids.includes("unsure") && ids.length === 1) {
-    return "Você ainda não nomeou exatamente o que incomoda, e isso é comum. A consulta pode ajudar a traduzir essa percepção geral em pontos observáveis, sem forçar uma decisão agora.";
-  }
+const PRIORITY_BY_OBJECTION: Record<string, string> = {
+  wear: "Preservação do dente natural",
+  durability: "Durabilidade e manutenção",
+  investment: "Transparência de investimento",
+  artificial: "Naturalidade e proporção",
+  pain: "Conforto durante o processo",
+};
 
-  const has = (id: string) => ids.includes(id);
-  const groups: string[] = [];
-
-  if (has("color") || has("stains")) groups.push("cor, manchas ou restaurações aparentes");
-  if (has("shape") || has("size") || has("edges"))
-    groups.push("formato, tamanho, proporção ou acabamento dos dentes");
-  if (has("spaces") || has("align")) groups.push("alinhamento visual e espaços");
-  if (has("small") || has("gum")) groups.push("exposição do sorriso, gengiva e presença ao sorrir");
-
-  if (groups.length === 0) {
-    return "Os pontos marcados ajudam a clínica a entender onde sua percepção estética está concentrada e quais temas merecem ser avaliados com mais calma.";
-  }
-
-  return `Os pontos que você marcou se concentram em ${formatList(groups)}. Isso não define tratamento, mas ajuda a conversa a começar pelo que você realmente percebe no espelho.`;
-}
-
-function perceptionInsight(title: string): string {
-  switch (title) {
-    case "Cor amarelada ou escura":
-    case "Cor dos dentes":
-      return "Cor e luminosidade: entender como a tonalidade interfere na aparência do sorriso.";
-    case "Formato irregular dos dentes":
-    case "Formato dos dentes":
-      return "Formato dos dentes: observar como contornos e desenho dental influenciam a personalidade do sorriso.";
-    case "Dentes pequenos, curtos ou desproporcionais":
-    case "Tamanho dos dentes":
-      return "Proporção: avaliar como tamanho e exposição dos dentes afetam a harmonia visual.";
-    case "Espaços entre os dentes":
-      return "Espaços: conversar sobre continuidade, simetria e equilíbrio do sorriso.";
-    case "Dentes tortos ou desalinhados":
-    case "Dentes desalinhados":
-      return "Alinhamento visual: observar sensação de continuidade, simetria e equilíbrio.";
-    case "Sorriso pequeno ou pouco aparente":
-      return "Exposição do sorriso: entender como os dentes aparecem ao falar ou sorrir.";
-    case "Gengiva muito aparente":
-      return "Gengiva: analisar com cuidado a relação entre dentes, gengiva e exposição ao sorrir.";
-    case "Bordas desgastadas ou irregulares":
-      return "Bordas e acabamento: observar contornos que podem influenciar a percepção estética.";
-    case "Manchas, restaurações ou marcas antigas":
-      return "Marcas e restaurações: avaliar como textura, manchas e histórico dental influenciam a indicação estética.";
-    case "Não sei exatamente, só quero melhorar":
-      return "Dúvida geral: transformar percepções soltas em perguntas claras para a avaliação profissional.";
-    default:
-      return title;
-  }
-}
-
-function safetyNarrative(ids: string[]): string {
-  if (ids.length === 0) {
-    return "Você busca mais clareza antes de decidir. Esse mapa ajuda a organizar a conversa inicial, mas a análise clínica vem depois.";
-  }
-
-  const parts: string[] = [];
-  if (ids.includes("natural")) parts.push("evitar resultado artificial");
-  if (ids.includes("wear")) parts.push("entender preservação e possível desgaste dos dentes");
-  if (ids.includes("fit")) parts.push("avaliar se a mudança combina com rosto e expressão");
-  if (ids.includes("price"))
-    parts.push(
-      "entender por que investimento varia conforme complexidade, materiais, planejamento e quantidade de dentes",
-    );
-  if (ids.includes("pain")) parts.push("esclarecer conforto, etapas e recuperação");
-  if (ids.includes("durability")) parts.push("conversar sobre durabilidade, manutenção e cuidados");
-  if (ids.includes("alternatives")) parts.push("comparar alternativas antes de pensar em facetas");
-  if (ids.includes("indication"))
-    parts.push("confirmar se facetas fazem sentido para o caso, sem indicação automática");
-
-  return `Suas principais dúvidas giram em torno de ${formatList(parts)}. Elas são boas perguntas para levar à avaliação, porque evitam decidir só pelo preço ou por promessa estética.`;
-}
-
-function momentNarrative(moment?: string): string {
-  if (moment === "evaluate") {
-    return "Como você já quer uma avaliação, o melhor próximo passo é levar esse mapa para uma conversa mais objetiva com a clínica.";
-  }
-  if (moment === "price") {
-    return "Se investimento ainda pesa na decisão, a conversa pode começar pelos fatores que influenciam valor antes de qualquer comparação rasa.";
-  }
-  if (moment === "compare") {
-    return "Como você está comparando clínicas ou tratamentos, este mapa ajuda a diferenciar desejo estético, dúvidas clínicas e critérios de escolha.";
-  }
-  if (moment === "fear") {
-    return "Como ainda existem receios, a prioridade é esclarecer dúvidas antes de decidir, sem pressão por tratamento.";
-  }
-  if (moment === "learn") {
-    return "Como você ainda está começando a pesquisar, este mapa serve como ponto de partida para uma conversa mais clara.";
-  }
-  return "O próximo passo mais seguro é conversar com a equipe para entender possibilidades, dúvidas e critérios de avaliação.";
-}
+const CONCERN_LABEL = Object.fromEntries(CONCERNS.map((c) => [c.id, c.title]));
+const OBJECTION_LABEL = Object.fromEntries(OBJECTIONS.map((c) => [c.id, c.title]));
+const DECISION_LABEL = Object.fromEntries(DECISION.map((c) => [c.id, c.title]));
 
 function formatList(items: string[]): string {
   if (items.length <= 1) return items[0] ?? "";
@@ -933,80 +741,81 @@ function formatList(items: string[]): string {
   return `${items.slice(0, -1).join(", ")} e ${items[items.length - 1]}`;
 }
 
-function buildClinicBrief(
-  answers: Answers,
-  styleLabel: string,
-  references: string[],
-  perceived: string[],
-  safetyTitles: string[],
-): string {
-  const parts = [
-    `Desejo principal: ${styleLabel}.`,
-    references.length
-      ? `Referências que chamaram atenção: ${formatList(references.slice(0, 4))}.`
-      : "Referências marcadas: nenhuma; pessoa apenas observou a etapa educativa.",
-    perceived.length
-      ? `Pontos percebidos: ${formatList(perceived.slice(0, 5))}.`
-      : "Pontos percebidos: não especificados.",
-    safetyTitles.length
-      ? `Dúvidas centrais: ${formatList(safetyTitles.slice(0, 5))}.`
-      : "Dúvidas centrais: não especificadas.",
-  ];
-
-  if (answers.moment) {
-    const momentLabel = MOMENT.find((m) => m.id === answers.moment)?.title;
-    if (momentLabel) parts.push(`Momento: ${momentLabel}.`);
-  }
-
-  return parts.join(" ");
-}
-
 function ResultMap({ answers, onRestart }: { answers: Answers; onRestart: () => void }) {
-  const styleLabel = answers.desire ? STYLE_LABEL[answers.desire] : "Equilibrado";
-  const refs = answers.references.map((id) => REF_LABEL[id]).filter(Boolean);
-  const perceived = answers.perception.map((id) => PERCEPTION_LABEL[id]).filter(Boolean);
-  const safetyTitles = answers.safety.map((id) => SAFETY_LABEL[id]).filter(Boolean);
-  const clinicBrief = buildClinicBrief(answers, styleLabel, refs, perceived, safetyTitles);
-  const wppMessage = encodeURIComponent(
-    `Olá! Acabei de preencher meu Mapa do Sorriso. ${clinicBrief} Gostaria de entender, com orientação da clínica, quais possibilidades podem fazer sentido antes de comparar apenas valores.`,
-  );
-  const clinicWhatsappNumber = "351911056526";
-  const wppHref = `https://wa.me/${clinicWhatsappNumber}?text=${wppMessage}`;
+  const profile = (answers.style && PROFILE_LABEL[answers.style]) || "Descoberta Guiada";
+  const goal = (answers.style && GOAL_LABEL[answers.style]) || "Ainda em definição";
+  const concernShort = answers.concerns.map((id) => CONCERN_SHORT[id]).filter(Boolean);
+  const concernFull = answers.concerns.map((id) => CONCERN_LABEL[id]).filter(Boolean);
+  const priority = answers.objection
+    ? PRIORITY_BY_OBJECTION[answers.objection]
+    : "Clareza antes da decisão";
+
+  const cta = (answers.decision && CTA_CONFIG[answers.decision]) || DEFAULT_CTA;
+
+  const brief = [
+    `Objetivo: ${goal}.`,
+    concernFull.length ? `Principais queixas: ${formatList(concernFull)}.` : "",
+    answers.objection ? `Principal dúvida: ${OBJECTION_LABEL[answers.objection]}` : "",
+    answers.decision ? `Momento: ${DECISION_LABEL[answers.decision]}.` : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const wppHref = `https://wa.me/${CLINIC_WHATSAPP}?text=${encodeURIComponent(`${cta.message} ${brief}`)}`;
 
   return (
-    <section className="pb-12">
+    <section className="pb-10">
       <header className="mb-5 mt-2 text-center">
-        <p className="mb-2 text-[10px] uppercase tracking-[0.18em] text-gold">
-          Resultado personalizado
+        <p className="mb-2 inline-flex items-center gap-2 rounded-full border border-gold/60 bg-gold-soft/30 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-foreground">
+          <span className="h-1 w-1 rounded-full bg-gold" /> Análise concluída
         </p>
-        <h2 className="font-serif text-[34px] leading-[1.05] text-foreground sm:text-4xl">
-          Seu Mapa do Sorriso
+        <h2 className="font-serif text-[32px] leading-[1.05] text-foreground">
+          Seu Mapa do Sorriso está pronto!
         </h2>
-        {answers.lead.name && (
-          <p className="mt-2 text-[14px] text-muted-foreground">
-            para {answers.lead.name.split(" ")[0]}
-          </p>
-        )}
       </header>
 
-      <div className="space-y-3">
-        {RESULT_CARDS.map((card) => (
-          <ResultBlock
-            key={card.eyebrow}
-            eyebrow={card.eyebrow}
-            title={card.text}
-            accent={card.eyebrow === "Desejo principal"}
+      <article className="rounded-3xl border border-gold bg-card p-4 shadow-gold">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-gold">Perfil</p>
+        <p className="mt-1.5 font-serif text-[24px] leading-tight text-foreground">{profile}</p>
+
+        <dl className="mt-4 space-y-2.5 border-t border-border pt-3.5">
+          <SummaryRow label="Objetivo" value={goal} />
+          <SummaryRow
+            label="Principal queixa"
+            value={concernShort.length ? formatList(concernShort) : "Não especificada"}
           />
-        ))}
+          <SummaryRow label="Prioridade técnica" value={priority} />
+        </dl>
+      </article>
 
-        <div className="rounded-3xl border border-dashed border-border bg-muted/50 p-4 text-[12.5px] leading-relaxed text-muted-foreground">
-          Este mapa é educativo e não substitui uma avaliação odontológica.
-        </div>
+      <article className="mt-3 rounded-3xl border border-border bg-card p-4 shadow-card">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+          Padrão de qualidade
+        </p>
+        <p className="mt-1.5 font-serif text-[20px] leading-tight text-foreground">
+          O Padrão de Qualidade do Seu Planejamento
+        </p>
+        <ul className="mt-3.5 space-y-3">
+          {QUALITY_POINTS.map((p) => (
+            <li key={p.title} className="flex items-start gap-2.5">
+              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+              <span className="min-w-0">
+                <span className="block font-serif text-[16px] leading-tight text-foreground">
+                  {p.title}
+                </span>
+                <span className="mt-0.5 block text-[13px] leading-snug text-muted-foreground">
+                  {p.text}
+                </span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </article>
+
+      <div className="mt-3 rounded-3xl border border-dashed border-border bg-muted/50 p-4 text-[12.5px] leading-relaxed text-muted-foreground">
+        Este mapa é educativo, não representa diagnóstico nem promessa de resultado. A indicação
+        final é sempre do dentista, após avaliação clínica.
       </div>
-
-      <p className="mt-4 text-center text-[12.5px] leading-relaxed text-muted-foreground">
-        Envie seu mapa para a clínica receber seu perfil resumido antes da avaliação.
-      </p>
 
       <a
         href={wppHref}
@@ -1014,15 +823,13 @@ function ResultMap({ answers, onRestart }: { answers: Answers; onRestart: () => 
         rel="noopener noreferrer"
         className="group mt-5 flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-4 text-left text-primary-foreground shadow-soft transition-all duration-300 hover:translate-y-[-2px] hover:shadow-gold active:scale-[0.99]"
       >
-        <span className="flex flex-col">
+        <span className="flex min-w-0 flex-col">
           <span className="text-[11px] uppercase tracking-[0.2em] text-gold-soft">
             Próximo passo
           </span>
-          <span className="mt-1 font-serif text-[17px] leading-tight">
-            Enviar meu Mapa do Sorriso para a clínica
-          </span>
+          <span className="mt-1 font-serif text-[16px] leading-tight">{cta.buttonText}</span>
         </span>
-        <span className="grid h-11 w-11 place-items-center rounded-full bg-gold text-primary transition-transform group-hover:translate-x-1">
+        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gold text-primary transition-transform group-hover:translate-x-1">
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
             <path d="M20 3.5A11.5 11.5 0 003 19l-1 4 4.2-1.1A11.5 11.5 0 1020 3.5zm-8.5 18a9.5 9.5 0 01-4.9-1.4l-.3-.2-2.5.7.7-2.4-.2-.4A9.5 9.5 0 1111.5 21.5zm5.4-7.1c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.2s-.8.9-1 1.1c-.2.2-.4.2-.7.1a7.7 7.7 0 01-2.3-1.4 8.6 8.6 0 01-1.6-2c-.2-.3 0-.5.1-.6l.5-.6c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.1c-.2-.5-.5-.4-.7-.4h-.6a1.2 1.2 0 00-.9.4 3.6 3.6 0 00-1.1 2.7c0 1.6 1.1 3.1 1.3 3.3.2.2 2.3 3.5 5.5 4.7a18 18 0 001.8.6 4.4 4.4 0 002 .1 3.3 3.3 0 002.2-1.5 2.7 2.7 0 00.2-1.5c-.1-.1-.3-.2-.6-.3z" />
           </svg>
@@ -1030,6 +837,7 @@ function ResultMap({ answers, onRestart }: { answers: Answers; onRestart: () => 
       </a>
 
       <button
+        type="button"
         onClick={onRestart}
         className="mt-3 w-full rounded-2xl border border-border bg-card px-5 py-3.5 text-[14px] text-muted-foreground transition-colors hover:text-foreground"
       >
@@ -1039,31 +847,12 @@ function ResultMap({ answers, onRestart }: { answers: Answers; onRestart: () => 
   );
 }
 
-function ResultBlock({
-  eyebrow,
-  title,
-  children,
-  accent = false,
-}: {
-  eyebrow: string;
-  title?: string;
-  children?: React.ReactNode;
-  accent?: boolean;
-}) {
+function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
-    <article
-      className={`rounded-3xl border bg-card p-4 ${accent ? "border-gold shadow-gold" : "border-border shadow-card"}`}
-    >
-      <p
-        className={`text-[11px] uppercase tracking-[0.2em] ${accent ? "text-gold" : "text-muted-foreground"}`}
-      >
-        {eyebrow}
-      </p>
-      {title && (
-        <p className="mt-2 font-serif text-[22px] leading-tight text-foreground">{title}</p>
-      )}
-      {children}
-    </article>
+    <div className="grid grid-cols-[minmax(0,7rem)_minmax(0,1fr)] items-start gap-3">
+      <dt className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">{label}</dt>
+      <dd className="min-w-0 text-[13.5px] leading-snug text-foreground">{value}</dd>
+    </div>
   );
 }
 
@@ -1113,7 +902,7 @@ function StickyCTA({
                   : "bg-primary text-primary-foreground active:scale-[0.99]"
               }`}
             >
-              <span className="font-serif text-[15px]">{label}</span>
+              <span className="truncate font-serif text-[15px]">{label}</span>
               <span
                 className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg transition-transform group-hover:translate-x-0.5 ${disabled ? "bg-background/40" : "bg-gold text-primary"}`}
               >
