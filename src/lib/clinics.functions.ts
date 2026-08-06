@@ -87,8 +87,12 @@ export const updateSession = createServerFn({ method: "POST" })
     if (data.completed !== undefined) patch["completed"] = data.completed;
     if (data.whatsappClicked !== undefined) patch["whatsapp_clicked"] = data.whatsappClicked;
     if (Object.keys(patch).length === 0) return { ok: true };
-    await publicClient().from("clinic_sessions").update(patch).eq("id", data.sessionId);
+    await publicClient()
+      .from("clinic_sessions")
+      .update(patch as never)
+      .eq("id", data.sessionId);
     return { ok: true };
+
   });
 
 /* ------------------------------- Admin ------------------------------- */
