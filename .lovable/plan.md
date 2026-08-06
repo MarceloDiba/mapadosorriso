@@ -15,7 +15,40 @@ Isso substitui o plano anterior de arquivos de configuração: as imagens, texto
 /admin/clinicas/:id    -> edição (dados, contrato, visual, WhatsApp)
 ```
 
-Se o link estiver desativado ou o contrato vencido, a página da clínica mostra um aviso neutro em vez do fluxo.
+## Hierarquia das 5 telas
+
+O fluxo segue uma progressão psicológica clara: **desejo → problema → objeção → decisão → resultado**. Cada tela tem uma única pergunta, poucas opções, cards verticais e nenhuma rolagem horizontal.
+
+1. **Tela 1 — Estilo do sorriso (Desejo)**  
+   Pergunta: "Qual sorriso mais te inspira hoje?"  
+   Layout: grid 2x2 com cards visuais (imagem + rótulo).  
+   Estilos: Natural, Rejuvenescido, Amplo, Hollywood.  
+   Adicionar opção "Não tenho certeza — quero orientação" para reduzir abandono.  
+   Baixa fricção: escolha visual e aspiracional.
+
+2. **Tela 2 — O que te incomoda (Problema)**  
+   Pergunta: "O que mais te incomoda no seu sorriso hoje?"  
+   Até 2 seleções.  
+   Opções: cor, formato, espaços, tamanho, alinhamento.  
+   Média fricção: leve toque pessoal, sem diagnóstico.
+
+3. **Tela 3 — Segurança (Objeção)**  
+   Pergunta: "O que mais te faz hesitar em dar esse passo?"  
+   5 opções em radio button (única escolha).  
+   Opções: resultado parece artificial, medo de desgaste, medo de dor, investimento, tempo de tratamento.  
+   Função educativa: pausa de tranquilidade antes da decisão.
+
+4. **Tela 4 — Momento (Decisão)**  
+   Pergunta: "Qual é seu momento hoje?"  
+   Opções: "Quero ser atendido(a) agora", "Quero agendar uma avaliação", "Quero entender valores antes", "Estou comparando possibilidades", "Tenho vontade, mas ainda tenho receios", "Quero apenas aprender por enquanto".  
+   Cada opção mapeia para uma mensagem de WhatsApp diferente no CTA final.
+
+5. **Tela 5 — Mapa do Sorriso (Resultado)**  
+   Exibe o perfil gerado com base nas escolhas.  
+   Bloco educativo sobre qualidade do tratamento.  
+   CTA WhatsApp com texto e mensagem preenchida conforme a Tela 4.
+
+
 
 ## Painel administrativo
 
