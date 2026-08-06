@@ -160,19 +160,17 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
                 map={map}
                 styleImage={img(answers.style && answers.style !== "orientacao" ? answers.style : "hero")}
                 clinicName={clinic.name}
-                whatsapp={clinic.whatsapp}
                 objection={answers.objection}
                 onObjection={(id) => {
                   setAnswers((a) => ({ ...a, objection: id }));
                   track?.({ objection: id, funnelStep: "objection" });
                 }}
-                onWhatsapp={() => track?.({ whatsappClicked: true })}
-                onLead={(lead) => track?.({ leadName: lead.name, leadPhone: lead.phone })}
                 onRestart={() => {
                   setAnswers({ concerns: [] });
                   setStepIndex(0);
                 }}
               />
+
             )}
           </div>
         </main>
