@@ -44,10 +44,16 @@ export const getClinicBySlug = createServerFn({ method: "GET" })
   .handler(async ({ data }): Promise<PublicClinic | null> => {
     const { data: row } = await publicClient()
       .from("clinics")
-      .select("id, slug, name, city, whatsapp, logo_url, palette, font_pair, images, copy")
+      .select(
+        "id, slug, name, city, whatsapp, logo_url, palette, font_pair, images, copy, is_active, contract_start, contract_end",
+      )
       .eq("slug", data.slug)
       .maybeSingle();
-    if (!row) return null;
+    if (!row || !row.is_active) return null;
+    const today = new Date().toISOString().slice(0, 10);
+    if (row.contract_start && row.contract_start > today) return null;
+    if (row.contract_end && row.contract_end < today) return null;
+
     return {
       ...row,
       images: (row.images ?? {}) as Record<string, string>,
