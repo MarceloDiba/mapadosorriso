@@ -357,6 +357,51 @@ export const deleteClinic = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+export const duplicateClinic = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { id: string }) => ({ id: String(data.id) }))
+  .handler(async ({ context, data }) => {
+    await assertAdmin(context.supabase as never, context.userId);
+    const { data: row, error } = await context.supabase
+      .from("clinics")
+      .select("*")
+      .eq("id", data.id)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    if (!row) throw new Error("Clínica não encontrada.");
+
+    const base = `${row.slug}-copia`;
+    let slug = base;
+    for (let i = 2; i < 30; i++) {
+      const { data: exists } = await context.supabase
+        .from("clinics")
+        .select("id")
+        .eq("slug", slug)
+        .maybeSingle();
+      if (!exists) break;
+      slug = `${base}-${i}`;
+    }
+
+    const { data: created, error: insertError } = await context.supabase
+      .from("clinics")
+      .insert({
+        slug,
+        name: `${row.name} (cópia)`,
+        city: row.city,
+        whatsapp: row.whatsapp,
+        logo_url: row.logo_url,
+        palette: row.palette,
+        font_pair: row.font_pair,
+        images: row.images,
+        copy: row.copy,
+        is_active: false,
+      })
+      .select("id")
+      .maybeSingle();
+    if (insertError) throw new Error(insertError.message);
+    return { id: created?.id as string };
+  });
+
 export const getClinicAnalytics = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: { id: string; days?: number }) => ({
@@ -368,7 +413,9 @@ export const getClinicAnalytics = createServerFn({ method: "GET" })
     const since = new Date(Date.now() - data.days * 86400000).toISOString();
     const { data: rows, error } = await context.supabase
       .from("clinic_sessions")
-      .select("id, style, concerns, objection, decision, completed, whatsapp_clicked, created_at")
+      .select(
+        "id, style, concerns, objection, decision, completed, whatsapp_clicked, funnel_step, utm_source, utm_campaign, lead_name, lead_phone, created_at",
+      )
       .eq("clinic_id", data.id)
       .gte("created_at", since)
       .order("created_at", { ascending: false })
@@ -378,12 +425,33 @@ export const getClinicAnalytics = createServerFn({ method: "GET" })
     const views = list.length;
     const completed = list.filter((r) => r.completed).length;
     const clicks = list.filter((r) => r.whatsapp_clicked).length;
+
+    const dropoff: Record<string, number> = {};
+    for (const step of FUNNEL_STEPS) dropoff[step.key] = 0;
+    for (const row of list) {
+      const step = FUNNEL_STEPS.find((f) => f.value === row.funnel_step);
+      if (step && !row.whatsapp_clicked) dropoff[step.key] = (dropoff[step.key] ?? 0) + 1;
+    }
+    const bottleneck = FUNNEL_STEPS.slice(0, 4).reduce<string>(
+      (best, step) => ((dropoff[step.key] ?? 0) > (dropoff[best] ?? 0) ? step.key : best),
+      FUNNEL_STEPS[0].key as string,
+    );
+
+    const sources: Record<string, number> = {};
+    for (const row of list) {
+      const key = row.utm_source || "direto";
+      sources[key] = (sources[key] ?? 0) + 1;
+    }
+
     return {
       days: data.days,
       views,
       completed,
       clicks,
       completionRate: views ? Math.round((completed / views) * 100) : 0,
-      leads: list.filter((r) => r.completed),
+      dropoff,
+      bottleneck,
+      sources,
+      leads: list.filter((r) => r.completed || r.lead_name || r.whatsapp_clicked),
     };
   });
