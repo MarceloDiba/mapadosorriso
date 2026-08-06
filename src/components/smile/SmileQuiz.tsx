@@ -687,35 +687,19 @@ function ResultMap({
   map,
   styleImage,
   clinicName,
-  whatsapp,
   objection,
   onObjection,
-  onWhatsapp,
-  onLead,
   onRestart,
 }: {
   title: string;
   map: ReturnType<typeof buildSmileMap>;
   styleImage: string;
   clinicName: string;
-  whatsapp: string;
   objection?: string;
   onObjection: (id: string) => void;
-  onWhatsapp: () => void;
-  onLead: (lead: { name: string; phone: string }) => void;
   onRestart: () => void;
 }) {
-  const [sheet, setSheet] = useState(false);
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
 
-  const message = name ? `${map.whatsappMessage}\n\nMeu nome: ${name}.` : map.whatsappMessage;
-  const href = whatsappLink(whatsapp, message);
-
-  const go = () => {
-    if (name.trim() || phone.trim()) onLead({ name: name.trim(), phone });
-    onWhatsapp();
-  };
 
   return (
     <section className="-mx-4 pb-32">
