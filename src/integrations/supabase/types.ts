@@ -21,10 +21,16 @@ export type Database = {
           concerns: string[]
           created_at: string
           decision: string | null
+          funnel_step: number
           id: string
+          lead_name: string | null
+          lead_phone: string | null
           objection: string | null
           style: string | null
           updated_at: string
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
           whatsapp_clicked: boolean
         }
         Insert: {
@@ -33,10 +39,16 @@ export type Database = {
           concerns?: string[]
           created_at?: string
           decision?: string | null
+          funnel_step?: number
           id?: string
+          lead_name?: string | null
+          lead_phone?: string | null
           objection?: string | null
           style?: string | null
           updated_at?: string
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
           whatsapp_clicked?: boolean
         }
         Update: {
@@ -45,10 +57,16 @@ export type Database = {
           concerns?: string[]
           created_at?: string
           decision?: string | null
+          funnel_step?: number
           id?: string
+          lead_name?: string | null
+          lead_phone?: string | null
           objection?: string | null
           style?: string | null
           updated_at?: string
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
           whatsapp_clicked?: boolean
         }
         Relationships: [
@@ -66,6 +84,7 @@ export type Database = {
           city: string | null
           contract_end: string | null
           contract_start: string | null
+          contract_value: number | null
           copy: Json
           created_at: string
           font_pair: string
@@ -75,6 +94,7 @@ export type Database = {
           logo_url: string | null
           name: string
           palette: string
+          sale_date: string | null
           slug: string
           updated_at: string
           whatsapp: string
@@ -83,6 +103,7 @@ export type Database = {
           city?: string | null
           contract_end?: string | null
           contract_start?: string | null
+          contract_value?: number | null
           copy?: Json
           created_at?: string
           font_pair?: string
@@ -92,6 +113,7 @@ export type Database = {
           logo_url?: string | null
           name: string
           palette?: string
+          sale_date?: string | null
           slug: string
           updated_at?: string
           whatsapp?: string
@@ -100,6 +122,7 @@ export type Database = {
           city?: string | null
           contract_end?: string | null
           contract_start?: string | null
+          contract_value?: number | null
           copy?: Json
           created_at?: string
           font_pair?: string
@@ -109,6 +132,7 @@ export type Database = {
           logo_url?: string | null
           name?: string
           palette?: string
+          sale_date?: string | null
           slug?: string
           updated_at?: string
           whatsapp?: string
