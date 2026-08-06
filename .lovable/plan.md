@@ -1,4 +1,8 @@
-# Um único lugar para trocar as imagens
+# Um painel de configuração: imagens, textos, cores e fontes
+
+Tudo o que uma clínica pode querer personalizar fica numa pasta `src/config/`, com quatro arquivos simples e comentados em português. Nenhuma lógica do fluxo muda.
+
+## Parte 1 — Imagens
 
 Hoje as 5 imagens usadas (capa + 4 estilos de sorriso) estão importadas direto no arquivo do fluxo, misturadas com a lógica. Isso obriga a mexer no código do app sempre que uma clínica quiser trocar uma foto.
 
