@@ -46,6 +46,48 @@ export const DEFAULT_COPY: Record<string, string> = {
   resultTitle: "Seu Mapa do Sorriso está pronto!",
 };
 
+/** Blocos do painel: imagem + textos da mesma etapa, juntos. */
+export const STEP_BLOCKS: {
+  key: string;
+  title: string;
+  hint?: string;
+  images: string[];
+  fields: string[];
+}[] = [
+  {
+    key: "hero",
+    title: "Capa",
+    hint: "Primeira tela que o paciente vê ao abrir o link.",
+    images: ["hero"],
+    fields: ["heroTitle", "heroSubtitle", "heroCta"],
+  },
+  {
+    key: "style",
+    title: "Tela 1 — Estilos de sorriso",
+    hint: "As quatro imagens de referência do grid.",
+    images: ["natural", "rejuvenescido", "amplo", "hollywood"],
+    fields: ["step1Title"],
+  },
+  { key: "concerns", title: "Tela 2 — O que incomoda", images: [], fields: ["step2Title"] },
+  { key: "objection", title: "Tela 3 — Segurança", images: [], fields: ["step3Title"] },
+  { key: "decision", title: "Tela 4 — Momento", images: [], fields: ["step4Title"] },
+  {
+    key: "result",
+    title: "Tela 5 — Mapa de Transformação",
+    hint: "Resultado personalizado e chamada para o WhatsApp.",
+    images: [],
+    fields: ["resultTitle"],
+  },
+];
+
+export const IMAGE_LABELS: Record<string, string> = Object.fromEntries(
+  IMAGE_SLOTS.map((s) => [s.key, s.label]),
+);
+
+export const COPY_LABELS: Record<string, string> = Object.fromEntries(
+  COPY_FIELDS.map((f) => [f.key, f.label]),
+);
+
 export function copyOf(clinicCopy: Record<string, unknown> | null | undefined, key: string) {
   const v = clinicCopy?.[key];
   return typeof v === "string" && v.trim() ? v : DEFAULT_COPY[key];
@@ -116,80 +158,105 @@ export const DECISION_SHORT: Record<string, string> = {
 
 /* --------------------------- Matriz lógica --------------------------- */
 
+/** Títulos aspiracionais (nada de jargão técnico). */
 const PROFILE_BY_STYLE: Record<string, string> = {
-  natural: "Harmonização Discreta & Anatomicamente Preservada",
-  rejuvenescido: "Luminosidade Jovem & Realce de Cor",
-  amplo: "Simetria Facial & Preenchimento de Corredor Bucal",
-  hollywood: "Design Ultra-Radiante & Alta Expressão Estética",
-  orientacao: "Mapeamento Personalizado em Consulta",
+  natural: "Harmonia Invisível & Elegância Discreta",
+  rejuvenescido: "Luminosidade Jovem & Vitalidade Facial",
+  amplo: "Presença Marcante & Equilíbrio Facial",
+  hollywood: "Presença Marcante & Alta Expressão Estética",
+  orientacao: "Descoberta Personalizada do Seu Estilo",
 };
 
-const PILLAR_BY_CONCERN: Record<string, { title: string; text: string }> = {
-  cor: {
-    title: "Tecnologia de Cor Estável",
-    text: "Laminados cerâmicos de alta opalescência, que bloqueiam o fundo escuro e não amarelam com o tempo.",
-  },
-  formato: {
-    title: "Planejamento Aditivo",
-    text: "Foco em recuperar volume e proporção sem desgaste desnecessário de estrutura sadia.",
-  },
-  espacos: {
-    title: "Fechamento Proporcional",
-    text: "Redesenho da largura dos dentes para fechar espaços mantendo a proporção do sorriso.",
-  },
-  alinhamento: {
-    title: "Fechamento Proporcional",
-    text: "Redesenho da largura dos dentes para corrigir assimetrias visuais mantendo a proporção.",
-  },
-  tamanho: {
-    title: "Arquitetura Gengival Integrada",
-    text: "Avaliação do contorno gengival para valorizar o tamanho e a proporção das facetas.",
-  },
+/** Desejo em linguagem emocional, para compor a jornada. */
+const DESIRE_BY_STYLE: Record<string, string> = {
+  natural: "um sorriso que parece seu de nascença — leve, natural e elegante",
+  rejuvenescido: "um sorriso mais jovem, luminoso e cheio de vitalidade",
+  amplo: "um sorriso mais amplo e equilibrado, em harmonia com o seu rosto",
+  hollywood: "um sorriso marcante, radiante e cheio de presença",
+  orientacao: "clareza sobre o estilo de sorriso que mais combina com você",
 };
 
-const BASE_PILLAR = {
-  title: "Protocolo Digital com Mock-up Prévio",
-  text: "Teste do sorriso no seu rosto antes de qualquer procedimento definitivo.",
+const CONCERN_PHRASE: Record<string, string> = {
+  cor: "com uma cor mais uniforme e luminosa",
+  formato: "com formato harmônico e proporções bem desenhadas",
+  espacos: "sem os espaços que hoje chamam sua atenção",
+  tamanho: "com dentes e gengiva em proporção equilibrada",
+  alinhamento: "com alinhamento e simetria bem resolvidos",
 };
 
-const SAFETY_BY_OBJECTION: Record<string, string> = {
-  desgaste: "Seu perfil é elegível para lentes ultrafinas, de mínimo desgaste biológico.",
+/** Receio da Tela 3 traduzido em tranquilidade — sem termo clínico frio. */
+const REASSURANCE_BY_OBJECTION: Record<string, string> = {
   artificialidade:
-    "Seu planejamento prevê Mock-up (teste do sorriso no rosto) antes de qualquer procedimento definitivo.",
-  dor: "Protocolo de execução rápida e minimamente invasiva, sem desconforto durante as sessões.",
+    "Naturalidade não é sorte: é planejamento. Você visualiza e aprova o seu novo sorriso no próprio rosto antes de qualquer etapa definitiva — nada acontece sem o seu sim.",
+  desgaste:
+    "Hoje a odontologia trabalha com técnicas modernas e minimamente invasivas, pensadas para preservar ao máximo a sua estrutura natural sob a condução do especialista.",
+  dor:
+    "O cuidado com o seu conforto guia todo o protocolo: etapas curtas, tecnologia atual e acompanhamento próximo do cirurgião-dentista do início ao fim.",
   investimento:
-    "Simulação de condições facilitadas e parcelamento são apresentadas diretamente na avaliação.",
-  tempo: "Cronograma reduzido, com etapas concentradas em poucas sessões.",
+    "Transparência faz parte do processo. Na avaliação você recebe o plano completo e as condições possíveis, com calma, para decidir com segurança.",
+  tempo:
+    "O planejamento digital concentra as etapas e organiza o cronograma, para que a sua transformação aconteça de forma previsível e sem atropelos.",
 };
+
+const REASSURANCE_DEFAULT =
+  "Cada etapa é conduzida com cuidado e validada com você, sempre sob a orientação do cirurgião-dentista.";
+
+/** Bloco fixo de impacto na autoestima. */
+export const IMPACT_TEXT =
+  "Estudos em psicologia comportamental mostram que cerca de 87% das pessoas relatam aumento na autoestima e na confiança ao se relacionar depois de harmonizar o sorriso. Mais do que estética, um sorriso equilibrado transmite segurança e jovialidade — e muda a forma como você se apresenta na vida pessoal e profissional.";
+
+export const AUTHORITY_TEXT =
+  "A odontologia de alto padrão une ciência e arte. O plano definitivo — e a indicação do que é possível no seu caso — nasce da avaliação presencial com o especialista, olhando para o seu rosto, o seu sorriso e o seu objetivo.";
+
+function protocolPillars(concerns: string[], objection?: string) {
+  const artistic =
+    concerns.includes("espacos") || concerns.includes("alinhamento") || concerns.includes("tamanho")
+      ? "Cada dente é desenhado respeitando as proporções únicas do seu rosto, para que largura, simetria e contorno conversem entre si."
+      : "Cada dente é desenhado respeitando os traços únicos do seu rosto, buscando o equilíbrio entre proporção, cor e expressão.";
+
+  const minimal =
+    objection === "desgaste"
+      ? "Técnicas modernas de mínima intervenção, criadas justamente para preservar ao máximo a sua estrutura natural."
+      : "Tecnologia guiada e materiais de alta performance, aplicados com o mínimo de intervenção necessária.";
+
+  return [
+    { title: "Visão artística e proporção áurea", text: artistic },
+    { title: "Tecnologia guiada de mínima intervenção", text: minimal },
+    {
+      title: "Previsibilidade total: teste antes de fazer",
+      text: "Você visualiza e aprova o resultado no seu próprio rosto antes de iniciar qualquer etapa definitiva.",
+    },
+  ];
+}
 
 const CTA_BY_DECISION: Record<string, { button: string; message: string }> = {
   agendar_agora: {
-    button: "Falar agora e reservar meu horário",
-    message: "Olá! Concluí meu Mapa do Sorriso e quero ser atendido(a) agora.",
+    button: "Agendar Minha Avaliação no WhatsApp",
+    message: "Olá! Concluí meu Mapa de Transformação do Sorriso e quero ser atendido(a) hoje.",
   },
   agendar_avaliacao: {
-    button: "Enviar meu Mapa e agendar avaliação",
-    message: "Olá! Concluí meu Mapa do Sorriso e gostaria de agendar uma avaliação.",
+    button: "Agendar Minha Avaliação no WhatsApp",
+    message: "Olá! Concluí meu Mapa de Transformação do Sorriso e gostaria de agendar minha avaliação.",
   },
   valores: {
-    button: "Enviar meu Mapa e receber as condições",
+    button: "Falar no WhatsApp e conhecer as condições",
     message:
-      "Olá! Concluí meu Mapa do Sorriso e gostaria de entender valores e condições antes de agendar.",
+      "Olá! Concluí meu Mapa de Transformação do Sorriso e gostaria de entender as condições antes de agendar.",
   },
   comparando: {
-    button: "Enviar meu Mapa e comparar possibilidades",
+    button: "Falar no WhatsApp sobre o protocolo da clínica",
     message:
-      "Olá! Concluí meu Mapa do Sorriso e gostaria de entender as técnicas e diferenciais da clínica.",
+      "Olá! Concluí meu Mapa de Transformação do Sorriso e gostaria de conhecer o protocolo e os diferenciais da clínica.",
   },
   pesquisando: {
-    button: "Receber meu Mapa e tirar dúvidas",
-    message: "Olá! Fiz o Mapa do Sorriso e gostaria de tirar algumas dúvidas.",
+    button: "Falar no WhatsApp e tirar minhas dúvidas",
+    message: "Olá! Fiz o Mapa de Transformação do Sorriso e gostaria de tirar algumas dúvidas.",
   },
 };
 
 const DEFAULT_CTA = {
-  button: "Enviar meu Mapa do Sorriso no WhatsApp",
-  message: "Olá! Concluí meu Mapa do Sorriso e gostaria de conversar com a clínica.",
+  button: "Agendar Minha Avaliação no WhatsApp",
+  message: "Olá! Concluí meu Mapa de Transformação do Sorriso e gostaria de conversar com a clínica.",
 };
 
 export type Answers = {
@@ -201,38 +268,32 @@ export type Answers = {
 
 export type SmileMap = {
   profile: string;
+  journey: string;
+  impact: string;
+  protocol: { title: string; text: string }[];
+  reassurance: string;
+  authority: string;
   summary: string;
-  pillars: { title: string; text: string }[];
-  safetyNote: string;
   ctaButton: string;
   whatsappMessage: string;
 };
 
 const labelOf = (list: Option[], id?: string) => list.find((o) => o.id === id)?.title ?? "";
 
-export function buildSmileMap(answers: Answers): SmileMap {
+export function buildSmileMap(answers: Answers, clinicName?: string): SmileMap {
   const style = answers.style ?? "orientacao";
   const profile = PROFILE_BY_STYLE[style] ?? PROFILE_BY_STYLE["orientacao"];
 
-  const pillars: { title: string; text: string }[] = [];
-  for (const c of answers.concerns) {
-    const p = PILLAR_BY_CONCERN[c];
-    if (p && !pillars.some((x) => x.title === p.title)) pillars.push(p);
-  }
-  while (pillars.length < 3) {
-    if (!pillars.some((x) => x.title === BASE_PILLAR.title)) {
-      pillars.push(BASE_PILLAR);
-    } else if (!pillars.some((x) => x.title === PILLAR_BY_CONCERN["cor"].title)) {
-      pillars.push(PILLAR_BY_CONCERN["cor"]);
-    } else {
-      pillars.push(PILLAR_BY_CONCERN["formato"]);
-    }
-  }
+  const desire = DESIRE_BY_STYLE[style] ?? DESIRE_BY_STYLE["orientacao"];
+  const concernPhrases = answers.concerns.map((c) => CONCERN_PHRASE[c]).filter(Boolean);
+  const concernPart = concernPhrases.length
+    ? `, ${concernPhrases.join(" e ")}`
+    : "";
+  const journey = `Você busca ${desire}${concernPart} — com segurança, naturalidade e respeito à sua saúde bucal.`;
 
-  const safetyNote = answers.objection
-    ? (SAFETY_BY_OBJECTION[answers.objection] ??
-      "Seu planejamento é conduzido de forma gradual, com validação a cada etapa.")
-    : "Seu planejamento é conduzido de forma gradual, com validação a cada etapa.";
+  const reassurance = answers.objection
+    ? (REASSURANCE_BY_OBJECTION[answers.objection] ?? REASSURANCE_DEFAULT)
+    : REASSURANCE_DEFAULT;
 
   const cta = (answers.decision && CTA_BY_DECISION[answers.decision]) || DEFAULT_CTA;
 
@@ -249,14 +310,20 @@ export function buildSmileMap(answers: Answers): SmileMap {
     .filter(Boolean)
     .join(" · ");
 
-  const whatsappMessage = `${cta.message}\n\nMeu perfil: ${profile}.\n${summary}.`;
+  const whatsappMessage = `${cta.message}\n\nMeu perfil: ${profile}.\n${summary}.${
+    clinicName ? `\nClínica: ${clinicName}.` : ""
+  }`;
 
   return {
     profile,
+    journey,
+    impact: IMPACT_TEXT,
+    protocol: protocolPillars(answers.concerns, answers.objection),
+    reassurance,
+    authority: AUTHORITY_TEXT,
     summary,
-    pillars: pillars.slice(0, 3),
-    safetyNote,
     ctaButton: cta.button,
     whatsappMessage,
   };
 }
+
