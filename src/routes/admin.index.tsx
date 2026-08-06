@@ -81,7 +81,7 @@ function Dashboard() {
   const toggle = async (c: Clinic) => {
     setBusy(c.id);
     try {
-      await setClinicActive({ data: { id: c.id, is_active: !c.is_active } });
+      await setClinicActive({ data: { id: c.id, active: !c.is_active } });
       reload();
     } finally {
       setBusy(null);
