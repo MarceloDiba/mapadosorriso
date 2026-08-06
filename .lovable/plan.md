@@ -48,6 +48,50 @@ O fluxo segue uma progressão psicológica clara: **desejo → problema → obje
    Bloco educativo sobre qualidade do tratamento.  
    CTA WhatsApp com texto e mensagem preenchida conforme a Tela 4.
 
+## Matriz de lógica do Mapa do Sorriso
+
+O resultado deixa de ser texto genérico e passa a ser montado por cruzamento das respostas.
+
+**1. Título do perfil (vem da Tela 1)**
+
+| Estilo | Perfil exibido |
+| --- | --- |
+| Natural | Harmonização Discreta & Anatomicamente Preservada |
+| Rejuvenescido | Luminosidade Jovem & Realce de Cor |
+| Amplo | Simetria Facial & Preenchimento de Corredor Bucal |
+| Hollywood | Design Ultra-Radiante & Alta Expressão Estética |
+| Não tenho certeza | Mapeamento Personalizado em Consulta |
+
+**2. Pilares recomendados (vêm da Tela 2)**
+
+Cada queixa marcada injeta um pilar técnico. Sempre exibimos 3 pilares: os das queixas escolhidas (até 2) e, completando, o pilar base "Protocolo Digital com Mock-up Prévio".
+
+| Queixa | Pilar |
+| --- | --- |
+| Cor amarelada / manchas | Tecnologia de Cor Estável — laminados de alta opalescência que bloqueiam o fundo escuro e não amarelam |
+| Formato / desgaste | Planejamento Aditivo — recupera volume e proporção sem desgaste desnecessário de estrutura sadia |
+| Espaços / alinhamento | Fechamento Proporcional — redesenho da largura dos dentes mantendo a proporção do sorriso |
+| Excesso de gengiva | Arquitetura Gengival Integrada — alinhamento do contorno gengival para valorizar o tamanho das facetas |
+
+**3. Nota de segurança (vem da Tela 3)**
+
+| Objeção | Nota exibida |
+| --- | --- |
+| Medo de desgaste | Seu perfil é elegível para lentes ultrafinas de mínimo desgaste biológico |
+| Resultado artificial | Seu planejamento prevê Mock-up (teste do sorriso no rosto) antes de qualquer procedimento definitivo |
+| Dor / sensibilidade | Protocolo de execução rápida e minimamente invasiva, sem desconforto durante as sessões |
+| Investimento | Simulação de condições facilitadas e parcelamento apresentadas na avaliação |
+| Tempo de tratamento | Cronograma reduzido, com etapas concentradas em poucas sessões |
+
+**4. Mensagem do WhatsApp**
+
+Montada com perfil + queixa principal + objeção + intenção da Tela 4, para o atendente receber o lead já qualificado. Exemplo:
+"Olá! Concluí meu Mapa do Sorriso no site. Meu perfil deu 'Harmonização Discreta' e minha principal dúvida é sobre investimento. Gostaria de agendar uma avaliação."
+
+O texto do botão também varia pela Tela 4 (agendar / valores / comparar / pesquisar).
+
+Todas as frases seguem as regras clínicas já definidas: sem diagnóstico, sem promessa de resultado, autoridade final é o dentista. Os textos da matriz ficam editáveis no painel por clínica.
+
 
 
 ## Painel administrativo
