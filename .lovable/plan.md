@@ -54,17 +54,26 @@ O fluxo segue uma progressão psicológica clara: **desejo → problema → obje
 
 Lista de clínicas com: nome, link, status (ativo/inativo/vencido), início e fim de contrato, e botão de ativar/desativar. Ações: criar, editar, copiar o link pronto para o anúncio.
 
-Ficha de cada clínica:
-- **Identificação**: nome, slug do link, cidade
+Ficha de cada clínica (`/admin/clinicas/:id`), em abas:
+
+**Aba Dados**
+- **Identificação**: nome, slug do link, cidade, logo
 - **Contato**: número de WhatsApp e, opcionalmente, o texto base da mensagem
 - **Contrato**: data inicial, data final, ativo sim/não
 - **Visual**: 5 imagens (capa + 4 estilos), paleta de cores escolhida de uma lista pronta, e uma das 3 fontes
 - **Textos**: títulos, subtítulos e rótulos das 5 telas (Desejo, Problema, Segurança, Momento, Resultado), com valores padrão preenchidos automaticamente para não precisar escrever tudo
 
+**Aba Analytics**
+- Cartões de métricas: Total de visualizações, Taxa de conclusão (%), Cliques no WhatsApp
+- Distribuição percentual das respostas da Tela 4 (Quero agendar / Planejando custos / Comparando clínicas / Apenas pesquisando), em barras horizontais
+- Tabela de histórico das respostas concluídas: data, estilo escolhido, queixas, objeção, momento e se clicou no WhatsApp
+- Filtro simples por período (7 / 30 / 90 dias)
+
 Paletas prontas: Marfim & Dourado (atual), Noir & Gold, Esmeralda Prestígio, Rosé & Areia.
 Fontes: Cormorant + Karla, Playfair + Inter, Outfit + DM Sans.
 
 Imagens: pode colar um link (mais rápido e barato) ou fazer upload pelo painel.
+
 
 ## Login
 
