@@ -302,7 +302,12 @@ export const saveClinic = createServerFn({ method: "POST" })
     if (!data.name.trim()) throw new Error("Informe o nome da clínica.");
 
     const whatsapp = data.whatsapp.replace(/\D/g, "");
-    if (whatsapp.length < 10) throw new Error("Informe o WhatsApp com DDI e DDD.");
+    if (whatsapp.length < 10 || whatsapp.length > 13) {
+      throw new Error("Informe o WhatsApp com DDI e DDD. Ex.: +55 (11) 99999-9999");
+    }
+    if (data.contract_start && data.contract_end && data.contract_end < data.contract_start) {
+      throw new Error("A data final do contrato não pode ser anterior à inicial.");
+    }
 
     const payload = {
       slug,
@@ -312,6 +317,11 @@ export const saveClinic = createServerFn({ method: "POST" })
       logo_url: data.logo_url?.trim() || null,
       contract_start: data.contract_start || null,
       contract_end: data.contract_end || null,
+      contract_value:
+        data.contract_value === undefined || data.contract_value === null
+          ? null
+          : Number(data.contract_value),
+      sale_date: data.sale_date || null,
       is_active: data.is_active,
       palette: data.palette,
       font_pair: data.font_pair,
