@@ -43,6 +43,9 @@ const ADVANCE_DELAY = 420;
 export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Track }) {
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState<Answers>({ concerns: [] });
+  const [sheet, setSheet] = useState(false);
+  const [lead, setLead] = useState({ name: "", phone: "" });
+
   const step: StepKey = STEPS[stepIndex].key;
   const mainRef = useRef<HTMLElement>(null);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
