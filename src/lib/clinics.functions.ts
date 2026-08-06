@@ -156,10 +156,96 @@ export const listClinics = createServerFn({ method: "GET" })
     await assertAdmin(context.supabase as never, context.userId);
     const { data, error } = await context.supabase
       .from("clinics")
-      .select("id, slug, name, city, is_active, contract_start, contract_end, created_at")
+      .select(
+        "id, slug, name, city, whatsapp, is_active, contract_start, contract_end, contract_value, sale_date, created_at",
+      )
       .order("created_at", { ascending: false });
     if (error) throw new Error(error.message);
     return data ?? [];
+  });
+
+/** Visão geral do painel: ativos, cliques, finalizados, gargalo e vendas. */
+export const getOverview = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { days?: number }) => ({
+    days: data?.days && [7, 30, 90, 365].includes(data.days) ? data.days : 30,
+  }))
+  .handler(async ({ context, data }) => {
+    await assertAdmin(context.supabase as never, context.userId);
+    const sinceDate = new Date(Date.now() - data.days * 86400000);
+    const since = sinceDate.toISOString();
+    const sinceDay = since.slice(0, 10);
+    const today = new Date().toISOString().slice(0, 10);
+
+    const [{ data: clinics }, { data: sessions }] = await Promise.all([
+      context.supabase
+        .from("clinics")
+        .select("id, name, is_active, contract_start, contract_end, contract_value, sale_date"),
+      context.supabase
+        .from("clinic_sessions")
+        .select("id, completed, whatsapp_clicked, funnel_step, utm_source, created_at")
+        .gte("created_at", since)
+        .limit(5000),
+    ]);
+
+    const list = clinics ?? [];
+    const active = list.filter(
+      (c) =>
+        c.is_active &&
+        (!c.contract_start || c.contract_start <= today) &&
+        (!c.contract_end || c.contract_end >= today),
+    );
+    const expiringSoon = list.filter((c) => {
+      if (!c.contract_end) return false;
+      const diff = (new Date(c.contract_end).getTime() - Date.now()) / 86400000;
+      return diff >= 0 && diff <= 15;
+    });
+    const scheduled = list.filter((c) => c.contract_start && c.contract_start > today);
+    const expired = list.filter((c) => c.contract_end && c.contract_end < today);
+
+    const s = sessions ?? [];
+    const views = s.length;
+    const completed = s.filter((r) => r.completed).length;
+    const clicks = s.filter((r) => r.whatsapp_clicked).length;
+
+    const STEP_ORDER = ["style", "concerns", "objection", "decision", "result"];
+    const dropoff: Record<string, number> = {};
+    for (const step of STEP_ORDER) dropoff[step] = 0;
+    for (const row of s) {
+      const step = row.funnel_step && STEP_ORDER.includes(row.funnel_step) ? row.funnel_step : null;
+      if (step && !row.whatsapp_clicked) dropoff[step] = (dropoff[step] ?? 0) + 1;
+    }
+    const bottleneck = STEP_ORDER.slice(0, 4).reduce(
+      (best, step) => ((dropoff[step] ?? 0) > (dropoff[best] ?? 0) ? step : best),
+      STEP_ORDER[0],
+    );
+
+    const sales = list.filter((c) => c.sale_date && c.sale_date >= sinceDay);
+    const revenue = sales.reduce((sum, c) => sum + Number(c.contract_value ?? 0), 0);
+
+    const sources: Record<string, number> = {};
+    for (const row of s) {
+      const key = row.utm_source || "direto";
+      sources[key] = (sources[key] ?? 0) + 1;
+    }
+
+    return {
+      days: data.days,
+      totalClinics: list.length,
+      activeClinics: active.length,
+      scheduled: scheduled.map((c) => ({ id: c.id, name: c.name, date: c.contract_start })),
+      expired: expired.map((c) => ({ id: c.id, name: c.name, date: c.contract_end })),
+      expiringSoon: expiringSoon.map((c) => ({ id: c.id, name: c.name, date: c.contract_end })),
+      views,
+      completed,
+      clicks,
+      completionRate: views ? Math.round((completed / views) * 100) : 0,
+      dropoff,
+      bottleneck,
+      salesCount: sales.length,
+      revenue,
+      sources,
+    };
   });
 
 export const getClinic = createServerFn({ method: "GET" })
@@ -185,6 +271,8 @@ export type ClinicInput = {
   logo_url?: string | null;
   contract_start?: string | null;
   contract_end?: string | null;
+  contract_value?: number | null;
+  sale_date?: string | null;
   is_active: boolean;
   palette: string;
   font_pair: string;
