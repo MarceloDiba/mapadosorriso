@@ -14,6 +14,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as CSlugRouteImport } from './routes/c.$slug'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminClinicasNovaRouteImport } from './routes/admin.clinicas.nova'
+import { Route as AdminClinicasIdRouteImport } from './routes/admin.clinicas.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,12 +41,18 @@ const AdminClinicasNovaRoute = AdminClinicasNovaRouteImport.update({
   path: '/admin/clinicas/nova',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminClinicasIdRoute = AdminClinicasIdRouteImport.update({
+  id: '/admin/clinicas/$id',
+  path: '/admin/clinicas/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin/login': typeof AdminLoginRoute
   '/c/$slug': typeof CSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/clinicas/$id': typeof AdminClinicasIdRoute
   '/admin/clinicas/nova': typeof AdminClinicasNovaRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/admin/login': typeof AdminLoginRoute
   '/c/$slug': typeof CSlugRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/clinicas/$id': typeof AdminClinicasIdRoute
   '/admin/clinicas/nova': typeof AdminClinicasNovaRoute
 }
 export interface FileRoutesById {
@@ -61,6 +69,7 @@ export interface FileRoutesById {
   '/admin/login': typeof AdminLoginRoute
   '/c/$slug': typeof CSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/clinicas/$id': typeof AdminClinicasIdRoute
   '/admin/clinicas/nova': typeof AdminClinicasNovaRoute
 }
 export interface FileRouteTypes {
@@ -70,15 +79,23 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/c/$slug'
     | '/admin/'
+    | '/admin/clinicas/$id'
     | '/admin/clinicas/nova'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin/login' | '/c/$slug' | '/admin' | '/admin/clinicas/nova'
+  to:
+    | '/'
+    | '/admin/login'
+    | '/c/$slug'
+    | '/admin'
+    | '/admin/clinicas/$id'
+    | '/admin/clinicas/nova'
   id:
     | '__root__'
     | '/'
     | '/admin/login'
     | '/c/$slug'
     | '/admin/'
+    | '/admin/clinicas/$id'
     | '/admin/clinicas/nova'
   fileRoutesById: FileRoutesById
 }
@@ -87,6 +104,7 @@ export interface RootRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   CSlugRoute: typeof CSlugRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminClinicasIdRoute: typeof AdminClinicasIdRoute
   AdminClinicasNovaRoute: typeof AdminClinicasNovaRoute
 }
 
@@ -127,6 +145,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminClinicasNovaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/clinicas/$id': {
+      id: '/admin/clinicas/$id'
+      path: '/admin/clinicas/$id'
+      fullPath: '/admin/clinicas/$id'
+      preLoaderRoute: typeof AdminClinicasIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -135,6 +160,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   CSlugRoute: CSlugRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminClinicasIdRoute: AdminClinicasIdRoute,
   AdminClinicasNovaRoute: AdminClinicasNovaRoute,
 }
 export const routeTree = rootRouteImport
