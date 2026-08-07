@@ -13,6 +13,7 @@ import {
   DECISION_SHORT,
   DEFAULT_IMAGES,
   OBJECTIONS,
+  PROCESS_STEPS,
   SMILE_AXES,
   STYLES,
   buildSmileMap,
@@ -736,6 +737,38 @@ function ResultMap({
                 <p className="font-serif text-[13px] text-gold">0{i + 1}</p>
                 <p className="mt-1 font-serif text-[20px] leading-tight text-foreground">{p.title}</p>
                 <p className="mt-1.5 text-[13.5px] leading-relaxed text-muted-foreground">{p.text}</p>
+              </li>
+            ))}
+          </ol>
+        </Reveal>
+
+        <Reveal className="mt-10 border-t border-border pt-8">
+          <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+            Como sua transformação acontece
+          </p>
+          <p className="mt-2 text-[13px] leading-snug text-muted-foreground">
+            O passo a passo real, conduzido pela {clinicName} do início ao fim.
+          </p>
+          <ol className="mt-5 space-y-0">
+            {PROCESS_STEPS.map((step, i) => (
+              <li key={step.title} className="relative flex gap-4 pb-6 last:pb-0">
+                {i < PROCESS_STEPS.length - 1 && (
+                  <span aria-hidden className="absolute left-[15px] top-8 h-full w-px bg-border" />
+                )}
+                <span
+                  aria-hidden
+                  className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-gold/50 bg-gold-soft/30 font-serif text-[13px] text-primary"
+                >
+                  {i + 1}
+                </span>
+                <span className="min-w-0 pt-0.5">
+                  <span className="block font-serif text-[17px] leading-tight text-foreground">
+                    {step.title}
+                  </span>
+                  <span className="mt-1 block text-[13.5px] leading-relaxed text-muted-foreground">
+                    {step.text}
+                  </span>
+                </span>
               </li>
             ))}
           </ol>

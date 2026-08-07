@@ -208,6 +208,35 @@ export const IMPACT_TEXT =
 export const AUTHORITY_TEXT =
   "A odontologia de alto padrão une ciência e arte. O plano definitivo nasce da avaliação presencial com o especialista, que olha para o seu rosto, o seu sorriso e o seu objetivo para indicar o que é possível no seu caso.";
 
+/**
+ * Linha do tempo com o processo real da clínica — gera consciência de valor
+ * mostrando o trabalho por trás do resultado (transparência operacional).
+ * Ainda é conteúdo fixo (não editável por clínica no admin); se o produto
+ * escalar para clínicas com protocolos diferentes, isso vira campo do admin.
+ */
+export const PROCESS_STEPS: { title: string; text: string }[] = [
+  {
+    title: "Consulta de avaliação",
+    text: "Você e o dentista se conhecem de perto: ele entende o que você deseja e avalia a saúde da sua boca antes de qualquer planejamento.",
+  },
+  {
+    title: "Planejamento digital (Digital Smile Design)",
+    text: "Seu sorriso é desenhado digitalmente antes de qualquer procedimento. Você visualiza e aprova o resultado no seu próprio rosto antes de decidir seguir.",
+  },
+  {
+    title: "Preparo e desinfecção",
+    text: "Uma limpeza profissional prepara o terreno, removendo placa e manchas superficiais antes das próximas etapas.",
+  },
+  {
+    title: "Clareamento",
+    text: "Antes das facetas, o clareamento uniformiza a cor natural dos seus dentes, servindo de base para o resultado final.",
+  },
+  {
+    title: "Aplicação das facetas",
+    text: "As facetas são aplicadas seguindo exatamente o desenho que você já aprovou no planejamento digital.",
+  },
+];
+
 function protocolPillars(concerns: string[], objection?: string) {
   const artistic =
     concerns.includes("espacos") || concerns.includes("alinhamento") || concerns.includes("tamanho")
