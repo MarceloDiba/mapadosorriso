@@ -45,6 +45,7 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
   const [answers, setAnswers] = useState<Answers>({ concerns: [] });
   const [sheet, setSheet] = useState(false);
   const [lead, setLead] = useState({ name: "", phone: "" });
+  const [resultProgress, setResultProgress] = useState(0);
 
   const step: StepKey = STEPS[stepIndex].key;
   const mainRef = useRef<HTMLElement>(null);
@@ -71,7 +72,16 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
 
   useEffect(() => {
     mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+    setResultProgress(0);
   }, [stepIndex]);
+
+  const onMainScroll = () => {
+    if (step !== "result") return;
+    const el = mainRef.current;
+    if (!el) return;
+    const max = el.scrollHeight - el.clientHeight;
+    setResultProgress(max > 0 ? Math.min(1, Math.max(0, el.scrollTop / max)) : 0);
+  };
 
   useEffect(() => {
     if (step === "hero" || step === "building") return;
@@ -103,8 +113,18 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
 
         {showRail && <StepRail current={sceneIdx} total={SCENE_KEYS.length} />}
 
+        {step === "result" && (
+          <div aria-hidden className="absolute inset-x-0 top-0 z-20 h-0.5 bg-border/60">
+            <div
+              className="h-full bg-gold transition-[width] duration-150 ease-out"
+              style={{ width: `${resultProgress * 100}%` }}
+            />
+          </div>
+        )}
+
         <main
           ref={mainRef}
+          onScroll={onMainScroll}
           className={`min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-hidden ${showRail ? "pl-9 pr-4" : "px-4"} pb-6 pt-1`}
         >
 
@@ -670,7 +690,7 @@ function Reveal({ children, className = "" }: { children: React.ReactNode; class
           io.disconnect();
         }
       },
-      { rootMargin: "-8% 0px -8% 0px" },
+      { rootMargin: "0px 0px -10% 0px" },
     );
     io.observe(el);
     return () => io.disconnect();
