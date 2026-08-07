@@ -207,7 +207,7 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
               className="flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-3.5 text-primary-foreground shadow-soft transition-all active:scale-[0.99]"
             >
               <span className="font-serif text-[16px]">Seguir com esta</span>
-              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gold text-primary">
+              <span aria-hidden className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gold text-primary">
                 <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.2">
                   <path d="M5 12h14M13 5l7 7-7 7" />
                 </svg>
@@ -227,7 +227,7 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
                 <span className="text-[10px] uppercase tracking-[0.2em] text-gold-soft">Próximo passo</span>
                 <span className="mt-1 truncate font-serif text-[16px] leading-tight">{map.ctaButton}</span>
               </span>
-              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gold text-primary transition-transform group-hover:translate-x-1">
+              <span aria-hidden className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gold text-primary transition-transform group-hover:translate-x-1">
                 <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
                   <path d="M20 3.5A11.5 11.5 0 003 19l-1 4 4.2-1.1A11.5 11.5 0 1020 3.5zm-8.5 18a9.5 9.5 0 01-4.9-1.4l-.3-.2-2.5.7.7-2.4-.2-.4A9.5 9.5 0 1111.5 21.5z" />
                 </svg>
@@ -858,7 +858,7 @@ function LeadSheet({
           className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-4 font-serif text-[17px] text-primary-foreground transition-all active:scale-[0.99]"
         >
           Continuar no WhatsApp
-          <svg viewBox="0 0 24 24" className="h-5 w-5 text-gold" fill="currentColor">
+          <svg aria-hidden viewBox="0 0 24 24" className="h-5 w-5 text-gold" fill="currentColor">
             <path d="M20 3.5A11.5 11.5 0 003 19l-1 4 4.2-1.1A11.5 11.5 0 1020 3.5zm-8.5 18a9.5 9.5 0 01-4.9-1.4l-.3-.2-2.5.7.7-2.4-.2-.4A9.5 9.5 0 1111.5 21.5z" />
           </svg>
         </a>
