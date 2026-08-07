@@ -274,12 +274,12 @@ export type Answers = {
  * diagnóstico clínico, é um reflexo do que ele mesmo apontou como foco.
  */
 export const SMILE_AXES = [
-  { key: "arco", label: "Arco do sorriso" },
-  { key: "proporcao", label: "Proporção dos dentes" },
-  { key: "cor", label: "Cor" },
-  { key: "simetria", label: "Simetria" },
-  { key: "formato", label: "Formato" },
-  { key: "gengival", label: "Exposição gengival" },
+  { key: "arco", label: "Arco do sorriso", shortLabel: "Arco" },
+  { key: "proporcao", label: "Proporção dos dentes", shortLabel: "Proporção" },
+  { key: "cor", label: "Cor", shortLabel: "Cor" },
+  { key: "simetria", label: "Simetria", shortLabel: "Simetria" },
+  { key: "formato", label: "Formato", shortLabel: "Formato" },
+  { key: "gengival", label: "Exposição gengival", shortLabel: "Gengiva" },
 ] as const;
 
 export type SmileAxisKey = (typeof SMILE_AXES)[number]["key"];

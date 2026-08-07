@@ -807,16 +807,16 @@ function SmileRadarChart({ scores }: { scores: SmileScores }) {
   useEffect(() => setMounted(true), []);
 
   const data = SMILE_AXES.map((axis) => ({
-    axis: axis.label,
+    axis: axis.shortLabel,
     value: scores[axis.key],
   }));
 
   return (
-    <div className="mt-5 rounded-3xl border border-border bg-card/60 p-2">
-      <div className="h-[280px] w-full">
+    <div className="mt-5 rounded-3xl border border-border bg-card/60 px-1 py-4">
+      <div className="h-[260px] w-full">
         {mounted ? (
           <ResponsiveContainer width="100%" height="100%">
-            <RadarChart data={data} outerRadius="68%">
+            <RadarChart data={data} outerRadius="58%">
               <PolarGrid stroke="var(--color-border)" />
               <PolarAngleAxis
                 dataKey="axis"
