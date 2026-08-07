@@ -164,7 +164,7 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
               <MultiChoiceStep
                 eyebrow="O que incomoda"
                 title={text("step2Title")}
-                text="Toque em até duas — a segunda já leva você adiante."
+                text="Toque em até duas. A segunda já leva você adiante."
                 items={CONCERNS}
                 value={answers.concerns}
                 max={2}
@@ -479,7 +479,7 @@ function StyleStep({
         onClick={onGuidance}
         className="mt-5 w-full text-center text-[12.5px] leading-snug text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground"
       >
-        Não tenho certeza — quero orientação
+        Não tenho certeza, quero orientação
       </button>
     </section>
   );
@@ -764,7 +764,7 @@ function ResultMap({
         <Reveal className="mt-10 border-t border-border pt-8">
           <p className="text-[10px] uppercase tracking-[0.22em] text-gold">O que ainda te segura?</p>
           <p className="mt-2 text-[13px] leading-snug text-muted-foreground">
-            Opcional — toque e veja o que a clínica faz sobre isso.
+            Opcional: toque e veja o que a clínica faz sobre isso.
           </p>
           <div className="mt-4 grid gap-2">
             {OBJECTIONS.map((o, idx) => (
@@ -840,8 +840,8 @@ function SmileRadarChart({ scores }: { scores: SmileScores }) {
         )}
       </div>
       <p className="px-3 pb-2 text-center text-[11px] leading-relaxed text-muted-foreground">
-        Reflexo do que você respondeu — não é uma avaliação clínica. O diagnóstico completo é feito
-        pelo cirurgião-dentista na avaliação presencial.
+        Isto reflete o que você respondeu, não é uma avaliação clínica. O diagnóstico completo é
+        feito pelo cirurgião-dentista na avaliação presencial.
       </p>
     </div>
   );
@@ -878,7 +878,7 @@ function LeadSheet({
           Quer que a clínica retome o contato?
         </p>
         <p className="mt-1 text-[12.5px] text-muted-foreground">
-          Opcional — você pode seguir direto para o WhatsApp.
+          Opcional: você pode seguir direto para o WhatsApp.
         </p>
 
         <div className="mt-4 grid gap-2">

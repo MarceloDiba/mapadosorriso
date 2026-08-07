@@ -28,16 +28,16 @@ export const COPY_FIELDS = [
   { key: "heroTitle", label: "Título da capa" },
   { key: "heroSubtitle", label: "Subtítulo da capa" },
   { key: "heroCta", label: "Botão da capa" },
-  { key: "step1Title", label: "Tela 1 — pergunta" },
-  { key: "step2Title", label: "Tela 2 — pergunta" },
-  { key: "step3Title", label: "Tela 3 — pergunta" },
-  { key: "step4Title", label: "Tela 4 — pergunta" },
-  { key: "resultTitle", label: "Tela 5 — título do resultado" },
+  { key: "step1Title", label: "Tela 1 · Pergunta" },
+  { key: "step2Title", label: "Tela 2 · Pergunta" },
+  { key: "step3Title", label: "Tela 3 · Pergunta" },
+  { key: "step4Title", label: "Tela 4 · Pergunta" },
+  { key: "resultTitle", label: "Tela 5 · Título do resultado" },
 ] as const;
 
 export const DEFAULT_COPY: Record<string, string> = {
   heroTitle: "Antes de decidir, entenda seu sorriso.",
-  heroSubtitle: "Uma jornada visual para organizar o que você quer mudar — em 2 minutos.",
+  heroSubtitle: "Uma jornada visual para organizar o que você quer mudar, em 2 minutos.",
   heroCta: "Começar meu mapa",
   step1Title: "Qual sorriso mais te inspira hoje?",
   step2Title: "O que mais te incomoda no seu sorriso hoje?",
@@ -63,17 +63,17 @@ export const STEP_BLOCKS: {
   },
   {
     key: "style",
-    title: "Tela 1 — Estilos de sorriso",
+    title: "Tela 1 · Estilos de sorriso",
     hint: "As quatro imagens de referência do grid.",
     images: ["natural", "rejuvenescido", "amplo", "hollywood"],
     fields: ["step1Title"],
   },
-  { key: "concerns", title: "Tela 2 — O que incomoda", images: [], fields: ["step2Title"] },
-  { key: "objection", title: "Tela 3 — Segurança", images: [], fields: ["step3Title"] },
-  { key: "decision", title: "Tela 4 — Momento", images: [], fields: ["step4Title"] },
+  { key: "concerns", title: "Tela 2 · O que incomoda", images: [], fields: ["step2Title"] },
+  { key: "objection", title: "Tela 3 · Segurança", images: [], fields: ["step3Title"] },
+  { key: "decision", title: "Tela 4 · Momento", images: [], fields: ["step4Title"] },
   {
     key: "result",
-    title: "Tela 5 — Mapa de Transformação",
+    title: "Tela 5 · Mapa de Transformação",
     hint: "Resultado personalizado e chamada para o WhatsApp.",
     images: [],
     fields: ["resultTitle"],
@@ -169,7 +169,7 @@ const PROFILE_BY_STYLE: Record<string, string> = {
 
 /** Desejo em linguagem emocional, para compor a jornada. */
 const DESIRE_BY_STYLE: Record<string, string> = {
-  natural: "um sorriso que parece seu de nascença — leve, natural e elegante",
+  natural: "um sorriso que parece seu de nascença, leve, natural e elegante",
   rejuvenescido: "um sorriso mais jovem, luminoso e cheio de vitalidade",
   amplo: "um sorriso mais amplo e equilibrado, em harmonia com o seu rosto",
   hollywood: "um sorriso marcante, radiante e cheio de presença",
@@ -187,7 +187,7 @@ const CONCERN_PHRASE: Record<string, string> = {
 /** Receio da Tela 3 traduzido em tranquilidade — sem termo clínico frio. */
 const REASSURANCE_BY_OBJECTION: Record<string, string> = {
   artificialidade:
-    "Naturalidade não é sorte: é planejamento. Você visualiza e aprova o seu novo sorriso no próprio rosto antes de qualquer etapa definitiva — nada acontece sem o seu sim.",
+    "Naturalidade não é sorte: é planejamento. Você visualiza e aprova o seu novo sorriso no próprio rosto antes de qualquer etapa definitiva. Nada acontece sem o seu sim.",
   desgaste:
     "Hoje a odontologia trabalha com técnicas modernas e minimamente invasivas, pensadas para preservar ao máximo a sua estrutura natural sob a condução do especialista.",
   dor:
@@ -203,10 +203,10 @@ const REASSURANCE_DEFAULT =
 
 /** Bloco fixo de impacto na autoestima. */
 export const IMPACT_TEXT =
-  "Pesquisas sobre estética do sorriso mostram que boa parte das pessoas evita sorrir abertamente por insatisfação com os próprios dentes. Um sorriso equilibrado tende a transmitir mais segurança e jovialidade — e muda a forma como você se apresenta na vida pessoal e profissional.";
+  "Pesquisas sobre estética do sorriso mostram que boa parte das pessoas evita sorrir abertamente por insatisfação com os próprios dentes. Um sorriso equilibrado tende a transmitir mais segurança e jovialidade, mudando a forma como você se apresenta na vida pessoal e profissional.";
 
 export const AUTHORITY_TEXT =
-  "A odontologia de alto padrão une ciência e arte. O plano definitivo — e a indicação do que é possível no seu caso — nasce da avaliação presencial com o especialista, olhando para o seu rosto, o seu sorriso e o seu objetivo.";
+  "A odontologia de alto padrão une ciência e arte. O plano definitivo nasce da avaliação presencial com o especialista, que olha para o seu rosto, o seu sorriso e o seu objetivo para indicar o que é possível no seu caso.";
 
 function protocolPillars(concerns: string[], objection?: string) {
   const artistic =
@@ -356,7 +356,7 @@ export function buildSmileMap(answers: Answers, clinicName?: string): SmileMap {
   const concernPart = concernPhrases.length
     ? `, ${concernPhrases.join(" e ")}`
     : "";
-  const journey = `Você busca ${desire}${concernPart} — com segurança, naturalidade e respeito à sua saúde bucal.`;
+  const journey = `Você busca ${desire}${concernPart}, com segurança, naturalidade e respeito à sua saúde bucal.`;
 
   const reassurance = answers.objection
     ? (REASSURANCE_BY_OBJECTION[answers.objection] ?? REASSURANCE_DEFAULT)
