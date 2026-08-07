@@ -127,11 +127,6 @@ export const DECISIONS: Option[] = [
     caption: "Já decidi e quero falar com a clínica hoje.",
   },
   {
-    id: "agendar_avaliacao",
-    title: "Quero agendar uma avaliação",
-    caption: "Quero entender meu caso com um especialista.",
-  },
-  {
     id: "valores",
     title: "Quero entender valores antes",
     caption: "Preciso de clareza sobre investimento e condições.",
@@ -150,7 +145,6 @@ export const DECISIONS: Option[] = [
 
 export const DECISION_SHORT: Record<string, string> = {
   agendar_agora: "Pronto para agendar",
-  agendar_avaliacao: "Pronto para agendar",
   valores: "Planejando custos",
   comparando: "Comparando clínicas",
   pesquisando: "Apenas pesquisando",
@@ -261,11 +255,7 @@ function protocolPillars(concerns: string[], objection?: string) {
 const CTA_BY_DECISION: Record<string, { button: string; message: string }> = {
   agendar_agora: {
     button: "Agendar Minha Avaliação no WhatsApp",
-    message: "Olá! Concluí meu Mapa de Transformação do Sorriso e quero ser atendido(a) hoje.",
-  },
-  agendar_avaliacao: {
-    button: "Agendar Minha Avaliação no WhatsApp",
-    message: "Olá! Concluí meu Mapa de Transformação do Sorriso e gostaria de agendar minha avaliação.",
+    message: "Olá! Concluí meu Mapa de Transformação do Sorriso e quero agendar minha avaliação.",
   },
   valores: {
     button: "Falar no WhatsApp e conhecer as condições",
