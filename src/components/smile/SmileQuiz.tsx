@@ -24,7 +24,7 @@ import {
 } from "@/config/quiz";
 import { themeStyle } from "@/config/theme";
 import type { PublicClinic } from "@/lib/clinics.functions";
-import { formatLocalPhone, whatsappLink } from "@/lib/phone";
+import { whatsappLink } from "@/lib/phone";
 
 type Track = (
   patch: Partial<Answers> & {
@@ -53,8 +53,6 @@ const ADVANCE_DELAY = 420;
 export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Track }) {
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState<Answers>({ concerns: [] });
-  const [sheet, setSheet] = useState(false);
-  const [lead, setLead] = useState({ name: "", phone: "" });
   const [resultProgress, setResultProgress] = useState(0);
 
   const step: StepKey = STEPS[stepIndex].key;
@@ -229,9 +227,11 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
 
         {step === "result" && (
           <FloatingBar>
-            <button
-              type="button"
-              onClick={() => setSheet(true)}
+            <a
+              href={whatsappLink(clinic.whatsapp, map.whatsappMessage)}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => track?.({ whatsappClicked: true })}
               className="group flex w-full items-center justify-between gap-3 rounded-2xl bg-gold px-5 py-5 text-left text-primary shadow-gold ring-2 ring-gold/40 ring-offset-2 ring-offset-background transition-all active:scale-[0.99]"
             >
               <span className="flex min-w-0 flex-col">
@@ -243,27 +243,8 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
                   <path d="M20 3.5A11.5 11.5 0 003 19l-1 4 4.2-1.1A11.5 11.5 0 1020 3.5zm-8.5 18a9.5 9.5 0 01-4.9-1.4l-.3-.2-2.5.7.7-2.4-.2-.4A9.5 9.5 0 1111.5 21.5z" />
                 </svg>
               </span>
-            </button>
+            </a>
           </FloatingBar>
-        )}
-
-        {sheet && (
-          <LeadSheet
-            href={whatsappLink(
-              clinic.whatsapp,
-              lead.name ? `${map.whatsappMessage}\n\nMeu nome: ${lead.name}.` : map.whatsappMessage,
-            )}
-            name={lead.name}
-            phone={lead.phone}
-            setName={(v) => setLead((l) => ({ ...l, name: v }))}
-            setPhone={(v) => setLead((l) => ({ ...l, phone: v }))}
-            onClose={() => setSheet(false)}
-            onGo={() => {
-              if (lead.name.trim() || lead.phone.trim())
-                track?.({ leadName: lead.name.trim(), leadPhone: lead.phone });
-              track?.({ whatsappClicked: true });
-            }}
-          />
         )}
       </div>
     </div>
@@ -308,7 +289,7 @@ function Header({ clinic, onBack }: { clinic: PublicClinic; onBack?: () => void 
             type="button"
             onClick={onBack}
             aria-label="Voltar"
-            className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-muted-foreground transition-colors active:bg-muted"
+            className="-mr-1.5 grid h-11 w-11 shrink-0 place-items-center rounded-full text-muted-foreground transition-colors active:bg-muted"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M19 12H5M12 5l-7 7 7 7" />
@@ -804,18 +785,36 @@ function ResultMap({
 
 function SmileRadarChart({ scores }: { scores: SmileScores }) {
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const onChange = () => setReducedMotion(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   const data = SMILE_AXES.map((axis) => ({
     axis: axis.shortLabel,
     value: scores[axis.key],
   }));
 
+  // Ranking em texto, sem expor números brutos (evita ler como nota clínica).
+  const ranked = [...SMILE_AXES]
+    .sort((a, b) => scores[b.key] - scores[a.key])
+    .map((axis) => axis.label);
+  const summary = `Os pontos que mais apareceram nas suas respostas, do mais ao menos presente: ${ranked.join(", ")}.`;
+
   return (
     <div className="mt-5 rounded-3xl border border-border bg-card/60 px-1 py-4">
-      <div className="h-[260px] w-full">
+      <div
+        role="img"
+        aria-label={summary}
+        className="h-[260px] w-full"
+      >
         {mounted ? (
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" aria-hidden>
             <RadarChart data={data} outerRadius="58%">
               <PolarGrid stroke="var(--color-border)" />
               <PolarAngleAxis
@@ -828,17 +827,18 @@ function SmileRadarChart({ scores }: { scores: SmileScores }) {
                 fill="var(--color-gold)"
                 fillOpacity={0.32}
                 strokeWidth={2}
-                isAnimationActive
+                isAnimationActive={!reducedMotion}
                 animationDuration={700}
               />
             </RadarChart>
           </ResponsiveContainer>
         ) : (
-          <div className="flex h-full items-center justify-center">
+          <div aria-hidden className="flex h-full items-center justify-center">
             <div className="h-40 w-40 animate-pulse rounded-full border border-dashed border-border" />
           </div>
         )}
       </div>
+      <p className="sr-only">{summary}</p>
       <p className="px-3 pb-2 text-center text-[11px] leading-relaxed text-muted-foreground">
         Isto reflete o que você respondeu, não é uma avaliação clínica. O diagnóstico completo é
         feito pelo cirurgião-dentista na avaliação presencial.
@@ -847,69 +847,3 @@ function SmileRadarChart({ scores }: { scores: SmileScores }) {
   );
 }
 
-function LeadSheet({
-  href,
-  name,
-  phone,
-  setName,
-  setPhone,
-  onClose,
-  onGo,
-}: {
-  href: string;
-  name: string;
-  phone: string;
-  setName: (v: string) => void;
-  setPhone: (v: string) => void;
-  onClose: () => void;
-  onGo: () => void;
-}) {
-  return (
-    <div className="fixed inset-0 z-50 mx-auto flex w-full max-w-[430px] flex-col justify-end">
-      <button
-        type="button"
-        aria-label="Fechar"
-        onClick={onClose}
-        className="absolute inset-0 bg-primary/40 backdrop-blur-[2px]"
-      />
-      <div className="relative animate-sheet-up rounded-t-3xl bg-background p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-card">
-        <span className="mx-auto mb-4 block h-1 w-10 rounded-full bg-border" />
-        <p className="font-serif text-[22px] leading-tight text-foreground">
-          Quer que a clínica retome o contato?
-        </p>
-        <p className="mt-1 text-[12.5px] text-muted-foreground">
-          Opcional: você pode seguir direto para o WhatsApp.
-        </p>
-
-        <div className="mt-4 grid gap-2">
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value.slice(0, 60))}
-            placeholder="Seu nome"
-            className="w-full rounded-xl border border-border bg-card px-3 py-3 text-[14px] text-foreground outline-none focus:border-gold"
-          />
-          <input
-            value={phone}
-            inputMode="numeric"
-            onChange={(e) => setPhone(formatLocalPhone(e.target.value))}
-            placeholder="(11) 99999-9999"
-            className="w-full rounded-xl border border-border bg-card px-3 py-3 text-[14px] text-foreground outline-none focus:border-gold"
-          />
-        </div>
-
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={onGo}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-gold px-5 py-5 text-[18px] font-semibold text-primary shadow-gold ring-2 ring-gold/40 ring-offset-2 ring-offset-background transition-all active:scale-[0.99]"
-        >
-          Continuar no WhatsApp
-          <svg aria-hidden viewBox="0 0 24 24" className="h-5 w-5 text-primary/70" fill="currentColor">
-            <path d="M20 3.5A11.5 11.5 0 003 19l-1 4 4.2-1.1A11.5 11.5 0 1020 3.5zm-8.5 18a9.5 9.5 0 01-4.9-1.4l-.3-.2-2.5.7.7-2.4-.2-.4A9.5 9.5 0 1111.5 21.5z" />
-          </svg>
-        </a>
-      </div>
-    </div>
-  );
-}
