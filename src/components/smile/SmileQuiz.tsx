@@ -231,7 +231,7 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
             >
               <span className="flex min-w-0 flex-col">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/85">Próximo passo</span>
-                <span className="mt-1 truncate font-sans text-[18px] font-semibold leading-tight text-white">{map.ctaButton}</span>
+                <span className="mt-1 truncate font-sans text-[18px] font-semibold leading-tight text-black">Agendar Avaliação</span>
               </span>
               <span aria-hidden className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white text-[#25D366] transition-transform group-hover:translate-x-1">
                 <svg viewBox="0 0 448 512" className="h-5 w-5" fill="currentColor">
