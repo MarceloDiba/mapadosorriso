@@ -4,7 +4,7 @@
  */
 
 export type PaletteKey = "marfim" | "noir" | "esmeralda" | "rose";
-export type FontKey = "cormorant" | "playfair" | "outfit";
+export type FontKey = "moderna" | "cormorant" | "playfair" | "outfit";
 
 export type PaletteDef = {
   key: PaletteKey;
@@ -99,6 +99,14 @@ export type FontDef = {
 };
 
 export const FONT_PAIRS: FontDef[] = [
+  {
+    key: "moderna",
+    label: "Manrope + Inter (moderna, sem serifa)",
+    vars: {
+      "--font-serif": '"Manrope", ui-sans-serif, system-ui, sans-serif',
+      "--font-sans": '"Inter", ui-sans-serif, system-ui, sans-serif',
+    },
+  },
   {
     key: "cormorant",
     label: "Cormorant + Karla",
