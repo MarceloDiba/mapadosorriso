@@ -203,7 +203,7 @@ const REASSURANCE_DEFAULT =
 
 /** Bloco fixo de impacto na autoestima. */
 export const IMPACT_TEXT =
-  "Estudos em psicologia comportamental mostram que cerca de 87% das pessoas relatam aumento na autoestima e na confiança ao se relacionar depois de harmonizar o sorriso. Mais do que estética, um sorriso equilibrado transmite segurança e jovialidade — e muda a forma como você se apresenta na vida pessoal e profissional.";
+  "Pesquisas sobre estética do sorriso mostram que boa parte das pessoas evita sorrir abertamente por insatisfação com os próprios dentes. Um sorriso equilibrado tende a transmitir mais segurança e jovialidade — e muda a forma como você se apresenta na vida pessoal e profissional.";
 
 export const AUTHORITY_TEXT =
   "A odontologia de alto padrão une ciência e arte. O plano definitivo — e a indicação do que é possível no seu caso — nasce da avaliação presencial com o especialista, olhando para o seu rosto, o seu sorriso e o seu objetivo.";
