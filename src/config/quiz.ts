@@ -197,7 +197,7 @@ const REASSURANCE_DEFAULT =
 
 /** Bloco fixo de impacto na autoestima. */
 export const IMPACT_TEXT =
-  "Pesquisas sobre estética do sorriso mostram que boa parte das pessoas evita sorrir abertamente por insatisfação com os próprios dentes. Um sorriso equilibrado tende a transmitir mais segurança e jovialidade, mudando a forma como você se apresenta na vida pessoal e profissional.";
+  "Segundo a American Academy of Cosmetic Dentistry, 99,7% das pessoas consideram o sorriso um ativo social importante. Evitar sorrir por insatisfação com os dentes limita sua comunicação diária. Projetar um sorriso equilibrado é o caminho mais rápido para transmitir jovialidade, autoconfiança e a melhor versão da sua imagem.";
 
 export const AUTHORITY_TEXT =
   "A odontologia de alto padrão une ciência e arte. O plano definitivo nasce da avaliação presencial com o especialista, que olha para o seu rosto, o seu sorriso e o seu objetivo para indicar o que é possível no seu caso.";
