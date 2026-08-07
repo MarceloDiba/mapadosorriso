@@ -161,7 +161,6 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
                   set({ concerns: v });
                   if (full) later(next, ADVANCE_DELAY);
                 }}
-                onContinue={next}
               />
             )}
 
@@ -520,7 +519,6 @@ function MultiChoiceStep({
   items,
   value,
   onChange,
-  onContinue,
   max,
 }: {
   eyebrow?: string;
@@ -529,7 +527,6 @@ function MultiChoiceStep({
   items: Option[];
   value: string[];
   onChange: (v: string[], reachedMax: boolean) => void;
-  onContinue: () => void;
   max: number;
 }) {
   const toggle = (id: string) => {
@@ -556,23 +553,6 @@ function MultiChoiceStep({
           />
         ))}
       </div>
-
-      {value.length === 1 && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 bg-gradient-to-t from-background via-background/95 to-transparent px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-6">
-          <button
-            type="button"
-            onClick={onContinue}
-            className="pointer-events-auto flex w-full animate-fade-up items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-3.5 text-primary-foreground shadow-soft transition-all active:scale-[0.99]"
-          >
-            <span className="font-serif text-[16px]">Seguir com esta</span>
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gold text-primary">
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.2">
-                <path d="M5 12h14M13 5l7 7-7 7" />
-              </svg>
-            </span>
-          </button>
-        </div>
-      )}
     </section>
   );
 }
