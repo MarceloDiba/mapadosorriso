@@ -744,7 +744,7 @@ function ResultMap({
           <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
             Por que este passo transforma
           </p>
-          <p className="mt-3 font-sans text-[13.5px] italic leading-relaxed text-muted-foreground">{map.impact}</p>
+          <p className="mt-3 font-sans text-[13.5px] font-semibold italic leading-relaxed text-muted-foreground">{map.impact}</p>
         </Reveal>
 
         <Reveal className="mt-10 border-t border-border pt-8">
