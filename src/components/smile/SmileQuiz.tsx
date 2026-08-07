@@ -220,6 +220,23 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
           </FloatingBar>
         )}
 
+        {step === "result" && resultProgress < 0.04 && (
+          <div
+            aria-hidden
+            className="animate-bob pointer-events-none absolute inset-x-0 z-20 flex flex-col items-center gap-1.5"
+            style={{ top: "73vh" }}
+          >
+            <span className="rounded-full bg-background/85 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-muted-foreground shadow-soft backdrop-blur">
+              Veja seu mapa
+            </span>
+            <span className="grid h-7 w-7 place-items-center rounded-full bg-background/85 text-muted-foreground shadow-soft backdrop-blur">
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.2">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </span>
+          </div>
+        )}
+
         {step === "result" && (
           <FloatingBar>
             <a

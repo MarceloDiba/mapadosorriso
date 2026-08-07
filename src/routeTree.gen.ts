@@ -11,10 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as CSlugRouteImport } from './routes/c.$slug'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
-import { Route as AdminClinicasNovaRouteImport } from './routes/admin.clinicas.nova'
+import { Route as CSlugRouteImport } from './routes/c.$slug'
 import { Route as AdminClinicasIdRouteImport } from './routes/admin.clinicas.$id'
+import { Route as AdminClinicasNovaRouteImport } from './routes/admin.clinicas.nova'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -26,24 +26,24 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/admin/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CSlugRoute = CSlugRouteImport.update({
-  id: '/c/$slug',
-  path: '/c/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/admin/login',
   path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminClinicasNovaRoute = AdminClinicasNovaRouteImport.update({
-  id: '/admin/clinicas/nova',
-  path: '/admin/clinicas/nova',
+const CSlugRoute = CSlugRouteImport.update({
+  id: '/c/$slug',
+  path: '/c/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminClinicasIdRoute = AdminClinicasIdRouteImport.update({
   id: '/admin/clinicas/$id',
   path: '/admin/clinicas/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminClinicasNovaRoute = AdminClinicasNovaRouteImport.update({
+  id: '/admin/clinicas/nova',
+  path: '/admin/clinicas/nova',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -124,13 +124,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/c/$slug': {
-      id: '/c/$slug'
-      path: '/c/$slug'
-      fullPath: '/c/$slug'
-      preLoaderRoute: typeof CSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/login': {
       id: '/admin/login'
       path: '/admin/login'
@@ -138,11 +131,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/clinicas/nova': {
-      id: '/admin/clinicas/nova'
-      path: '/admin/clinicas/nova'
-      fullPath: '/admin/clinicas/nova'
-      preLoaderRoute: typeof AdminClinicasNovaRouteImport
+    '/c/$slug': {
+      id: '/c/$slug'
+      path: '/c/$slug'
+      fullPath: '/c/$slug'
+      preLoaderRoute: typeof CSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/clinicas/$id': {
@@ -150,6 +143,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/clinicas/$id'
       fullPath: '/admin/clinicas/$id'
       preLoaderRoute: typeof AdminClinicasIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/clinicas/nova': {
+      id: '/admin/clinicas/nova'
+      path: '/admin/clinicas/nova'
+      fullPath: '/admin/clinicas/nova'
+      preLoaderRoute: typeof AdminClinicasNovaRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -166,3 +166,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

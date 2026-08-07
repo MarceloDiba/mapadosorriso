@@ -149,6 +149,11 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes bob {
+  0%, 100% { transform: translateY(0); opacity: 0.85; }
+  50% { transform: translateY(5px); opacity: 1; }
+}
+
 @utility animate-fade-up {
   animation: fade-up 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
@@ -166,6 +171,9 @@
 }
 @utility animate-sheet-up {
   animation: sheet-up 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@utility animate-bob {
+  animation: bob 1.6s ease-in-out infinite;
 }
 
 /* Faixa de escolha — vocabulário editorial, sem radio/checkbox. */
