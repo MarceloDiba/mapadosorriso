@@ -1,4 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  PolarAngleAxis,
+  PolarGrid,
+  Radar,
+  RadarChart,
+  ResponsiveContainer,
+} from "recharts";
 
 import {
   CONCERNS,
@@ -6,11 +13,14 @@ import {
   DECISION_SHORT,
   DEFAULT_IMAGES,
   OBJECTIONS,
+  SMILE_AXES,
   STYLES,
   buildSmileMap,
+  buildSmileScores,
   copyOf,
   type Answers,
   type Option,
+  type SmileScores,
 } from "@/config/quiz";
 import { themeStyle } from "@/config/theme";
 import type { PublicClinic } from "@/lib/clinics.functions";
@@ -102,6 +112,7 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
   };
 
   const map = useMemo(() => buildSmileMap(answers, clinic.name), [answers, clinic.name]);
+  const scores = useMemo(() => buildSmileScores(answers), [answers]);
 
   return (
     <div
@@ -181,6 +192,7 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
               <ResultMap
                 title={text("resultTitle")}
                 map={map}
+                scores={scores}
                 styleImage={img(answers.style && answers.style !== "orientacao" ? answers.style : "hero")}
                 clinicName={clinic.name}
                 objection={answers.objection}
@@ -686,6 +698,7 @@ function Reveal({ children, className = "" }: { children: React.ReactNode; class
 function ResultMap({
   title,
   map,
+  scores,
   styleImage,
   clinicName,
   objection,
@@ -694,6 +707,7 @@ function ResultMap({
 }: {
   title: string;
   map: ReturnType<typeof buildSmileMap>;
+  scores: SmileScores;
   styleImage: string;
   clinicName: string;
   objection?: string;
@@ -716,6 +730,14 @@ function ResultMap({
       </div>
 
       <div className="px-5">
+        <Reveal className="mt-10">
+          <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">Seu mapa visual</p>
+          <p className="mt-2 font-serif text-[19px] leading-snug text-foreground">
+            Os pontos de atenção que mais apareceram no que você contou.
+          </p>
+          <SmileRadarChart scores={scores} />
+        </Reveal>
+
         <Reveal className="mt-10">
           <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
             Por que este passo transforma
@@ -777,6 +799,51 @@ function ResultMap({
       </div>
     </section>
 
+  );
+}
+
+function SmileRadarChart({ scores }: { scores: SmileScores }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  const data = SMILE_AXES.map((axis) => ({
+    axis: axis.label,
+    value: scores[axis.key],
+  }));
+
+  return (
+    <div className="mt-5 rounded-3xl border border-border bg-card/60 p-2">
+      <div className="h-[280px] w-full">
+        {mounted ? (
+          <ResponsiveContainer width="100%" height="100%">
+            <RadarChart data={data} outerRadius="68%">
+              <PolarGrid stroke="var(--color-border)" />
+              <PolarAngleAxis
+                dataKey="axis"
+                tick={{ fill: "var(--color-foreground)", fontSize: 11, fontFamily: "var(--font-sans)" }}
+              />
+              <Radar
+                dataKey="value"
+                stroke="var(--color-gold)"
+                fill="var(--color-gold)"
+                fillOpacity={0.32}
+                strokeWidth={2}
+                isAnimationActive
+                animationDuration={700}
+              />
+            </RadarChart>
+          </ResponsiveContainer>
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            <div className="h-40 w-40 animate-pulse rounded-full border border-dashed border-border" />
+          </div>
+        )}
+      </div>
+      <p className="px-3 pb-2 text-center text-[11px] leading-relaxed text-muted-foreground">
+        Reflexo do que você respondeu — não é uma avaliação clínica. O diagnóstico completo é feito
+        pelo cirurgião-dentista na avaliação presencial.
+      </p>
+    </div>
   );
 }
 

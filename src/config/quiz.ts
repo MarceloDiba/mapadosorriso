@@ -266,6 +266,73 @@ export type Answers = {
   decision?: string;
 };
 
+/* ------------------------- Mapa visual (radar) ------------------------- */
+
+/**
+ * Seis eixos de leitura estética do sorriso (vocabulário de Smile Design),
+ * usados só para dar forma visual às respostas do paciente — não é um
+ * diagnóstico clínico, é um reflexo do que ele mesmo apontou como foco.
+ */
+export const SMILE_AXES = [
+  { key: "arco", label: "Arco do sorriso" },
+  { key: "proporcao", label: "Proporção dos dentes" },
+  { key: "cor", label: "Cor" },
+  { key: "simetria", label: "Simetria" },
+  { key: "formato", label: "Formato" },
+  { key: "gengival", label: "Exposição gengival" },
+] as const;
+
+export type SmileAxisKey = (typeof SMILE_AXES)[number]["key"];
+export type SmileScores = Record<SmileAxisKey, number>;
+
+const AXIS_BASE = 38;
+
+const CONCERN_AXIS_WEIGHTS: Record<string, Partial<Record<SmileAxisKey, number>>> = {
+  cor: { cor: 55 },
+  formato: { formato: 50 },
+  espacos: { simetria: 45, arco: 20 },
+  tamanho: { proporcao: 50, gengival: 40 },
+  alinhamento: { simetria: 50, arco: 15 },
+};
+
+const STYLE_AXIS_WEIGHTS: Record<string, Partial<Record<SmileAxisKey, number>>> = {
+  natural: { formato: 10, proporcao: 10 },
+  rejuvenescido: { cor: 20, arco: 10 },
+  amplo: { arco: 25, simetria: 10 },
+  hollywood: { cor: 25, arco: 20 },
+  orientacao: {},
+};
+
+/**
+ * Converte as respostas do quiz num placar de 0 a 100 por eixo — quanto
+ * maior, mais aquele eixo apareceu no que a pessoa disse desejar ou notar.
+ * É um espelho das respostas, não uma avaliação clínica do sorriso dela.
+ */
+export function buildSmileScores(answers: Answers): SmileScores {
+  const scores = Object.fromEntries(
+    SMILE_AXES.map((a) => [a.key, AXIS_BASE]),
+  ) as SmileScores;
+
+  const styleWeights = STYLE_AXIS_WEIGHTS[answers.style ?? "orientacao"] ?? {};
+  for (const axis of SMILE_AXES) {
+    scores[axis.key] += styleWeights[axis.key] ?? 0;
+  }
+
+  for (const concern of answers.concerns) {
+    const weights = CONCERN_AXIS_WEIGHTS[concern];
+    if (!weights) continue;
+    for (const axis of SMILE_AXES) {
+      scores[axis.key] += weights[axis.key] ?? 0;
+    }
+  }
+
+  for (const axis of SMILE_AXES) {
+    scores[axis.key] = Math.max(0, Math.min(100, Math.round(scores[axis.key])));
+  }
+
+  return scores;
+}
+
 export type SmileMap = {
   profile: string;
   journey: string;
