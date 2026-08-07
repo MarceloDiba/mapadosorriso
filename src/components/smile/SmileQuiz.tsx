@@ -220,13 +220,13 @@ export function SmileQuiz({ clinic, track }: { clinic: PublicClinic; track?: Tra
             <button
               type="button"
               onClick={() => setSheet(true)}
-              className="group flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-4 text-left text-primary-foreground shadow-soft transition-all active:scale-[0.99]"
+              className="group flex w-full items-center justify-between gap-3 rounded-2xl bg-gold px-5 py-5 text-left text-primary shadow-gold ring-2 ring-gold/40 ring-offset-2 ring-offset-background transition-all active:scale-[0.99]"
             >
               <span className="flex min-w-0 flex-col">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-gold-soft">Próximo passo</span>
-                <span className="mt-1 truncate font-serif text-[16px] leading-tight">{map.ctaButton}</span>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary/70">Próximo passo</span>
+                <span className="mt-1 truncate font-sans text-[18px] font-semibold leading-tight">{map.ctaButton}</span>
               </span>
-              <span aria-hidden className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gold text-primary transition-transform group-hover:translate-x-1">
+              <span aria-hidden className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-primary text-gold transition-transform group-hover:translate-x-1">
                 <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
                   <path d="M20 3.5A11.5 11.5 0 003 19l-1 4 4.2-1.1A11.5 11.5 0 1020 3.5zm-8.5 18a9.5 9.5 0 01-4.9-1.4l-.3-.2-2.5.7.7-2.4-.2-.4A9.5 9.5 0 1111.5 21.5z" />
                 </svg>
@@ -835,10 +835,10 @@ function LeadSheet({
           target="_blank"
           rel="noopener noreferrer"
           onClick={onGo}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-4 font-serif text-[17px] text-primary-foreground transition-all active:scale-[0.99]"
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-gold px-5 py-5 text-[18px] font-semibold text-primary shadow-gold ring-2 ring-gold/40 ring-offset-2 ring-offset-background transition-all active:scale-[0.99]"
         >
           Continuar no WhatsApp
-          <svg aria-hidden viewBox="0 0 24 24" className="h-5 w-5 text-gold" fill="currentColor">
+          <svg aria-hidden viewBox="0 0 24 24" className="h-5 w-5 text-primary/70" fill="currentColor">
             <path d="M20 3.5A11.5 11.5 0 003 19l-1 4 4.2-1.1A11.5 11.5 0 1020 3.5zm-8.5 18a9.5 9.5 0 01-4.9-1.4l-.3-.2-2.5.7.7-2.4-.2-.4A9.5 9.5 0 1111.5 21.5z" />
           </svg>
         </a>
