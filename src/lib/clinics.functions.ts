@@ -51,13 +51,16 @@ export type ClinicResolution = {
 export const getClinicBySlug = createServerFn({ method: "GET" })
   .inputValidator((data: { slug: string }) => ({ slug: String(data.slug).slice(0, 80) }))
   .handler(async ({ data }): Promise<ClinicResolution> => {
-    const { data: row } = await publicClient()
+    const { data: row, error } = await publicClient()
       .from("clinics")
       .select(
         "id, slug, name, city, whatsapp, logo_url, palette, font_pair, images, copy, is_active, contract_start, contract_end",
       )
       .eq("slug", data.slug)
       .maybeSingle();
+    if (error) {
+      console.error(`[getClinicBySlug] falha ao consultar Supabase para slug "${data.slug}":`, error);
+    }
     if (!row) return { clinic: null, reason: "not_found" };
     if (!row.is_active) return { clinic: null, reason: "inactive" };
     const today = new Date().toISOString().slice(0, 10);
@@ -88,7 +91,7 @@ export const startSession = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const trim = (v?: string | null) => (v ? String(v).slice(0, 80) : null);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: row } = await supabaseAdmin
+    const { data: row, error } = await supabaseAdmin
       .from("clinic_sessions")
       .insert({
         clinic_id: data.clinicId,
@@ -98,6 +101,9 @@ export const startSession = createServerFn({ method: "POST" })
       })
       .select("id, session_token")
       .maybeSingle();
+    if (error) {
+      console.error(`[startSession] falha ao criar sessão para clínica "${data.clinicId}":`, error);
+    }
     // O token é o comprovante de propriedade da sessão: sem ele, ninguém altera esta sessão.
     return { id: row?.id ?? null, token: row?.session_token ?? null };
   });
@@ -145,6 +151,9 @@ export const updateSession = createServerFn({ method: "POST" })
       .eq("id", data.sessionId)
       .eq("session_token", data.sessionToken)
       .gte("created_at", new Date(Date.now() - 6 * 3600_000).toISOString());
+    if (error) {
+      console.error(`[updateSession] falha ao atualizar sessão "${data.sessionId}":`, error);
+    }
     return { ok: !error };
   });
 
