@@ -708,13 +708,6 @@ function ResultMap({
           <SmileRadarChart scores={scores} />
         </Reveal>
 
-        <Reveal className="mt-10">
-          <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-            Por que este passo transforma
-          </p>
-          <p className="mt-3 font-serif text-[19px] leading-snug text-foreground">{map.impact}</p>
-        </Reveal>
-
         <Reveal className="mt-10 border-t border-border pt-8">
           <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
             Como sua transformação acontece
@@ -745,6 +738,13 @@ function ResultMap({
               </li>
             ))}
           </ol>
+        </Reveal>
+
+        <Reveal className="mt-10 border-t border-border pt-8">
+          <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+            Por que este passo transforma
+          </p>
+          <p className="mt-3 font-sans text-[13.5px] italic leading-relaxed text-muted-foreground">{map.impact}</p>
         </Reveal>
 
         <Reveal className="mt-10 border-t border-border pt-8">
